@@ -1,0 +1,8 @@
+[Desktop Entry]
+_Name=Fogger
+_Comment=Fogger application
+Categories=GNOME;Utility;
+Exec=fogger
+Icon=fogger
+Terminal=false
+Type=Application
