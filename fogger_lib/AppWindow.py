@@ -9,10 +9,11 @@ logger = logging.getLogger('fogger_lib')
 
 from . helpers import get_builder, show_uri, get_help_uri
 
+
 # This class is meant to be subclassed by FoggerWindow.  It provides
 # common functions and some boilerplate.
-class Window(Gtk.Window):
-    __gtype_name__ = "Window"
+class AppWindow(Gtk.Window):
+    __gtype_name__ = "AppWindow"
 
     # To construct a new instance of this method, the following notable
     # methods are called in this order:
@@ -30,8 +31,8 @@ class Window(Gtk.Window):
 
         Returns a fully instantiated BaseFoggerWindow object.
         """
-        builder = get_builder('FoggerWindow')
-        new_object = builder.get_object("fogger_window")
+        builder = get_builder('FoggerAppWindow')
+        new_object = builder.get_object("fogger_app_window")
         new_object.finish_initializing(builder)
         return new_object
 
@@ -48,6 +49,7 @@ class Window(Gtk.Window):
         self.PreferencesDialog = None # class
         self.preferences_dialog = None # instance
         self.AboutDialog = None # class
+
 
         self.settings = Gio.Settings("net.launchpad.fogger")
         self.settings.connect('changed', self.on_preferences_changed)
@@ -75,6 +77,7 @@ class Window(Gtk.Window):
             self.indicator = indicator.new_application_indicator(self)
         except ImportError:
             pass
+
 
     def on_mnu_contents_activate(self, widget, data=None):
         show_uri(self, "ghelp:%s" % get_help_uri())
@@ -108,9 +111,6 @@ class Window(Gtk.Window):
         """Signal handler for closing the FoggerWindow."""
         self.destroy()
 
-    def on_create(self, widget, data=None):
-        pass
-
     def on_destroy(self, widget, data=None):
         """Called when the FoggerWindow is closed."""
         # Clean up code for saving application state should be added here.
@@ -127,3 +127,4 @@ class Window(Gtk.Window):
         logger.debug('on_preferences_dialog_destroyed')
         # to determine whether to create or present preferences_dialog
         self.preferences_dialog = None
+

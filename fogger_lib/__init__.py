@@ -8,5 +8,7 @@
 while keeping its api constant'''
 from . helpers import set_up_logging
 from . Window import Window
+from .AppWindow import AppWindow
+from .FogApp import *
 from . foggerconfig import get_version
 

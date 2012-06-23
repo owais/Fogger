@@ -1,0 +1,10 @@
+
+[Desktop Entry]
+name=%(name)s
+Comment=%(name)s
+Categories=GNOME;Utility;
+Exec=fogger %(name)s
+Icon=%(icon)s
+Terminal=false
+Type=Application
+StartupNotify=true
