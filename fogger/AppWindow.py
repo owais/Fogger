@@ -8,7 +8,7 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('fogger')
 
-from gi.repository import Gtk, Gdk, WebKit # pylint: disable=E0611
+from gi.repository import Gtk, Gdk, GLib, WebKit # pylint: disable=E0611
 import logging
 logger = logging.getLogger('fogger')
 
@@ -16,6 +16,8 @@ from fogger_lib import AppWindow
 from fogger_lib.helpers import get_media_file
 from fogger.AboutFoggerDialog import AboutFoggerDialog
 from fogger.PreferencesFoggerDialog import PreferencesFoggerDialog
+
+DOWNLOAD_DIR = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DOWNLOAD)
 
 # See fogger_lib.Window.py for more details about how this class works
 class FoggerAppWindow(AppWindow):
@@ -52,13 +54,15 @@ class FoggerAppWindow(AppWindow):
         self.websettings.props.enable_accelerated_compositing = True
         self.websettings.props.enable_dns_prefetching = True
         self.websettings.props.enable_fullscreen = True
+        self.websettings.props.enable_offline_web_application_cache = True
+        self.websettings.props.javascript_can_open_windows_automatically = True
         self.websettings.props.enable_html5_database = True
         self.websettings.props.enable_html5_local_storage = True
-        self.websettings.enable_site_specific_quirks = True
-        self.websettings.enable_spell_checking = True
-        self.websettings.enable_web_audio = True
-        self.websettings.enable_webgl = True
-        self.websettings.enable_page_cache = True
+        self.websettings.props.enable_site_specific_quirks = True
+        self.websettings.props.enable_spell_checking = True
+        self.websettings.props.enable_webaudio = True
+        self.websettings.props.enable_webgl = True
+        self.websettings.props.enable_page_cache = True
 
     def do_window_state_event(self, widget, data=None):
         if self.app:
@@ -88,7 +92,14 @@ class FoggerAppWindow(AppWindow):
         self.statusbar.show()
 
     def download_requested(self, widget, download, data=None):
-        download.set_destination_uri('file:///home/owais/Desktop/1.svg')
+        name = download.get_suggested_filename()
+        _name, ext = op.splitext(name)
+        path = op.join(DOWNLOAD_DIR, name)
+        i = 1
+        while op.exists(path):
+            path = '%s_%d%s' %(op.join(DOWNLOAD_DIR, _name), i, ext)
+            i += 1
+        download.set_destination_uri('file://%s' % path)
         return True
 
     def run_app(self, app):

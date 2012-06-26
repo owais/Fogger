@@ -103,7 +103,6 @@ class FogAppManager:
             return None
 
     def create(self, name, url, icon):
-        print icon, '<<<'
         uuid = md5(name).hexdigest()
         path = self._setup_app_dir(uuid)
         app = FogApp()
