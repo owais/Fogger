@@ -85,10 +85,10 @@ class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
 
 DistUtilsExtra.auto.setup(
     name='fogger',
-    version='0.1',
+    version='0.1-public2',
     license='GPL-3',
-    #author='Your Name',
-    #author_email='email@ubuntu.com',
+    author='Owais Lone',
+    author_email='hello@owaislone.org',
     #description='UI for managing …',
     #long_description='Here a longer description',
     #url='https://launchpad.net/fogger',

@@ -1,3 +1,21 @@
+fogger (0.1-public2ubuntu1) precise; urgency=low
+
+  * 
+
+ -- Owais Lone <hello@owaislone.org>  Tue, 26 Jun 2012 17:46:03 +0530
+
+fogger (0.1-public2) precise; urgency=low
+
+  * New release.
+
+ -- Owais Lone <hello@owaislone.org>  Tue, 26 Jun 2012 17:40:56 +0530
+
+fogger (0.1-public1) precise; urgency=low
+
+  * New release.
+
+ -- Owais Lone <hello@owaislone.org>  Tue, 26 Jun 2012 17:37:28 +0530
+
 fogger (0.1) precise; urgency=low
 
   * Initial release.

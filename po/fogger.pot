@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-26 15:09+0530\n"
+"POT-Creation-Date: 2012-06-26 17:45+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,8 +47,29 @@ msgstr ""
 msgid "Status Area"
 msgstr ""
 
-#: ../fogger/__init__.py:23
+#: ../fogger/__init__.py:34
 msgid "Show debug messages (-vv debugs fogger_lib also)"
+msgstr ""
+
+#: ../data/ui/AboutFoggerDialog.ui.h:1
+msgid ""
+"# Copyright (C) 2012 Owais Lone <hello@owaislone.org>\n"
+"# This program is free software: you can redistribute it and/or modify it \n"
+"# under the terms of the GNU General Public License version 3, as "
+"published \n"
+"# by the Free Software Foundation.\n"
+"# \n"
+"# This program is distributed in the hope that it will be useful, but \n"
+"# WITHOUT ANY WARRANTY; without even the implied warranties of \n"
+"# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR \n"
+"# PURPOSE.  See the GNU General Public License for more details.\n"
+"# \n"
+"# You should have received a copy of the GNU General Public License along \n"
+"# with this program.  If not, see <http://www.gnu.org/licenses/>.\n"
+msgstr ""
+
+#: ../data/ui/AboutFoggerDialog.ui.h:14
+msgid "Copyright (C) 2012 Owais Lone <hello@owaislone.org>"
 msgstr ""
 
 #: ../data/ui/FoggerWindow.ui.h:2
