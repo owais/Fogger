@@ -13,11 +13,11 @@
     <property name="title" translatable="yes">Fogger</property>
     <property name="default_width">400</property>
     <property name="icon">../media/fogger.svg</property>
+    <property name="gravity">center</property>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="spacing">5</property>
         <child>
           <object class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
@@ -27,66 +27,45 @@
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_File</property>
+                <property name="label" translatable="yes">_App</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkImageMenuItem" id="mnu_new">
-                        <property name="label">gtk-new</property>
+                      <object class="GtkMenuItem" id="menuitem2">
                         <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Reload</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <accelerator key="n" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="mnu_open">
-                        <property name="label">gtk-open</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <accelerator key="o" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem" id="separatormenuitem3">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="mnu_save">
-                        <property name="label">gtk-save</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <accelerator key="s" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="mnu_save_as">
-                        <property name="label">gtk-save-as</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <accelerator key="s" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem1">
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Export</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="mnu_preferences">
+                        <property name="label">gtk-preferences</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                       </object>
                     </child>
                     <child>
@@ -102,90 +81,6 @@
                     </child>
                   </object>
                 </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="mnu_edit">
-                <property name="use_action_appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_Edit</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="menu2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkImageMenuItem" id="mnu_cut">
-                        <property name="label">gtk-cut</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <accelerator key="x" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="mnu_copy">
-                        <property name="label">gtk-copy</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <accelerator key="c" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="mnu_paste">
-                        <property name="label">gtk-paste</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <accelerator key="v" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="mnu_delete">
-                        <property name="label">gtk-delete</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <accelerator key="Delete" signal="activate"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="mnu_preferences">
-                        <property name="label">gtk-preferences</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="mnu_view">
-                <property name="use_action_appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_View</property>
-                <property name="use_underline">True</property>
               </object>
             </child>
             <child>
@@ -232,7 +127,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkScrolledWindow" id="web_view_container">
+          <object class="GtkScrolledWindow" id="webview_container">
             <property name="can_focus">True</property>
             <property name="shadow_type">in</property>
             <child>
@@ -262,7 +157,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <attributes>
-                      <attribute name="size" value="70000"/>
+                      <attribute name="size" value="40000"/>
                     </attributes>
                   </object>
                   <packing>
@@ -272,44 +167,19 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="box2">
+                  <object class="GtkSpinner" id="spinner1">
+                    <property name="width_request">35</property>
+                    <property name="height_request">35</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">center</property>
-                    <property name="spacing">5</property>
-                    <child>
-                      <object class="GtkLabel" id="loadinglabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">loading</property>
-                        <attributes>
-                          <attribute name="size" value="20000"/>
-                        </attributes>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="load_status">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <attributes>
-                          <attribute name="size" value="20000"/>
-                        </attributes>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
+                    <property name="valign">center</property>
+                    <property name="active">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
+                    <property name="padding">20</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -319,9 +189,6 @@
                 <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
-            </child>
-            <child>
-              <placeholder/>
             </child>
             <child>
               <object class="GtkImage" id="image1">
@@ -348,15 +215,42 @@
         <child>
           <object class="GtkStatusbar" id="statusbar">
             <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
             <property name="spacing">2</property>
             <child>
-              <object class="GtkLabel" id="label2">
+              <object class="GtkBox" id="box3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">0</property>
-                <property name="xpad">5</property>
-                <property name="ypad">5</property>
-                <property name="label" translatable="yes">Status Area</property>
+                <child>
+                  <object class="GtkLabel" id="label2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="xpad">5</property>
+                    <property name="ypad">5</property>
+                    <property name="label" translatable="yes">Status Area</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkProgressBar" id="progressbar">
+                    <property name="height_request">20</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="valign">center</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="padding">20</property>
+                    <property name="pack_type">end</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">True</property>

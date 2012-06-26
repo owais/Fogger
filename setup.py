@@ -46,9 +46,7 @@ def update_desktop_file(datadir):
         fin = file('fogger.desktop.in', 'r')
         fout = file(fin.name + '.new', 'w')
 
-        for line in fin:            
-            if 'Icon=' in line:
-                line = "Icon=%s\n" % (datadir + 'media/fogger.svg')
+        for line in fin:
             fout.write(line)
         fout.flush()
         fout.close()
@@ -69,7 +67,7 @@ class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
         update_config(previous_values)
 
 
-        
+
 ##################################################################################
 ###################### YOU SHOULD MODIFY ONLY WHAT IS BELOW ######################
 ##################################################################################

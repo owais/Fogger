@@ -7,15 +7,18 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('fogger')
 
-from gi.repository import Gtk, Gdk, GdkPixbuf # pylint: disable=E0611
+from gi.repository import Gtk, Gdk, GdkPixbuf, Gio # pylint: disable=E0611
 import logging
 logger = logging.getLogger('fogger')
-from quickly.prompts import open_image_file
 from fogger_lib import Window
 from fogger_lib import app_manager
 from fogger_lib.errors import BaseFogAppException
 from fogger.AboutFoggerDialog import AboutFoggerDialog
 from fogger.PreferencesFoggerDialog import PreferencesFoggerDialog
+
+
+ICON_SIZE = Gtk.icon_size_register('FoggerIconSize', 80, 80)
+
 
 # See fogger_lib.Window.py for more details about how this class works
 class FoggerWindow(Window):
@@ -28,27 +31,31 @@ class FoggerWindow(Window):
         self.AboutDialog = AboutFoggerDialog
         self.PreferencesDialog = PreferencesFoggerDialog
 
-        self.overlay = Gtk.Overlay()
-        vbox = self.builder.get_object('vbox1')
-        vbox.pack_start(self.overlay, True, True, 0)
-        vbox.reorder_child(self.overlay, 5)
-        bgimg = self.builder.get_object('eventbox1')
-        bgimg.set_halign(Gtk.Align.CENTER)
-        bgimg.set_valign(Gtk.Align.CENTER)
-        self.overlay.add(bgimg)
-        bgimg.show()
-        self.overlay.show_all()
-
         self.url = self.builder.get_object('url_entry')
+        self.url.realize()
         self.name = self.builder.get_object('name_entry')
         self.icon = self.builder.get_object('app_icon')
-        self.icon.props.pixbuf = self.icon.get_pixbuf().scale_simple(80, 80, GdkPixbuf.InterpType.BILINEAR)
+        #self.icon.props.pixbuf = self.icon.get_pixbuf().scale_simple(80, 80, GdkPixbuf.InterpType.BILINEAR)
         self.icon_path = None
         self.setup_drop_targets()
+        self.icon_theme = Gtk.IconTheme.get_default()
 
 
     def on_cancel(self, widget, data=None):
         self.destroy()
+
+    def on_url_changed(self, widget, data=None):
+        pass
+
+    def on_name_changed(self, widget, data=None):
+        name = self.name.get_text().lower().replace(' ', '-')
+        if self.icon_theme.has_icon(name):
+            gicon = Gio.Icon.new_for_string(name)
+            self.icon_path = name
+        else:
+            gicon = Gio.Icon.new_for_string('foggerapp')
+            self.icon_path = 'foggerapp'
+        self.icon.set_from_gicon(gicon, ICON_SIZE)
 
     def on_create(self, widget, data=None):
         name = self.name.get_text()
@@ -58,8 +65,9 @@ class FoggerWindow(Window):
         except BaseFogAppException:
             logger.error("Error creating App %s" % url)
         else:
-            app.run()
-            self.hide()
+            app = Gio.DesktopAppInfo.new_from_filename(app.get_desktop_file())
+            app.launch([], Gio.AppLaunchContext())
+            self.destroy()
 
     def setup_drop_targets(self):
         self.drag_dest_set(Gtk.DestDefaults.ALL, [], Gdk.DragAction.MOVE)

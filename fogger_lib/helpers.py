@@ -4,8 +4,9 @@
 ### END LICENSE
 
 """Helpers for an Ubuntu application."""
-import logging
 import os
+import re
+import logging
 
 from . foggerconfig import get_data_file
 from . Builder import Builder
