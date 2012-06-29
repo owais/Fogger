@@ -11,7 +11,8 @@
   <object class="FoggerAppWindow" id="fogger_app_window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Fogger</property>
-    <property name="default_width">400</property>
+    <property name="default_width">800</property>
+    <property name="default_height">600</property>
     <property name="icon">../media/fogger.svg</property>
     <property name="gravity">center</property>
     <child>
@@ -211,6 +212,9 @@
             <property name="fill">True</property>
             <property name="position">2</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
         <child>
           <object class="GtkStatusbar" id="statusbar">

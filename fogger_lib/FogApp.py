@@ -54,12 +54,13 @@ class FogApp:
         cache = get_or_create_directory(os.path.join(GLib.get_user_cache_dir(), 'fogger', self.uuid))
         cookie_jar = Soup.CookieJarText.new(op.join(cache, 'WebkitSession'), False)
         session.add_feature(cookie_jar)
+        session.props.max_conns_per_host = 8
 
     def set_url(self, url):
         self.url = url
         purl = urlparse.urlparse(self.url)
         if not purl.scheme:
-           self.url = 'https://%s' % (self.url,)
+           self.url = 'http://%s' % (self.url,)
         #try:
         #    urllib2.urlopen(self.url)
         #except urllib2.URLError:

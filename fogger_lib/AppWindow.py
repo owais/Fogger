@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -64,6 +64,8 @@ class AppWindow(Gtk.Window):
 
         self.settings = Gio.Settings("net.launchpad.fogger")
         self.settings.connect('changed', self.on_preferences_changed)
+        self.is_popup = False
+        self.popups = []
 
         # Optional Launchpad integration
         # This shouldn't crash if not found as it is simply used for bug reporting.
@@ -125,7 +127,11 @@ class AppWindow(Gtk.Window):
     def on_destroy(self, widget, data=None):
         """Called when the FoggerWindow is closed."""
         # Clean up code for saving application state should be added here.
-        Gtk.main_quit()
+        if not self.is_popup:
+            for w in self.popups:
+                w.destroy()
+            Gtk.main_quit()
+        return True
 
     def on_preferences_changed(self, settings, key, data=None):
         logger.debug('preference changed: %s = %s' % (key, str(settings.get_value(key))))
