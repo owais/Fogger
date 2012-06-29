@@ -53,9 +53,8 @@ class FoggerAppWindow(AppWindow):
         self.setup_websettings()
         self.webview.show()
         self.webview.connect('document-load-finished', self.init_dom)
-        self.webview.connect('load-progress-changed', self.load_progress)
-        self.webview.connect('load-finished', self.load_finished)
-        self.webview.connect('load-started', self.load_started)
+        self.webview.connect('notify::progress', self.load_progress)
+        self.webview.connect('notify::load-status', self.load_status_changed)
         self.webview.connect('download-requested', self.download_requested)
         self.webview.connect('navigation-policy-decision-requested', self.navigation_requested)
         self.webview.connect('create-web-view', self.on_create_webview)
@@ -96,15 +95,15 @@ class FoggerAppWindow(AppWindow):
             self.app.window_size = self.get_size()
             self.app.save()
 
-    def load_progress(self, widget, progress, data=None):
-        self.progressbar.set_fraction(progress)
+    def load_progress(self, widget, propname):
+        self.progressbar.set_fraction(self.webview.props.progress)
 
-    def load_finished(self, widget, data=None):
-        self.progressbar.set_fraction(0.0)
-        self.progressbar.hide()
-
-    def load_started(self, widget, data=None):
-        self.progressbar.show()
+    def load_status_changed(self, widget, propname):
+        if self.webview.props.load_status in \
+                (WebKit.LoadStatus.FAILED, WebKit.LoadStatus.FINISHED):
+            self.progressbar.hide()
+        else:
+            self.progressbar.show()
 
     def init_dom(self, widget, data=None):
         for script in self.userscripts:
