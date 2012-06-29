@@ -157,21 +157,22 @@ class FoggerAppWindow(AppWindow):
             self.set_icon_from_file(self.app.icon)
         else:
             self.set_icon_name(self.app.icon)
-        self.appname.set_text(app.name)
         self.set_title(app.name or app.url or 'FogApp')
         self.set_role('FogApp:%s' % app.name)
         if not webview:
+            self.appname.set_text(app.name)
             self.webview.load_uri(self.app.url)
             self.set_default_size(*self.app.window_size)
             if self.app.maximized:
                 self.maximize()
         else:
+            self.appname.set_text('Loading...')
             self.is_popup = True
             wf = webview.props.window_features
             if wf.props.width and wf.props.height:
-                self.set_default_size(wf.props.width, wf.props.height)
+                self.resize(wf.props.width, wf.props.height)
             else:
-                self.set_default_size(800, 600)
+                self.resize(800, 600)
             if wf.props.fullscreen:
                 self.fullscreen()
         self.show()
