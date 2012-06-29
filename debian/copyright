@@ -1,7 +1,7 @@
 Format-Specification: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?op=file&rev=135
 Name: fogger
 Maintainer: Owais Lone <hello@owaislone.org>
-Source: UNKNOWN
+Source: https://launchpad.net/fogger
 
 Files: *
 Copyright: (C) 2012 Owais Lone <hello@owaislone.org>
