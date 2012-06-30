@@ -1,3 +1,9 @@
+fogger (12.06.3) precise; urgency=low
+
+  * Removed unused glib schema
+
+ -- Owais Lone <hello@owaislone.org>  Sat, 30 Jun 2012 23:57:32 +0530
+
 fogger (12.06.2) precise; urgency=low
 
   * Some minor improvements to UI
