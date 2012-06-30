@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-30 14:44+0530\n"
+"POT-Creation-Date: 2012-07-01 01:47+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,10 +104,6 @@ msgstr ""
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:1
 msgid "Fogger Preferences"
-msgstr ""
-
-#: ../data/ui/PreferencesFoggerDialog.ui.h:2
-msgid "_Example entry:"
 msgstr ""
 
 #: ../fogger.desktop.in.h:2
