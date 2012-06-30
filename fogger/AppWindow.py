@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -29,6 +29,8 @@ from fogger.AboutFoggerDialog import AboutFoggerDialog
 from fogger.PreferencesFoggerDialog import PreferencesFoggerDialog
 
 DOWNLOAD_DIR = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DOWNLOAD)
+MAXIMIZED = Gdk.WindowState.MAXIMIZED
+
 
 # See fogger_lib.Window.py for more details about how this class works
 class FoggerAppWindow(AppWindow):
@@ -84,14 +86,16 @@ class FoggerAppWindow(AppWindow):
         self.websettings.props.enable_plugins = True
         self.webview.set_settings(self.websettings)
 
+    def is_maximized(self):
+        return self.get_state() & MAXIMIZED == MAXIMIZED
+
     def do_window_state_event(self, widget, data=None):
         if self.app and not self.is_popup:
-            M = Gdk.WindowState.MAXIMIZED
-            self.app.maximized = self.get_window().get_state() & M == M
+            self.app.maximized = self.is_maximized()
             self.app.save()
 
     def on_size_allocate(self, widget, data=None):
-        if not self.is_popup:
+        if not self.is_popup and not self.is_maximized():
             self.app.window_size = self.get_size()
             self.app.save()
 

@@ -3,9 +3,15 @@
   <!-- interface-requires gtk+ 3.0 -->
   <!-- interface-requires fogger_app_window 1.0 -->
   <!-- interface-local-resource-path ../media -->
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-help</property>
+  </object>
   <object class="FoggerAppWindow" id="fogger_app_window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Fogger</property>
+    <property name="window_position">center</property>
     <property name="default_width">800</property>
     <property name="default_height">600</property>
     <property name="icon">../media/fogger.svg</property>
@@ -16,7 +22,6 @@
         <property name="can_focus">False</property>
         <child>
           <object class="GtkMenuBar" id="menubar1">
-            <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
               <object class="GtkMenuItem" id="mnu_file">
@@ -125,7 +130,8 @@
         <child>
           <object class="GtkScrolledWindow" id="webview_container">
             <property name="can_focus">True</property>
-            <property name="shadow_type">in</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
             <child>
               <placeholder/>
             </child>
@@ -265,10 +271,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-help</property>
   </object>
 </interface>
