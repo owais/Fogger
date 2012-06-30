@@ -1,3 +1,9 @@
+fogger (12.07.1) precise; urgency=low
+
+  * Made some changes to app loading to adjust to /opt packaging
+
+ -- Owais Lone <hello@owaislone.org>  Sun, 01 Jul 2012 01:58:20 +0530
+
 fogger (12.07ubuntu1) precise; urgency=low
 
   * 
