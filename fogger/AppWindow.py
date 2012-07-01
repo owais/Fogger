@@ -15,6 +15,7 @@
 ### END LICENSE
 
 from os import path as op
+import urllib
 import gettext
 from gettext import gettext as _
 gettext.textdomain('fogger')
@@ -24,6 +25,7 @@ import logging
 logger = logging.getLogger('fogger')
 
 from fogger_lib import AppWindow
+from fogger_lib import DesktopBridge
 from fogger_lib.helpers import get_media_file
 from fogger.AboutFoggerDialog import AboutFoggerDialog
 from fogger.PreferencesFoggerDialog import PreferencesFoggerDialog
@@ -58,7 +60,7 @@ class FoggerAppWindow(AppWindow):
         self.webview.connect('notify::progress', self.load_progress)
         self.webview.connect('notify::load-status', self.load_status_changed)
         self.webview.connect('download-requested', self.download_requested)
-        self.webview.connect('navigation-policy-decision-requested', self.navigation_requested)
+        self.webview.connect('resource-request-starting', self.on_resource_request_starting)
         self.webview.connect('create-web-view', self.on_create_webview)
         self.userscripts = [get_media_file('userscripts/fogger.js', '')]
         self.userstyles = []
@@ -135,13 +137,16 @@ class FoggerAppWindow(AppWindow):
         self.popups.append(window)
         window.set_transient_for(self)
 
-    def navigation_requested(self, widget, frame, request, action, decision, data=None):
-        return
-        '''
-        l = len('Access-Control-Allow-Origin: *')
-        request.props.message.props.response_headers.append('0', 'Access-Control-Allow-Origin: *')
-        request.props.uri
-        '''
+    def on_resource_request_starting(self, widget, frame, resource, request, response, data=None):
+        uri = urllib.unquote(request.props.uri)
+        if uri.startswith('http://fogger.local/'):
+            request.props.uri = 'about:blank'
+            method = uri.lstrip('http://fogger.local/')
+            parts = method.split('/')
+            method = parts[0]
+            args = parts[1:]
+            getattr(self.bridge, method)(*args)
+            return True
 
     def download_requested(self, widget, download, data=None):
         name = download.get_suggested_filename()
@@ -163,6 +168,7 @@ class FoggerAppWindow(AppWindow):
             self.set_icon_name(self.app.icon)
         self.set_title(app.name or app.url or 'FogApp')
         self.set_role('FogApp:%s' % app.name)
+        self.bridge = DesktopBridge('%s.desktop' % self.app.uuid, self.app.icon)
         if not webview:
             self.appname.set_text(app.name)
             self.webview.load_uri(self.app.url)

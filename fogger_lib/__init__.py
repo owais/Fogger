@@ -17,6 +17,7 @@
 '''facade - makes fogger_lib package easy to refactor
 
 while keeping its api constant'''
+from .Bridge import DesktopBridge
 from . helpers import set_up_logging
 from . Window import Window
 from .AppWindow import AppWindow
