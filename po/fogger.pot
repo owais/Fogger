@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-01 22:24+0530\n"
+"POT-Creation-Date: 2012-07-02 02:18+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,9 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. Code for other initialization actions should be added here.
 #: ../data/ui/FoggerAppWindow.ui.h:1 ../data/ui/FoggerWindow.ui.h:1
-#: ../fogger.desktop.in.h:1
 msgid "Fogger"
 msgstr ""
 
@@ -28,18 +26,46 @@ msgid "_App"
 msgstr ""
 
 #: ../data/ui/FoggerAppWindow.ui.h:3
-msgid "_Reload"
+msgid "_Back"
 msgstr ""
 
 #: ../data/ui/FoggerAppWindow.ui.h:4
+msgid "_Forward"
+msgstr ""
+
+#: ../data/ui/FoggerAppWindow.ui.h:5
+msgid "_Reload"
+msgstr ""
+
+#: ../data/ui/FoggerAppWindow.ui.h:6
 msgid "_Export"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:5 ../data/ui/FoggerWindow.ui.h:3
+#: ../data/ui/FoggerAppWindow.ui.h:7
+msgid "_Remove"
+msgstr ""
+
+#: ../data/ui/FoggerAppWindow.ui.h:8
+msgid "_View"
+msgstr ""
+
+#: ../data/ui/FoggerAppWindow.ui.h:9
+msgid "Zoom _In"
+msgstr ""
+
+#: ../data/ui/FoggerAppWindow.ui.h:10
+msgid "Zoom _Out"
+msgstr ""
+
+#: ../data/ui/FoggerAppWindow.ui.h:11
+msgid "Zoom _Reset"
+msgstr ""
+
+#: ../data/ui/FoggerAppWindow.ui.h:12 ../data/ui/FoggerWindow.ui.h:3
 msgid "_Help"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:6 ../data/ui/FoggerWindow.ui.h:4
+#: ../data/ui/FoggerAppWindow.ui.h:13 ../data/ui/FoggerWindow.ui.h:4
 msgid "Contents"
 msgstr ""
 
@@ -106,6 +132,7 @@ msgstr ""
 msgid "Fogger Preferences"
 msgstr ""
 
-#: ../fogger.desktop.in.h:2
-msgid "Fogger application"
+#. Code for other initialization actions should be added here.
+#: ../fogger.desktop.in.h:1
+msgid "Create a new fog app"
 msgstr ""

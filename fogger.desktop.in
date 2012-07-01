@@ -1,7 +1,7 @@
 [Desktop Entry]
-_Name=Fogger
-_Comment=Fogger application
-Categories=GNOME;Utility;
+_Name=Create a new fog app
+_Comment=Create a new fog app
+Categories=Network;WebBrowser;
 Exec=fogger
 Icon=fogger
 Terminal=false
