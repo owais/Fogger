@@ -130,6 +130,7 @@ class FoggerAppWindow(AppWindow):
             'icon': self.app.icon,
             'name': self.app.name,
             'url': webview.get_uri(),
+            'uuid': self.app.uuid,
             'window_size': self.app.window_size,
             'maximized': False,
             })
