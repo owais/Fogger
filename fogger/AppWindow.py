@@ -124,6 +124,24 @@ class FoggerAppWindow(AppWindow):
         webview.connect('web-view-ready', self.on_web_view_ready)
         return webview
 
+    def on_zoom_in(self, widget, data=None):
+        self.webview.zoom_in()
+
+    def on_zoom_out(self, widget, data=None):
+        self.webview.zoom_out()
+
+    def on_zoom_reset(self, widget, data=None):
+        self.webview.props.zoom_level = 1.0
+
+    def on_reload(self, widget, data=None):
+        self.webview.reload()
+
+    def on_go_back(self, widget, data=None):
+        self.webview.go_back()
+
+    def on_go_forward(self, widget, data=None):
+        self.webview.go_forward()
+
     def on_web_view_ready(self, webview, data=None):
         window = self.__class__()
         app = type('FogApp', tuple(), {
