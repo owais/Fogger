@@ -5,7 +5,7 @@ import logging
 import simplejson as json
 from hashlib import md5
 
-from gi.repository import GLib, WebKit, Soup
+from gi.repository import GLib
 
 from fogger import AppWindow
 from fogger_lib.helpers import get_or_create_directory
@@ -49,13 +49,6 @@ class FogApp:
     def get_desktop_file(self):
         return op.join(GLib.get_user_data_dir(), 'applications', '%s.desktop' % self.uuid)
 
-    def setup_webkit_session(self):
-        session = WebKit.get_default_session()
-        cache = get_or_create_directory(os.path.join(GLib.get_user_cache_dir(), 'fogger', self.uuid))
-        cookie_jar = Soup.CookieJarText.new(op.join(cache, 'WebkitSession'), False)
-        session.add_feature(cookie_jar)
-        session.props.max_conns_per_host = 8
-
     def set_url(self, url):
         self.url = url
         purl = urlparse.urlparse(self.url)
@@ -81,7 +74,6 @@ class FogApp:
         handle.close()
 
     def run(self):
-        self.setup_webkit_session()
         self.window = AppWindow.AppWindow()
         self.window.run_app(self)
 

@@ -20,13 +20,12 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('fogger')
 
-from gi.repository import Gtk, Gdk, GLib, WebKit, Soup # pylint: disable=E0611
+from gi.repository import Gdk, GLib, WebKit, Soup # pylint: disable=E0611
 import logging
 logger = logging.getLogger('fogger')
 
-from fogger_lib import AppWindow
-from fogger_lib import DesktopBridge
-from fogger_lib.helpers import get_media_file
+from fogger_lib import AppWindow, DesktopBridge
+from fogger_lib.helpers import get_media_file, get_or_create_directory
 from fogger.AboutFoggerDialog import AboutFoggerDialog
 from fogger.PreferencesFoggerDialog import PreferencesFoggerDialog
 
@@ -55,6 +54,7 @@ class FoggerAppWindow(AppWindow):
     def setup_webview(self, webview=None):
         self.webview = webview or WebKit.WebView()
         self.setup_websettings()
+        self.setup_webkit_session()
         self.webview.show()
         self.webview.connect('document-load-finished', self.init_dom)
         self.webview.connect('notify::progress', self.load_progress)
@@ -62,13 +62,26 @@ class FoggerAppWindow(AppWindow):
         self.webview.connect('download-requested', self.download_requested)
         self.webview.connect('resource-request-starting', self.on_resource_request_starting)
         self.webview.connect('create-web-view', self.on_create_webview)
+        self.webview.connect('database-quota-exceeded', self.on_database_quota_exceeded)
         self.userscripts = [get_media_file('userscripts/fogger.js', '')]
         self.userstyles = []
         self.webcontainer.add(self.webview)
         self.webview.show()
 
+    def setup_webkit_session(self):
+        session = WebKit.get_default_session()
+        cache = get_or_create_directory(op.join(
+            GLib.get_user_cache_dir(), 'fogger', self.app.uuid))
+        cookie_jar = Soup.CookieJarText.new(op.join(cache, 'WebkitSession'), False)
+        session.add_feature(cookie_jar)
+        session.props.max_conns_per_host = 8
+
     def setup_websettings(self):
         self.websettings = WebKit.WebSettings()
+        self.websettings.props.html5_local_storage_database_path = \
+                                    get_or_create_directory(op.join(
+                                                GLib.get_user_cache_dir(),
+                                                'fogger/databases'))
         self.websettings.props.enable_accelerated_compositing = True
         self.websettings.props.enable_dns_prefetching = True
         self.websettings.props.enable_fullscreen = True
@@ -76,7 +89,7 @@ class FoggerAppWindow(AppWindow):
         self.websettings.props.javascript_can_open_windows_automatically = True
         self.websettings.props.enable_html5_database = True
         self.websettings.props.enable_html5_local_storage = True
-        self.websettings.props.enable_xss_auditor = False
+        #self.websettings.props.enable_xss_auditor = True
         self.websettings.props.enable_hyperlink_auditing = False
         self.websettings.props.enable_file_access_from_file_uris = True
         self.websettings.props.enable_universal_access_from_file_uris = True
@@ -110,6 +123,11 @@ class FoggerAppWindow(AppWindow):
             self.progressbar.hide()
         else:
             self.progressbar.show()
+
+    def on_database_quota_exceeded(self, webview, frame, database, data=None):
+        so = database.get_security_origin()
+        quota = so.get_web_database_quota()
+        so.set_web_database_quota(quota + 5242880) # Increase by 5mb
 
     def init_dom(self, widget, data=None):
         for script in self.userscripts:
@@ -179,8 +197,8 @@ class FoggerAppWindow(AppWindow):
         return True
 
     def run_app(self, app, webview=None):
-        self.setup_webview(webview)
         self.app = app
+        self.setup_webview(webview)
         if op.isfile(self.app.icon):
             self.set_icon_from_file(self.app.icon)
         else:
