@@ -47,7 +47,7 @@ class FoggerWindow(Window):
         self.name = self.builder.get_object('name_entry')
         self.icon = self.builder.get_object('app_icon')
         #self.icon.props.pixbuf = self.icon.get_pixbuf().scale_simple(80, 80, GdkPixbuf.InterpType.BILINEAR)
-        self.icon_path = None
+        self.icon_path = 'fogger'
         self.setup_drop_targets()
         self.icon_theme = Gtk.IconTheme.get_default()
 

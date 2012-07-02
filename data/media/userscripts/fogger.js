@@ -7,7 +7,7 @@ window.webkitNotifications.Notification = function(icon, title, content) {
 };
 
 window.webkitNotifications.Notification.prototype.show = function() {
-  document.location = 'fogger://notify/' + this.title + '/' + this.content;
+  new Fogger().notify(this.title, this.content);
 };
 
 window.webkitNotifications.checkPermission = function() {
@@ -43,8 +43,8 @@ Fogger.prototype.setProgress = function(progress) {
 }
 
 Fogger.prototype.setProgressVisible = function(visible) {
-  var uri = visible == true ? 'fogger://set_progress_visible': 'fogger://set_progress_invisible';
-  this._dispatch(uri);
+  var action = 'set_progress_' + (visible == true ? 'visible': 'invisible');
+  this._dispatch(action);
 }
 
 Fogger.prototype.setCount = function(count) {
@@ -52,8 +52,8 @@ Fogger.prototype.setCount = function(count) {
 }
 
 Fogger.prototype.setCountVisible = function(visible) {
-  var uri = visible == true ? 'set_count_visible': 'set_count_invisible';
-  this._dispatch(uri);
+  var action = 'set_count_' + (visible == true ? 'visible': 'invisible');
+  this._dispatch(action);
 }
 
 Fogger.prototype.notify = function(summary, body) {
@@ -61,8 +61,8 @@ Fogger.prototype.notify = function(summary, body) {
 }
 
 Fogger.prototype.setUrgent = function(urgent) {
-  var uri = urgent == true ? 'set_urgent': 'unset_urgent';
-  this._dispatch(uri);
+  var action = urgent == true ? 'set_urgent': 'unset_urgent';
+  this._dispatch(action);
 }
 
 

@@ -112,7 +112,7 @@ class FogAppManager:
         return app
 
     def _setup_icon(self, uuid, icon):
-        if op.exists(icon):
+        if icon.startswith('/') and op.exists(icon):
             _, ext = op.splitext(icon)
             path = op.join(APP_PATH, uuid, 'icon%s' % ext)
             data = open(icon).read()
