@@ -216,6 +216,7 @@
                     <property name="invisible_char_set">True</property>
                     <property name="placeholder_text">Name</property>
                     <signal name="changed" handler="on_name_changed" swapped="no"/>
+                    <signal name="changed" handler="validate_form" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -232,7 +233,7 @@
                     <property name="invisible_char">•</property>
                     <property name="invisible_char_set">True</property>
                     <property name="placeholder_text">Website URL</property>
-                    <signal name="changed" handler="on_url_changed" swapped="no"/>
+                    <signal name="changed" handler="validate_form" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -274,6 +275,7 @@
                 <property name="label" translatable="yes">Create</property>
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>

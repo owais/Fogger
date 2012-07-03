@@ -19,6 +19,7 @@ from gettext import gettext as _
 gettext.textdomain('fogger')
 
 from gi.repository import Gtk, Gdk, GdkPixbuf, Gio # pylint: disable=E0611
+from quickly.prompts import yes_no
 import logging
 logger = logging.getLogger('fogger')
 from fogger_lib import Window
@@ -46,6 +47,7 @@ class FoggerWindow(Window):
         self.url.realize()
         self.name = self.builder.get_object('name_entry')
         self.icon = self.builder.get_object('app_icon')
+        self.create_button = self.builder.get_object('create_button')
         #self.icon.props.pixbuf = self.icon.get_pixbuf().scale_simple(80, 80, GdkPixbuf.InterpType.BILINEAR)
         self.icon_path = 'fogger'
         self.setup_drop_targets()
@@ -56,6 +58,12 @@ class FoggerWindow(Window):
 
     def on_url_changed(self, widget, data=None):
         pass
+
+    def validate_form(self, widget, data=None):
+        url = self.url.get_text()
+        name = self.name.get_text()
+        sensitive = url and name
+        self.create_button.set_sensitive(sensitive)
 
     def on_name_changed(self, widget, data=None):
         name = self.name.get_text().lower().replace(' ', '-')
@@ -82,7 +90,7 @@ class FoggerWindow(Window):
         except BaseFogAppException:
             logger.error("Error creating App %s" % url)
         else:
-            app = Gio.DesktopAppInfo.new_from_filename(app.get_desktop_file())
+            app = Gio.DesktopAppInfo.new_from_filename(app.desktop_file)
             app.launch([], Gio.AppLaunchContext())
             self.destroy()
 

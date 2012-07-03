@@ -16,12 +16,13 @@
 
 from os import path as op
 import urllib
+import logging
 import gettext
 from gettext import gettext as _
 gettext.textdomain('fogger')
 
-from gi.repository import Gdk, GLib, WebKit, Soup # pylint: disable=E0611
-import logging
+from gi.repository import Gdk, GLib, Gtk, WebKit, Soup # pylint: disable=E0611
+
 logger = logging.getLogger('fogger')
 
 from fogger_lib import AppWindow, DesktopBridge
@@ -80,8 +81,8 @@ class FoggerAppWindow(AppWindow):
         self.websettings = WebKit.WebSettings()
         self.websettings.props.html5_local_storage_database_path = \
                                     get_or_create_directory(op.join(
-                                                GLib.get_user_cache_dir(),
-                                                'fogger/databases'))
+                                            GLib.get_user_cache_dir(),
+                                            'fogger/%s/db' % self.app.uuid))
         self.websettings.props.enable_accelerated_compositing = True
         self.websettings.props.enable_dns_prefetching = True
         self.websettings.props.enable_fullscreen = True
@@ -102,7 +103,7 @@ class FoggerAppWindow(AppWindow):
         self.webview.set_settings(self.websettings)
 
     def is_maximized(self):
-        return self.get_state() & MAXIMIZED == MAXIMIZED
+        return self.props.window.get_state() & MAXIMIZED == MAXIMIZED
 
     def do_window_state_event(self, widget, data=None):
         if self.app and not self.is_popup:
@@ -160,6 +161,11 @@ class FoggerAppWindow(AppWindow):
     def on_go_forward(self, widget, data=None):
         self.webview.go_forward()
 
+    def on_remove_fog_app(self, widget, data=None):
+        # TODO: COnfirmation dialog
+        self.app.remove()
+        self.destroy()
+
     def on_web_view_ready(self, webview, data=None):
         window = self.__class__()
         app = type('FogApp', tuple(), {
@@ -179,13 +185,14 @@ class FoggerAppWindow(AppWindow):
         if uri.startswith('http://fogger.local/'):
             request.props.uri = 'about:blank'
             method = uri.lstrip('http://fogger.local/')
-            parts = method.split('/')
-            method = parts[0]
-            args = parts[1:]
+            action = method.split('/')
+            method = action[0]
+            args = action[1:]
             getattr(self.bridge, method)(*args)
             return True
 
     def download_requested(self, widget, download, data=None):
+        # TODO: Confirmation, progress, notifications
         name = download.get_suggested_filename()
         _name, ext = op.splitext(name)
         path = op.join(DOWNLOAD_DIR, name)
