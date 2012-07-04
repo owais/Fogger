@@ -29,11 +29,9 @@
         <property name="headers_visible">False</property>
         <property name="headers_clickable">False</property>
         <property name="search_column">0</property>
-        <signal name="button-press-event" handler="on_download_tree_button_press" swapped="no"/>
+        <signal name="button-press-event" handler="on_download_clicked" swapped="no"/>
         <child internal-child="selection">
-          <object class="GtkTreeSelection" id="treeview-selection2">
-            <signal name="changed" handler="on_download_selection_changed" swapped="no"/>
-          </object>
+          <object class="GtkTreeSelection" id="treeview-selection2"/>
         </child>
         <child>
           <object class="GtkTreeViewColumn" id="download_name_column">
@@ -88,7 +86,7 @@
           <object class="GtkMenuBar" id="menubar">
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkMenuItem" id="mnu_file">
+              <object class="GtkMenuItem" id="mnu_app">
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -98,39 +96,6 @@
                   <object class="GtkMenu" id="menu1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkMenuItem" id="back">
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Back</property>
-                        <property name="use_underline">True</property>
-                        <accelerator key="Left" signal="activate" modifiers="GDK_MOD1_MASK"/>
-                        <signal name="activate" handler="on_go_back" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="forward">
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Forward</property>
-                        <property name="use_underline">True</property>
-                        <accelerator key="Right" signal="activate" modifiers="GDK_MOD1_MASK"/>
-                        <signal name="activate" handler="on_go_forward" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="reload">
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Reload</property>
-                        <property name="use_underline">True</property>
-                        <accelerator key="F5" signal="activate"/>
-                        <signal name="activate" handler="on_reload" swapped="no"/>
-                      </object>
-                    </child>
                     <child>
                       <object class="GtkMenuItem" id="downloads">
                         <property name="use_action_appearance">False</property>
@@ -211,6 +176,54 @@
               </object>
             </child>
             <child>
+              <object class="GtkMenuItem" id="mnu_go">
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">_Go</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu3">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkMenuItem" id="back">
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Back</property>
+                        <property name="use_underline">True</property>
+                        <accelerator key="Left" signal="activate" modifiers="GDK_MOD1_MASK"/>
+                        <signal name="activate" handler="on_go_back" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="forward">
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Forward</property>
+                        <property name="use_underline">True</property>
+                        <accelerator key="Right" signal="activate" modifiers="GDK_MOD1_MASK"/>
+                        <signal name="activate" handler="on_go_forward" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="reload">
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Reload</property>
+                        <property name="use_underline">True</property>
+                        <accelerator key="F5" signal="activate"/>
+                        <signal name="activate" handler="on_reload" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
               <object class="GtkMenuItem" id="View">
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
@@ -228,8 +241,8 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Zoom _In</property>
                         <property name="use_underline">True</property>
-                        <accelerator key="equal" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="plus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="equal" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_zoom_in" swapped="no"/>
                       </object>
                     </child>

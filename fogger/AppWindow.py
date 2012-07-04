@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -21,18 +21,16 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('fogger')
 
-from gi.repository import GObject, Gdk, GLib, Gtk, GdkPixbuf, WebKit, Soup # pylint: disable=E0611
+from gi.repository import Gdk, GLib, Gtk, WebKit, Soup # pylint: disable=E0611
 
 op = os.path
 logger = logging.getLogger('fogger')
 
-from fogger_lib import AppWindow, DesktopBridge
-from fogger_lib.widgets import DownloadCancelButton
+from fogger_lib import AppWindow, DesktopBridge, DownloadManager
 from fogger_lib.helpers import get_media_file, get_or_create_directory
 from fogger.AboutFoggerDialog import AboutFoggerDialog
 from fogger.PreferencesFoggerDialog import PreferencesFoggerDialog
 
-DOWNLOAD_DIR = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DOWNLOAD)
 MAXIMIZED = Gdk.WindowState.MAXIMIZED
 
 
@@ -58,14 +56,10 @@ class FoggerAppWindow(AppWindow):
         self.status_text = self.builder.get_object('status_text')
         self.progressbar = self.builder.get_object('progressbar')
         self.error_message = self.builder.get_object('error_message')
-        self.download_window = self.builder.get_object('DownloadWindow')
-        self.download_store = self.builder.get_object('downloadstore')
-        download_cancel_column = self.builder.get_object('download_cancel_column')
-        download_cancel_button = DownloadCancelButton()
-        download_cancel_column.pack_start(download_cancel_button, True)
-        self.download_view = self.builder.get_object('download_view')
+        self.menu_app = self.builder.get_object('mnu_app')
 
         self.is_popup = False
+        self.downloads = DownloadManager(self.builder)
         self.extra_windows = []
 
     def setup_webview(self, webview=None):
@@ -79,7 +73,7 @@ class FoggerAppWindow(AppWindow):
         self.webview.connect('document-load-finished', self.init_dom)
         self.webview.connect('notify::progress', self.load_progress)
         #self.webview.connect('load-error', self.on_load_error)
-        self.webview.connect('download-requested', self.download_requested)
+        self.webview.connect('download-requested', self.downloads.requested)
         self.webview.connect('resource-request-starting', self.on_resource_request_starting)
         self.webview.connect('create-web-view', self.on_create_webview)
         self.webview.connect('database-quota-exceeded', self.on_database_quota_exceeded)
@@ -129,8 +123,11 @@ class FoggerAppWindow(AppWindow):
         self.inspector_window.show_all()
         return inspector_view
 
+    def on_download_clicked(self, *args, **kwargs):
+        return self.downloads.on_download_clicked(*args, **kwargs)
+
     def show_download_window(self, widget, data=None):
-        self.download_window.show()
+        self.downloads.show()
 
     def is_maximized(self):
         if self.props.window:
@@ -241,44 +238,9 @@ class FoggerAppWindow(AppWindow):
             getattr(self.bridge, method)(*args)
             return True
 
-    def download_requested(self, widget, download, data=None):
-        # TODO: Confirmation, progress, notifications
-        name = download.get_suggested_filename()
-        _name, ext = op.splitext(name)
-        path = op.join(DOWNLOAD_DIR, name)
-        i = 1
-        while op.exists(path):
-            path = '%s_%d%s' %(op.join(DOWNLOAD_DIR, _name), i, ext)
-            i += 1
-        download.set_destination_uri('file://%s' % path)
-        self.add_download(download)
-        return True
-
-    def add_download(self, download):
-        name = op.split(download.props.destination_uri)[-1]
-        self.download_store.prepend([name, 0.0, None, download])
-        download.connect('notify::progress', self.on_download_progress)
-
-    def on_download_tree_button_press(self, tree, event, data=None):
-        x, y = event.get_coords()
-        path, column, _, _ = tree.get_path_at_pos(x, y)
-        if column.get_name() == 'download_cancel_column':
-            _iter = self.download_store.get_iter(path)
-            download = self.download_store.get_value(_iter, 3)
-            download.cancel()
-            self.download_store.remove(_iter)
-
-    def on_download_progress(self, download, progress, data=None):
-        #print download, progress
-        #print dir(progress)
-        def update_progress(download, progress):
-            for d in self.download_store:
-                if d[3] == download:
-                    d[1] = download.props.progress * 100
-        GObject.idle_add(update_progress, download, progress)
-
     def run_app(self, app, webview=None):
         self.app = app
+        self.menu_app.set_label('_%s' % self.app.name)
         self.setup_webview(webview)
         if op.isfile(self.app.icon):
             self.set_icon_from_file(self.app.icon)
