@@ -12,7 +12,8 @@ class DesktopBridge:
         self.web = window.webview
         self.desktop_file = desktop_file
         self.icon_name = icon_name
-        self.launcher_entry = Unity.LauncherEntry.get_for_desktop_file(self.desktop_file)
+        #self.launcher_entry = Unity.LauncherEntry.get_for_desktop_file(self.desktop_file)
+        self.launcher_entry = Unity.LauncherEntry.get_for_desktop_file('firefox.desktop')
         self.quicklist = None
         self.indicator = None
 

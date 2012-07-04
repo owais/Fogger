@@ -34,7 +34,7 @@ document.addEventListener('foggerQLCallbackEvent', function(e) {
   var item = fogger.quicklist.items[e.foggerData.name];
   var callback = item['callback'];
   if (callback) {
-    callback(menu, item);
+    callback(item);
   };
 });
 
@@ -129,7 +129,6 @@ var Fogger = function() {
   this.__version__  = 12.07;
   this._dispatch = dispatch;
 };
-
 
 Fogger.prototype.setProgress = function(progress) {
   this._dispatch('set_progress/' + progress);
