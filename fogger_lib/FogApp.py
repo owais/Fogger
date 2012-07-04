@@ -46,8 +46,16 @@ class FogApp:
             self.maximized = state['maximized']
 
     @property
-    def stylesheet(self):
-        return op.join(self.path, 'styles', 'style.css')
+    def scripts(self):
+        scripts = []
+        path = self.scripts_path
+        for item in os.listdir(path):
+            scripts.append(open(op.join(path, item)).read())
+        return scripts
+
+    @property
+    def scripts_path(self):
+        return op.join(self.path, 'scripts')
 
     @property
     def desktop_file(self):
@@ -117,16 +125,17 @@ class FogAppManager:
             logger.error('No such app: %s' % uuid)
             return None
 
-    def create(self, name, url, icon):
+    def create(self, name, url, icon_name, icon_path):
         uuid = md5(name).hexdigest()
         path = setup_app_dir(uuid)
-        setup_icon(icon, path)
-        create_desktop_files(name, uuid, icon, path)
+        if icon_path:
+            setup_icon(icon_path, path)
+        create_desktop_files(name, uuid, icon_name, path)
         app = FogApp()
         app.name = name
         app.path = path
         app.uuid = uuid
-        app.icon = icon
+        app.icon = icon_name
         app.set_url(url)
         app.save()
         #self.apps[uuid] = path

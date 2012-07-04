@@ -3,6 +3,75 @@
   <!-- interface-requires gtk+ 3.0 -->
   <!-- interface-requires fogger_app_window 1.0 -->
   <!-- interface-local-resource-path ../media -->
+  <object class="GtkListStore" id="downloadstore">
+    <columns>
+      <!-- column-name Name -->
+      <column type="gchararray"/>
+      <!-- column-name Progress -->
+      <column type="gdouble"/>
+      <!-- column-name Cancel -->
+      <column type="GdkPixbuf"/>
+      <!-- column-name Download -->
+      <column type="GObject"/>
+    </columns>
+  </object>
+  <object class="GtkWindow" id="DownloadWindow">
+    <property name="width_request">400</property>
+    <property name="height_request">200</property>
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Downloads</property>
+    <property name="window_position">center</property>
+    <child>
+      <object class="GtkTreeView" id="download_view">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="model">downloadstore</property>
+        <property name="headers_visible">False</property>
+        <property name="headers_clickable">False</property>
+        <property name="search_column">0</property>
+        <signal name="button-press-event" handler="on_download_tree_button_press" swapped="no"/>
+        <child internal-child="selection">
+          <object class="GtkTreeSelection" id="treeview-selection2">
+            <signal name="changed" handler="on_download_selection_changed" swapped="no"/>
+          </object>
+        </child>
+        <child>
+          <object class="GtkTreeViewColumn" id="download_name_column">
+            <property name="resizable">True</property>
+            <property name="sizing">autosize</property>
+            <property name="min_width">200</property>
+            <property name="title" translatable="yes">Download</property>
+            <child>
+              <object class="GtkCellRendererText" id="cellrenderertext1"/>
+              <attributes>
+                <attribute name="text">0</attribute>
+              </attributes>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkTreeViewColumn" id="download_progress_column">
+            <property name="resizable">True</property>
+            <property name="min_width">150</property>
+            <property name="title" translatable="yes">Progress</property>
+            <child>
+              <object class="GtkCellRendererProgress" id="cellrendererprogress1"/>
+              <attributes>
+                <attribute name="value">1</attribute>
+              </attributes>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkTreeViewColumn" id="download_cancel_column">
+            <property name="sizing">fixed</property>
+            <property name="fixed_width">50</property>
+            <property name="title" translatable="yes">Cancel</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="FoggerAppWindow" id="fogger_app_window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Fogger</property>
@@ -16,7 +85,7 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkMenuBar" id="menubar1">
+          <object class="GtkMenuBar" id="menubar">
             <property name="can_focus">False</property>
             <child>
               <object class="GtkMenuItem" id="mnu_file">
@@ -63,6 +132,16 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="downloads">
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Downloads</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="show_download_window" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
                         <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
@@ -80,6 +159,16 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="scripts">
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_User Scripts</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_show_scripts" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="remove">
                         <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
@@ -87,6 +176,13 @@
                         <property name="label" translatable="yes">_Remove</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_remove_fog_app" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                     </child>
                     <child>
@@ -166,7 +262,6 @@
             <child>
               <object class="GtkMenuItem" id="mnu_help">
                 <property name="use_action_appearance">False</property>
-                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Help</property>
                 <property name="use_underline">True</property>
@@ -222,7 +317,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="placeholder">
+          <object class="GtkBox" id="ui_loading">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
@@ -294,20 +389,100 @@
           </packing>
         </child>
         <child>
-          <placeholder/>
+          <object class="GtkBox" id="ui_error">
+            <property name="can_focus">False</property>
+            <property name="valign">center</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkImage" id="image3">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="pixbuf">../media/bad_cloud.png</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">Fogger encountered a problem</property>
+                <attributes>
+                  <attribute name="size" value="15000"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="error_message">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">&lt;tt&gt;&lt;small&gt;Hello I love tell me what's your name&lt;/small&gt;&lt;/tt&gt;</property>
+                <property name="use_markup">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="padding">5</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="retry_button">
+                <property name="label" translatable="yes">Retry</property>
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="on_retry" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="padding">20</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
         </child>
         <child>
           <object class="GtkStatusbar" id="statusbar">
+            <property name="height_request">15</property>
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <property name="spacing">2</property>
             <child>
               <object class="GtkBox" id="box3">
+                <property name="height_request">10</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
                   <object class="GtkProgressBar" id="progressbar">
-                    <property name="height_request">20</property>
+                    <property name="height_request">10</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="valign">center</property>
@@ -320,7 +495,8 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label2">
+                  <object class="GtkLabel" id="status_text">
+                    <property name="height_request">10</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
@@ -332,6 +508,9 @@
                     <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
               </object>
               <packing>

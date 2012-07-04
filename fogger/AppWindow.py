@@ -14,18 +14,20 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
-from os import path as op
+import os
 import urllib
 import logging
 import gettext
 from gettext import gettext as _
 gettext.textdomain('fogger')
 
-from gi.repository import Gdk, GLib, Gtk, WebKit, Soup # pylint: disable=E0611
+from gi.repository import GObject, Gdk, GLib, Gtk, GdkPixbuf, WebKit, Soup # pylint: disable=E0611
 
+op = os.path
 logger = logging.getLogger('fogger')
 
 from fogger_lib import AppWindow, DesktopBridge
+from fogger_lib.widgets import DownloadCancelButton
 from fogger_lib.helpers import get_media_file, get_or_create_directory
 from fogger.AboutFoggerDialog import AboutFoggerDialog
 from fogger.PreferencesFoggerDialog import PreferencesFoggerDialog
@@ -34,7 +36,9 @@ DOWNLOAD_DIR = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DOWNLOAD)
 MAXIMIZED = Gdk.WindowState.MAXIMIZED
 
 
-# See fogger_lib.Window.py for more details about how this class works
+# TODO: Move WebView and DownloadManager to their own classes and tidy up
+# FoggerAppWindow class
+
 class FoggerAppWindow(AppWindow):
     __gtype_name__ = "FoggerAppWindow"
 
@@ -44,11 +48,23 @@ class FoggerAppWindow(AppWindow):
 
         self.AboutDialog = AboutFoggerDialog
         self.PreferencesDialog = PreferencesFoggerDialog
-        self.placeholder = self.builder.get_object('placeholder')
+
+        self.ui_loading = self.builder.get_object('ui_loading')
+        self.ui_error = self.builder.get_object('ui_error')
         self.webcontainer = self.builder.get_object('webview_container')
         self.appname = self.builder.get_object('appname')
+        self.menubar = self.builder.get_object('menubar')
         self.statusbar = self.builder.get_object('statusbar')
+        self.status_text = self.builder.get_object('status_text')
         self.progressbar = self.builder.get_object('progressbar')
+        self.error_message = self.builder.get_object('error_message')
+        self.download_window = self.builder.get_object('DownloadWindow')
+        self.download_store = self.builder.get_object('downloadstore')
+        download_cancel_column = self.builder.get_object('download_cancel_column')
+        download_cancel_button = DownloadCancelButton()
+        download_cancel_column.pack_start(download_cancel_button, True)
+        self.download_view = self.builder.get_object('download_view')
+
         self.is_popup = False
         self.extra_windows = []
 
@@ -56,15 +72,19 @@ class FoggerAppWindow(AppWindow):
         self.webview = webview or WebKit.WebView()
         self.setup_websettings()
         self.setup_webkit_session()
+        self.webview_inspector = self.webview.get_inspector()
+        self.webview_inspector.connect('inspect-web-view', self.inspect_webview)
+        self.inspector_window = Gtk.Window()
         self.webview.show()
         self.webview.connect('document-load-finished', self.init_dom)
         self.webview.connect('notify::progress', self.load_progress)
-        self.webview.connect('notify::load-status', self.load_status_changed)
+        #self.webview.connect('load-error', self.on_load_error)
         self.webview.connect('download-requested', self.download_requested)
         self.webview.connect('resource-request-starting', self.on_resource_request_starting)
         self.webview.connect('create-web-view', self.on_create_webview)
         self.webview.connect('database-quota-exceeded', self.on_database_quota_exceeded)
-        self.userscripts = [get_media_file('userscripts/fogger.js', '')]
+        self.userscripts = self.app.scripts
+        self.userscripts.append(open(get_media_file('js/fogger.js', '')).read())
         self.userstyles = []
         self.webcontainer.add(self.webview)
         self.webview.show()
@@ -90,7 +110,6 @@ class FoggerAppWindow(AppWindow):
         self.websettings.props.javascript_can_open_windows_automatically = True
         self.websettings.props.enable_html5_database = True
         self.websettings.props.enable_html5_local_storage = True
-        #self.websettings.props.enable_xss_auditor = True
         self.websettings.props.enable_hyperlink_auditing = False
         self.websettings.props.enable_file_access_from_file_uris = True
         self.websettings.props.enable_universal_access_from_file_uris = True
@@ -100,10 +119,24 @@ class FoggerAppWindow(AppWindow):
         self.websettings.props.enable_webgl = True
         self.websettings.props.enable_page_cache = True
         self.websettings.props.enable_plugins = True
+        self.websettings.props.enable_developer_extras = True
         self.webview.set_settings(self.websettings)
 
+    def inspect_webview(self, inspector, widget, data=None):
+        inspector_view = WebKit.WebView()
+        self.inspector_window.add(inspector_view)
+        self.inspector_window.resize(800, 400)
+        self.inspector_window.show_all()
+        return inspector_view
+
+    def show_download_window(self, widget, data=None):
+        self.download_window.show()
+
     def is_maximized(self):
-        return self.props.window.get_state() & MAXIMIZED == MAXIMIZED
+        if self.props.window:
+            return self.props.window.get_state() & MAXIMIZED == MAXIMIZED
+        else:
+            return False
 
     def do_window_state_event(self, widget, data=None):
         if self.app and not self.is_popup:
@@ -120,22 +153,34 @@ class FoggerAppWindow(AppWindow):
 
     def load_status_changed(self, widget, propname):
         if self.webview.props.load_status in \
-                (WebKit.LoadStatus.FAILED, WebKit.LoadStatus.FINISHED):
-            self.progressbar.hide()
+                (WebKit.LoadStatus.FINISHED,):
+            #self.progressbar.hide()
+            self.statusbar.hide()
         else:
-            self.progressbar.show()
+            #self.progressbar.show()
+            self.statusbar.show()
+
+    def on_load_error(self, webview, frame, uri, error, data=None):
+        self.error_message.set_markup('<tt>%s</tt>' % error.message)
+        self.webcontainer.hide()
+        self.webview.hide()
+        self.statusbar.show()
+        self.progressbar.hide()
+        self.ui_error.show()
 
     def on_database_quota_exceeded(self, webview, frame, database, data=None):
         so = database.get_security_origin()
         quota = so.get_web_database_quota()
         so.set_web_database_quota(quota + 5242880) # Increase by 5mb
 
-    def init_dom(self, widget, data=None):
+    def init_dom(self, webview, frame, data=None):
         for script in self.userscripts:
-            self.webview.execute_script(open(script).read())
-        self.placeholder.hide()
+            self.webview.execute_script(script)
+        self.ui_loading.hide()
+        self.webview.connect('notify::load-status', self.load_status_changed)
+        #if not frame.props.load_status == WebKit.LoadStatus.FAILED:
+        #    self.webcontainer.show()
         self.webcontainer.show()
-        self.statusbar.show()
 
     def on_create_webview(self, widget, frame, data=None):
         webview = WebKit.WebView()
@@ -155,6 +200,9 @@ class FoggerAppWindow(AppWindow):
     def on_reload(self, widget, data=None):
         self.webview.reload()
 
+    def on_retry(self, widget, data=None):
+        self.webview.reload()
+
     def on_go_back(self, widget, data=None):
         self.webview.go_back()
 
@@ -166,16 +214,18 @@ class FoggerAppWindow(AppWindow):
         self.app.remove()
         self.destroy()
 
+    def on_show_scripts(self, widget, data=None):
+        os.system('xdg-open %s' % self.app.scripts_path)
+
     def on_web_view_ready(self, webview, data=None):
         window = self.__class__()
-        app = type('FogApp', tuple(), {
-            'icon': self.app.icon,
-            'name': self.app.name,
-            'url': webview.get_uri(),
-            'uuid': self.app.uuid,
-            'window_size': self.app.window_size,
-            'maximized': False,
-            })
+        app = type('FogApp', tuple(),
+            {'icon': self.app.icon,
+             'name': self.app.name,
+             'url': webview.get_uri(),
+             'uuid': self.app.uuid,
+             'window_size': self.app.window_size,
+             'maximized': False})
         window.run_app(app, webview)
         self.popups.append(window)
         window.set_transient_for(self)
@@ -184,7 +234,7 @@ class FoggerAppWindow(AppWindow):
         uri = urllib.unquote(request.props.uri)
         if uri.startswith('http://fogger.local/'):
             request.props.uri = 'about:blank'
-            method = uri.lstrip('http://fogger.local/')
+            method = uri.replace('http://fogger.local/', '')
             action = method.split('/')
             method = action[0]
             args = action[1:]
@@ -201,7 +251,31 @@ class FoggerAppWindow(AppWindow):
             path = '%s_%d%s' %(op.join(DOWNLOAD_DIR, _name), i, ext)
             i += 1
         download.set_destination_uri('file://%s' % path)
+        self.add_download(download)
         return True
+
+    def add_download(self, download):
+        name = op.split(download.props.destination_uri)[-1]
+        self.download_store.prepend([name, 0.0, None, download])
+        download.connect('notify::progress', self.on_download_progress)
+
+    def on_download_tree_button_press(self, tree, event, data=None):
+        x, y = event.get_coords()
+        path, column, _, _ = tree.get_path_at_pos(x, y)
+        if column.get_name() == 'download_cancel_column':
+            _iter = self.download_store.get_iter(path)
+            download = self.download_store.get_value(_iter, 3)
+            download.cancel()
+            self.download_store.remove(_iter)
+
+    def on_download_progress(self, download, progress, data=None):
+        #print download, progress
+        #print dir(progress)
+        def update_progress(download, progress):
+            for d in self.download_store:
+                if d[3] == download:
+                    d[1] = download.props.progress * 100
+        GObject.idle_add(update_progress, download, progress)
 
     def run_app(self, app, webview=None):
         self.app = app
@@ -212,7 +286,7 @@ class FoggerAppWindow(AppWindow):
             self.set_icon_name(self.app.icon)
         self.set_title(app.name or app.url or 'FogApp')
         self.set_role('FogApp:%s' % app.name)
-        self.bridge = DesktopBridge('%s.desktop' % self.app.uuid, self.app.icon)
+        self.bridge = DesktopBridge(self, '%s.desktop' % self.app.uuid, self.app.icon)
         if not webview:
             self.appname.set_text(app.name)
             self.webview.load_uri(self.app.url)

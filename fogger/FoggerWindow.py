@@ -49,7 +49,8 @@ class FoggerWindow(Window):
         self.icon = self.builder.get_object('app_icon')
         self.create_button = self.builder.get_object('create_button')
         #self.icon.props.pixbuf = self.icon.get_pixbuf().scale_simple(80, 80, GdkPixbuf.InterpType.BILINEAR)
-        self.icon_path = 'fogger'
+        self.icon_name = 'fogger'
+        self.icon_path = None
         self.setup_drop_targets()
         self.icon_theme = Gtk.IconTheme.get_default()
 
@@ -70,23 +71,23 @@ class FoggerWindow(Window):
         gicon = None
         if self.icon_theme.has_icon(name):
             gicon = Gio.Icon.new_for_string(name)
-            self.icon_path = name
+            self.icon_name = name
         else:
             for subname in name.split('-'):
                 if self.icon_theme.has_icon(subname):
                     gicon = Gio.Icon.new_for_string(subname)
-                    self.icon_path = subname
+                    self.icon_name = subname
                     break
         if not gicon:
             gicon = Gio.Icon.new_for_string('foggerapp')
-            self.icon_path = 'foggerapp'
+            self.icon_name = 'foggerapp'
         self.icon.set_from_gicon(gicon, ICON_SIZE)
 
     def on_create(self, widget, data=None):
         name = self.name.get_text()
         url = self.url.get_text()
         try:
-            app = app_manager.create(name, url, self.icon_path)
+            app = app_manager.create(name, url, self.icon_name, self.icon_path)
         except BaseFogAppException:
             logger.error("Error creating App %s" % url)
         else:
