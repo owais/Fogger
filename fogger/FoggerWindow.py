@@ -24,7 +24,7 @@ import logging
 logger = logging.getLogger('fogger')
 from fogger_lib import Window
 from fogger_lib import app_manager
-from fogger_lib.errors import BaseFogAppException
+from fogger_lib.exceptions import BaseFogAppException
 from fogger.AboutFoggerDialog import AboutFoggerDialog
 from fogger.PreferencesFoggerDialog import PreferencesFoggerDialog
 

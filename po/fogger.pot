@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-04 17:56+0530\n"
+"POT-Creation-Date: 2012-07-04 22:46+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,86 +22,94 @@ msgid "Downloads"
 msgstr ""
 
 #: ../data/ui/FoggerAppWindow.ui.h:2
-msgid "Download"
+msgid "Progress"
 msgstr ""
 
 #: ../data/ui/FoggerAppWindow.ui.h:3
-msgid "Progress"
+msgid "Size"
 msgstr ""
 
 #: ../data/ui/FoggerAppWindow.ui.h:4
 msgid "Cancel"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:5 ../data/ui/FoggerWindow.ui.h:1
+#: ../data/ui/FoggerAppWindow.ui.h:5
+msgid "Show Downloads"
+msgstr ""
+
+#: ../data/ui/FoggerAppWindow.ui.h:6 ../data/ui/FoggerWindow.ui.h:1
 msgid "Fogger"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:6
+#: ../data/ui/FoggerAppWindow.ui.h:7
 msgid "_App"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:7
-msgid "_Back"
-msgstr ""
-
 #: ../data/ui/FoggerAppWindow.ui.h:8
-msgid "_Forward"
-msgstr ""
-
-#: ../data/ui/FoggerAppWindow.ui.h:9
-msgid "_Reload"
-msgstr ""
-
-#: ../data/ui/FoggerAppWindow.ui.h:10
 msgid "_Downloads"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:11
+#: ../data/ui/FoggerAppWindow.ui.h:9
 msgid "_Export"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:12
+#: ../data/ui/FoggerAppWindow.ui.h:10
 msgid "_User Scripts"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:13
+#: ../data/ui/FoggerAppWindow.ui.h:11
 msgid "_Remove"
 msgstr ""
 
+#: ../data/ui/FoggerAppWindow.ui.h:12
+msgid "_Go"
+msgstr ""
+
+#: ../data/ui/FoggerAppWindow.ui.h:13
+msgid "_Back"
+msgstr ""
+
 #: ../data/ui/FoggerAppWindow.ui.h:14
-msgid "_View"
+msgid "_Forward"
 msgstr ""
 
 #: ../data/ui/FoggerAppWindow.ui.h:15
-msgid "Zoom _In"
+msgid "_Reload"
 msgstr ""
 
 #: ../data/ui/FoggerAppWindow.ui.h:16
-msgid "Zoom _Out"
+msgid "_View"
 msgstr ""
 
 #: ../data/ui/FoggerAppWindow.ui.h:17
+msgid "Zoom _In"
+msgstr ""
+
+#: ../data/ui/FoggerAppWindow.ui.h:18
+msgid "Zoom _Out"
+msgstr ""
+
+#: ../data/ui/FoggerAppWindow.ui.h:19
 msgid "Zoom _Reset"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:18 ../data/ui/FoggerWindow.ui.h:3
+#: ../data/ui/FoggerAppWindow.ui.h:20 ../data/ui/FoggerWindow.ui.h:3
 msgid "_Help"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:19 ../data/ui/FoggerWindow.ui.h:4
+#: ../data/ui/FoggerAppWindow.ui.h:21 ../data/ui/FoggerWindow.ui.h:4
 msgid "Contents"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:20
+#: ../data/ui/FoggerAppWindow.ui.h:22
 msgid "Fogger encountered a problem"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:21
-msgid "<tt><small>Hello I love tell me what's your name</small></tt>"
+#: ../data/ui/FoggerAppWindow.ui.h:23
+msgid "<tt><small></small></tt>Placeholder"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:22
+#: ../data/ui/FoggerAppWindow.ui.h:24
 msgid "Retry"
 msgstr ""
 
@@ -171,4 +179,8 @@ msgstr ""
 #. Code for other initialization actions should be added here.
 #: ../fogger.desktop.in.h:1
 msgid "Create a new fog app"
+msgstr ""
+
+#: ../fogger_lib/Downloads.py:79
+msgid "Error"
 msgstr ""

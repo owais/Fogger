@@ -64,8 +64,9 @@ class AppWindow(Gtk.Window):
 
         #self.settings = Gio.Settings("net.launchpad.fogger")
         #self.settings.connect('changed', self.on_preferences_changed)
-        self.is_popup = False
+        self.root = None
         self.popups = []
+        self.downloads = None
 
         # Optional Launchpad integration
         # This shouldn't crash if not found as it is simply used for bug reporting.
@@ -91,6 +92,9 @@ class AppWindow(Gtk.Window):
         except ImportError:
             pass
 
+    @property
+    def is_popup(self):
+        return self.root != None
 
     def on_mnu_contents_activate(self, widget, data=None):
         show_uri(self, "ghelp:%s" % get_help_uri())
@@ -127,10 +131,18 @@ class AppWindow(Gtk.Window):
     def on_destroy(self, widget, data=None):
         """Called when the FoggerWindow is closed."""
         # Clean up code for saving application state should be added here.
-        if not self.is_popup:
-            for w in self.popups:
-                w.destroy()
-            Gtk.main_quit()
+        if self.is_popup:
+            self.destroy()
+            self.root.popups.remove(self)
+            if not self.root.popups:
+                self.root.on_destroy(self.root)
+        else:
+            if self.popups:
+                self.hide()
+            else:
+                if self.downloads:
+                    self.downloads.cancel_all()
+                Gtk.main_quit()
         return True
 
     '''

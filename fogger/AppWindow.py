@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it
-# under the terms of the GNU General Public License version 3, as published
+# This program is free software: you can redistribute it and/or modify it 
+# under the terms of the GNU General Public License version 3, as published 
 # by the Free Software Foundation.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranties of
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+# 
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranties of 
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
 # PURPOSE.  See the GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License along
+# 
+# You should have received a copy of the GNU General Public License along 
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -58,8 +58,7 @@ class FoggerAppWindow(AppWindow):
         self.error_message = self.builder.get_object('error_message')
         self.menu_app = self.builder.get_object('mnu_app')
 
-        self.is_popup = False
-        self.downloads = DownloadManager(self.builder)
+        self.downloads = DownloadManager(self)
         self.extra_windows = []
 
     def setup_webview(self, webview=None):
@@ -77,9 +76,9 @@ class FoggerAppWindow(AppWindow):
         self.webview.connect('resource-request-starting', self.on_resource_request_starting)
         self.webview.connect('create-web-view', self.on_create_webview)
         self.webview.connect('database-quota-exceeded', self.on_database_quota_exceeded)
-        self.userscripts = self.app.scripts
-        self.userscripts.append(open(get_media_file('js/fogger.js', '')).read())
-        self.userstyles = []
+        self.webview.userscripts = self.app.scripts
+        self.webview.userscripts.append(open(get_media_file('js/fogger.js', '')).read())
+        self.webview.userstyles = []
         self.webcontainer.add(self.webview)
         self.webview.show()
 
@@ -122,6 +121,9 @@ class FoggerAppWindow(AppWindow):
         self.inspector_window.resize(800, 400)
         self.inspector_window.show_all()
         return inspector_view
+
+    def open_downloads_folder(self, *args, **kwargs):
+        self.downloads.open_folder(*args, **kwargs)
 
     def on_download_clicked(self, *args, **kwargs):
         return self.downloads.on_download_clicked(*args, **kwargs)
@@ -171,7 +173,7 @@ class FoggerAppWindow(AppWindow):
         so.set_web_database_quota(quota + 5242880) # Increase by 5mb
 
     def init_dom(self, webview, frame, data=None):
-        for script in self.userscripts:
+        for script in self.webview.userscripts:
             self.webview.execute_script(script)
         self.ui_loading.hide()
         self.webview.connect('notify::load-status', self.load_status_changed)
@@ -216,16 +218,17 @@ class FoggerAppWindow(AppWindow):
 
     def on_web_view_ready(self, webview, data=None):
         window = self.__class__()
+        # FIXME: Fix this hack and create proper support for popups
         app = type('FogApp', tuple(),
             {'icon': self.app.icon,
              'name': self.app.name,
              'url': webview.get_uri(),
              'uuid': self.app.uuid,
              'window_size': self.app.window_size,
-             'maximized': False})
-        window.run_app(app, webview)
+             'maximized': False,
+             'scripts': self.app.scripts})
+        window.run_app(app, self.root or self)
         self.popups.append(window)
-        window.set_transient_for(self)
 
     def on_resource_request_starting(self, widget, frame, resource, request, response, data=None):
         uri = urllib.unquote(request.props.uri)
@@ -238,10 +241,11 @@ class FoggerAppWindow(AppWindow):
             getattr(self.bridge, method)(*args)
             return True
 
-    def run_app(self, app, webview=None):
+    def run_app(self, app, root=None):
         self.app = app
+        self.root = root
         self.menu_app.set_label('_%s' % self.app.name)
-        self.setup_webview(webview)
+        self.setup_webview(root.webview if root else None)
         if op.isfile(self.app.icon):
             self.set_icon_from_file(self.app.icon)
         else:
@@ -249,7 +253,7 @@ class FoggerAppWindow(AppWindow):
         self.set_title(app.name or app.url or 'FogApp')
         self.set_role('FogApp:%s' % app.name)
         self.bridge = DesktopBridge(self, '%s.desktop' % self.app.uuid, self.app.icon)
-        if not webview:
+        if not root:
             self.appname.set_text(app.name)
             self.webview.load_uri(self.app.url)
             self.set_default_size(*self.app.window_size)
@@ -257,8 +261,7 @@ class FoggerAppWindow(AppWindow):
                 self.maximize()
         else:
             self.appname.set_text('Loading...')
-            self.is_popup = True
-            wf = webview.props.window_features
+            wf = root.webview.props.window_features
             if wf.props.width and wf.props.height:
                 self.resize(wf.props.width, wf.props.height)
             else:

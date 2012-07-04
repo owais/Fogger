@@ -1,4 +1,3 @@
-import urllib2
 import urlparse
 import os
 import logging
@@ -10,6 +9,7 @@ from gi.repository import GLib
 
 from fogger import AppWindow
 from fogger_lib.helpers import get_or_create_directory
+from fogger_lib.exceptions import BadFogAppException
 from . foggerconfig import get_data_file
 
 
@@ -37,13 +37,19 @@ class FogApp:
             return
         self.path = path
         if op.exists(self.path):
-            state = json.loads(open(op.join(self.path, 'app.json'), 'r').read())
-            self.name = state['name']
-            self.url = state['url']
-            self.uuid = state['uuid']
-            self.icon = state['icon']
-            self.window_size = state['window_size']
-            self.maximized = state['maximized']
+            try:
+                state = json.loads(open(op.join(self.path, 'app.json'), 'r').read())
+            except:
+                raise BadFogAppException()
+            try:
+                self.name = state['name']
+                self.url = state['url']
+                self.uuid = state['uuid']
+                self.icon = state['icon']
+                self.window_size = state['window_size']
+                self.maximized = state['maximized']
+            except KeyError:
+                raise BadFogAppException()
 
     @property
     def scripts(self):

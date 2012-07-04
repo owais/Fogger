@@ -9,66 +9,163 @@
       <column type="gchararray"/>
       <!-- column-name Progress -->
       <column type="gdouble"/>
-      <!-- column-name Cancel -->
-      <column type="GdkPixbuf"/>
+      <!-- column-name Size -->
+      <column type="gchararray"/>
       <!-- column-name Download -->
       <column type="GObject"/>
     </columns>
   </object>
   <object class="GtkWindow" id="DownloadWindow">
-    <property name="width_request">400</property>
-    <property name="height_request">200</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Downloads</property>
     <property name="window_position">center</property>
+    <property name="default_width">460</property>
+    <property name="default_height">500</property>
     <child>
-      <object class="GtkTreeView" id="download_view">
+      <object class="GtkBox" id="box2">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="model">downloadstore</property>
-        <property name="headers_visible">False</property>
-        <property name="headers_clickable">False</property>
-        <property name="search_column">0</property>
-        <signal name="button-press-event" handler="on_download_clicked" swapped="no"/>
-        <child internal-child="selection">
-          <object class="GtkTreeSelection" id="treeview-selection2"/>
-        </child>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkTreeViewColumn" id="download_name_column">
-            <property name="resizable">True</property>
-            <property name="sizing">autosize</property>
-            <property name="min_width">200</property>
-            <property name="title" translatable="yes">Download</property>
+          <object class="GtkScrolledWindow" id="scrolledwindow1">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="shadow_type">in</property>
             <child>
-              <object class="GtkCellRendererText" id="cellrenderertext1"/>
-              <attributes>
-                <attribute name="text">0</attribute>
-              </attributes>
+              <object class="GtkTreeView" id="download_view">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="border_width">5</property>
+                <property name="model">downloadstore</property>
+                <property name="headers_visible">False</property>
+                <property name="headers_clickable">False</property>
+                <property name="rules_hint">True</property>
+                <property name="search_column">0</property>
+                <signal name="button-press-event" handler="on_download_clicked" swapped="no"/>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection" id="treeview-selection2"/>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="download_progress_column">
+                    <property name="sizing">autosize</property>
+                    <property name="min_width">250</property>
+                    <property name="title" translatable="yes">Progress</property>
+                    <child>
+                      <object class="GtkCellRendererProgress" id="cellrendererprogress1">
+                        <property name="height">50</property>
+                        <property name="ypad">10</property>
+                      </object>
+                      <attributes>
+                        <attribute name="text">0</attribute>
+                        <attribute name="value">1</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="Size">
+                    <property name="title" translatable="yes">Size</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="size"/>
+                      <attributes>
+                        <attribute name="text">2</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="download_cancel_column">
+                    <property name="sizing">fixed</property>
+                    <property name="fixed_width">50</property>
+                    <property name="title" translatable="yes">Cancel</property>
+                    <child>
+                      <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf1">
+                        <property name="ypad">10</property>
+                        <property name="stock_id">gtk-cancel</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
             </child>
           </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
         </child>
         <child>
-          <object class="GtkTreeViewColumn" id="download_progress_column">
-            <property name="resizable">True</property>
-            <property name="min_width">150</property>
-            <property name="title" translatable="yes">Progress</property>
-            <child>
-              <object class="GtkCellRendererProgress" id="cellrendererprogress1"/>
-              <attributes>
-                <attribute name="value">1</attribute>
-              </attributes>
+          <object class="GtkInfoBar" id="infobar1">
+            <property name="visible">True</property>
+            <property name="app_paintable">True</property>
+            <property name="can_focus">False</property>
+            <child internal-child="content_area">
+              <object class="GtkBox" id="infobar-content_area1">
+                <property name="can_focus">False</property>
+                <property name="halign">end</property>
+                <property name="valign">end</property>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <object class="GtkButton" id="button1">
+                    <property name="label" translatable="yes">Show Downloads</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="image">image4</property>
+                    <signal name="clicked" handler="open_downloads_folder" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="pack_type">end</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child internal-child="action_area">
+              <object class="GtkButtonBox" id="infobar-action_area1">
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <property name="layout_style">end</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
             </child>
           </object>
-        </child>
-        <child>
-          <object class="GtkTreeViewColumn" id="download_cancel_column">
-            <property name="sizing">fixed</property>
-            <property name="fixed_width">50</property>
-            <property name="title" translatable="yes">Cancel</property>
-          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">1</property>
+          </packing>
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-help</property>
   </object>
   <object class="FoggerAppWindow" id="fogger_app_window">
     <property name="can_focus">False</property>
@@ -241,8 +338,8 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Zoom _In</property>
                         <property name="use_underline">True</property>
-                        <accelerator key="plus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="equal" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="plus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_zoom_in" swapped="no"/>
                       </object>
                     </child>
@@ -443,7 +540,7 @@
                 <property name="can_focus">False</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <property name="label" translatable="yes">&lt;tt&gt;&lt;small&gt;Hello I love tell me what's your name&lt;/small&gt;&lt;/tt&gt;</property>
+                <property name="label" translatable="yes">&lt;tt&gt;&lt;small&gt;&lt;/small&gt;&lt;/tt&gt;Placeholder</property>
                 <property name="use_markup">True</property>
               </object>
               <packing>
@@ -543,9 +640,9 @@
       </object>
     </child>
   </object>
-  <object class="GtkImage" id="image2">
+  <object class="GtkImage" id="image4">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-help</property>
+    <property name="stock">gtk-open</property>
   </object>
 </interface>
