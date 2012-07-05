@@ -1,3 +1,10 @@
+fogger (12.07.14) precise; urgency=low
+
+  * * Double clicking a download opens it   * file:/// uris not working
+    bug fixed
+
+ -- Owais Lone <hello@owaislone.org>  Fri, 06 Jul 2012 03:47:07 +0530
+
 fogger (12.07.13) precise; urgency=low
 
   * removed print statements
