@@ -106,7 +106,6 @@ class DesktopBridge:
                 self._dispatch_dom_event('foggerMenuCallbackEvent',
                     {'menu': menu_name, 'name': item_name}))
         item.show()
-        print self.menus
 
     def remove_menu_item(self, menu_name, item_name):
         _menu = self.menus.get(menu_name)
