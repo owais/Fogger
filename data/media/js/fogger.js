@@ -74,7 +74,6 @@ var QuicklistItem = function(name, callback) {
 var Quicklist = function() {
   this.items = {};
   this._dispatch = dispatch;
-  this._dispatch('add_quicklist')
   fogger.quicklist = this;
 }
 
@@ -94,6 +93,15 @@ Quicklist.prototype.addItem = function(conf) {
   }
 }
 
+Quicklist.prototype.removeItem = function(conf) {
+  if (!conf.name) {
+    console.error('Conf must contain "name"');
+    return;
+  }
+  this._dispatch('remove_quicklist_item/' + conf.name);
+  delete(this.items[conf.name]);
+}
+
 
 var MenuItem = function(name, callback) {
   this.name = name;
@@ -107,6 +115,11 @@ var Menu = function(name) {
   this._dispatch('add_menu/' + this.name)
   fogger.menus[name] = this;
 };
+
+Menu.prototype.remove = function() {
+  this._dispatch('remove_menu/' + this.name);
+  delete(fogger.menus[this.name]);
+}
 
 Menu.prototype.addItem = function(conf) {
   if (!conf.name) {
@@ -123,6 +136,15 @@ Menu.prototype.addItem = function(conf) {
     return item;
   }
 };
+
+Menu.prototype.removeItem = function(conf) {
+  if (!conf.name) {
+    console.error('Conf must contain "name"');
+    return;
+  }
+  this._dispatch('remove_menu_item/' + this.name + '/' + conf.name);
+  delete(this.items[conf.name]);
+}
 
 
 var Fogger = function() {

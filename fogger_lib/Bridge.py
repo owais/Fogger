@@ -12,10 +12,10 @@ class DesktopBridge:
         self.web = window.webview
         self.desktop_file = desktop_file
         self.icon_name = icon_name
-        #self.launcher_entry = Unity.LauncherEntry.get_for_desktop_file(self.desktop_file)
-        self.launcher_entry = Unity.LauncherEntry.get_for_desktop_file('firefox.desktop')
-        self.quicklist = None
-        self.quicklist_items = []
+        self.launcher_entry = Unity.LauncherEntry.get_for_desktop_file(self.desktop_file)
+        self.quicklist = Dbusmenu.Menuitem.new()
+        self.launcher_entry.set_property("quicklist", self.quicklist)
+        self.quicklist_items = {}
         self.indicator = None
 
     def _js(self, jscode):
@@ -55,11 +55,6 @@ class DesktopBridge:
     def unset_urgent(self):
         self.launcher_entry.props.urgent = False
 
-    def add_quicklist(self):
-        if not self.quicklist:
-            self.quicklist = Dbusmenu.Menuitem.new()
-            self.launcher_entry.set_property("quicklist", self.quicklist)
-
     def add_quicklist_item(self, name):
         if name in self.quicklist_items:
             return
@@ -72,6 +67,12 @@ class DesktopBridge:
         self.quicklist.child_append(item)
         self.quicklist_items[name] = item
 
+    def remove_quicklist_item(self, name):
+        item = self.quicklist_items.get(name)
+        if item:
+            self.quicklist.child_delete(item)
+            del self.quicklist_items[name]
+
     def add_menu(self, name):
         if name in self.menus:
             return
@@ -83,18 +84,37 @@ class DesktopBridge:
         menu_item.show()
         menu_item.props.use_underline = True
         self.W.menubar.append(menu_item)
-        self.menus[name] = {'menu': menu, 'items': []}
+        self.menus[name] = {'menu': menu, 'menu_item': menu_item, 'items': {}}
+
+    def remove_menu(self, name):
+        if not name in self.menus:
+            return
+        menu = self.menus[name]['menu_item']
+        self.W.menubar.remove(menu)
+        del self.menus[name]
 
     def add_menu_item(self, menu_name, item_name):
         _menu = self.menus.get(menu_name)
-        if _menu:
-            if item_name in _menu['items']:
-                return
-            gmenu = _menu['menu']
-            item = Gtk.MenuItem(item_name)
-            item.props.use_underline = True
-            gmenu.append(item)
-            item.connect('activate', lambda *a, **kw:
-                    self._dispatch_dom_event('foggerMenuCallbackEvent',
-                        {'menu': menu_name, 'name': item_name}))
-            item.show()
+        if not _menu and _menu['items'].get(item_name):
+            return
+        gmenu = _menu['menu']
+        item = Gtk.MenuItem(item_name)
+        item.props.use_underline = True
+        gmenu.append(item)
+        _menu['items'][item_name] = item
+        item.connect('activate', lambda *a, **kw:
+                self._dispatch_dom_event('foggerMenuCallbackEvent',
+                    {'menu': menu_name, 'name': item_name}))
+        item.show()
+        print self.menus
+
+    def remove_menu_item(self, menu_name, item_name):
+        _menu = self.menus.get(menu_name)
+        if not _menu and item_name not in _menu['items']:
+            return
+        gmenu = _menu['menu']
+        item = _menu['items'][item_name]
+        gmenu.remove(item)
+        del _menu['items'][item_name]
+        item.destroy()
+

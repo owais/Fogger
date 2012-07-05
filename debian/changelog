@@ -4,7 +4,7 @@ fogger (12.07.12) precise; urgency=low
   * * Tons of improvements   * User script support   * JS API now
     supports menus, quicklists, launcher entry api   * Download Manager)
 
- -- Owais Lone <hello@owaislone.org>  Thu, 05 Jul 2012 16:41:53 +0530
+ -- Owais Lone <hello@owaislone.org>  Fri, 06 Jul 2012 00:14:05 +0530
 
 fogger (12.07.11) precise; urgency=low
 

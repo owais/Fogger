@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-05 16:41+0530\n"
+"POT-Creation-Date: 2012-07-06 00:15+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -164,7 +164,7 @@ msgstr ""
 msgid "<b>Create a new fog app</b>"
 msgstr ""
 
-#: ../data/ui/FoggerWindow.ui.h:6
+#: ../data/ui/FoggerWindow.ui.h:6 ../data/ui/PreferencesFoggerDialog.ui.h:2
 msgid ""
 "<tt><small><i>You can also drop a custom icon anywhere on the window</i></"
 "small></tt>"
@@ -192,6 +192,13 @@ msgstr ""
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:1
 msgid "Fogger Preferences"
+msgstr ""
+
+#: ../fogger/FoggerWindow.py:164
+#, python-format
+msgid ""
+"The URL %s could not be reached.\n"
+"Please double check the URL you provided and try again."
 msgstr ""
 
 #. Code for other initialization actions should be added here.
