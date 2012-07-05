@@ -76,6 +76,11 @@ class DownloadManager:
             download = self.store.get_value(_iter, 3)
             download.cancel()
             self.store.remove(_iter)
+        elif event.get_click_count()[1] == 2:
+            _iter = self.store.get_iter(path)
+            download = self.store.get_value(_iter, 3)
+            if download.props.status == WebKit.DownloadStatus.FINISHED:
+                os.system('xdg-open %s' % download.props.destination_uri)
 
     def on_download_progress(self, download, progress, data=None):
         for d in self.store:

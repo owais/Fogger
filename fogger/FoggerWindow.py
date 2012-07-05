@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -153,8 +153,14 @@ class FoggerWindow(Window):
     def verify_url(self):
         logger.debug('Fetching url')
         url = self.url.get_text()
-        if not url.startswith(('http://', 'https://',)):
+
+        if url.startswith('file://'):
+            GObject.idle_add(self.set_loading_url, False)
+            GObject.idle_add(self.create_app, url)
+            return
+        elif not url.startswith(('http://', 'https://',)):
             url = 'http://%s' % url
+
         try:
             response = urllib2.urlopen(url)
         except urllib2.URLError:
@@ -169,6 +175,7 @@ class FoggerWindow(Window):
 
         # Try to find the apple-touch-icon
         contents = response.read()
+        response.close()
         soup = BeautifulSoup(contents)
         icons = soup.find('head').findAll('link', rel=re.compile('^apple-touch-icon'))
         if not icons:

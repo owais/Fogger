@@ -5,7 +5,7 @@ fogger (12.07.13) precise; urgency=low
   * * Added file chooser dialog for choosing icon   * Added support for
     apple-touch-icons   * Some fixes
 
- -- Owais Lone <hello@owaislone.org>  Fri, 06 Jul 2012 01:39:03 +0530
+ -- Owais Lone <hello@owaislone.org>  Fri, 06 Jul 2012 02:05:41 +0530
 
 fogger (12.07.12) precise; urgency=low
 
