@@ -67,16 +67,6 @@ class FogApp:
     def desktop_file(self):
         return op.join(DESKTOP_DIR, '%s.desktop' % self.uuid)
 
-    def set_url(self, url):
-        self.url = url
-        purl = urlparse.urlparse(self.url)
-        if not purl.scheme:
-           self.url = 'http://%s' % (self.url,)
-        #try:
-        #    urllib2.urlopen(self.url)
-        #except urllib2.URLError:
-        #    raise BadFogAppException()
-
     def save(self):
         state = {
             'name': self.name,
@@ -131,18 +121,17 @@ class FogAppManager:
             logger.error('No such app: %s' % uuid)
             return None
 
-    def create(self, name, url, icon_name, icon_path):
+    def create(self, name, url, icon):
         uuid = md5(name).hexdigest()
         path = setup_app_dir(uuid)
-        if icon_path:
-            setup_icon(icon_path, path)
-        create_desktop_files(name, uuid, icon_name, path)
+        icon = setup_icon(icon, path)
+        create_desktop_files(name, uuid, icon, path)
         app = FogApp()
         app.name = name
         app.path = path
         app.uuid = uuid
-        app.icon = icon_name
-        app.set_url(url)
+        app.icon = icon
+        app.url = url
         app.save()
         #self.apps[uuid] = path
         #self.save()

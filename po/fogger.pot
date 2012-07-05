@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-05 00:18+0530\n"
+"POT-Creation-Date: 2012-07-05 16:41+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: ../fogger_lib/Dialogs.py:19
+msgid "gtk-remove"
+msgstr ""
+
+#: ../fogger_lib/Dialogs.py:22
+msgid "gtk-cancel"
+msgstr ""
 
 #: ../data/ui/FoggerAppWindow.ui.h:1
 msgid "Downloads"
@@ -111,6 +119,16 @@ msgstr ""
 
 #: ../data/ui/FoggerAppWindow.ui.h:24
 msgid "Retry"
+msgstr ""
+
+#. TODO: COnfirmation dialog
+#: ../fogger/AppWindow.py:213
+#, python-format
+msgid "%s will be removed"
+msgstr ""
+
+#: ../fogger/AppWindow.py:214
+msgid "Are you sure you want to remove this app?"
 msgstr ""
 
 #: ../fogger/__init__.py:34

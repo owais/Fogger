@@ -15,6 +15,7 @@ class DesktopBridge:
         #self.launcher_entry = Unity.LauncherEntry.get_for_desktop_file(self.desktop_file)
         self.launcher_entry = Unity.LauncherEntry.get_for_desktop_file('firefox.desktop')
         self.quicklist = None
+        self.quicklist_items = []
         self.indicator = None
 
     def _js(self, jscode):
@@ -60,8 +61,8 @@ class DesktopBridge:
             self.launcher_entry.set_property("quicklist", self.quicklist)
 
     def add_quicklist_item(self, name):
-        if not self.quicklist:
-            self.add_quicklist()
+        if name in self.quicklist_items:
+            return
         item = Dbusmenu.Menuitem.new()
         item.property_set(Dbusmenu.MENUITEM_PROP_LABEL, name)
         item.property_set_bool(Dbusmenu.MENUITEM_PROP_VISIBLE, True)
@@ -69,9 +70,11 @@ class DesktopBridge:
                 self._dispatch_dom_event('foggerQLCallbackEvent',
                     {'name': name}))
         self.quicklist.child_append(item)
-
+        self.quicklist_items[name] = item
 
     def add_menu(self, name):
+        if name in self.menus:
+            return
         menu = Gtk.Menu()
         menu.set_title(name)
         menu.show()
@@ -80,15 +83,18 @@ class DesktopBridge:
         menu_item.show()
         menu_item.props.use_underline = True
         self.W.menubar.append(menu_item)
-        self.menus[name] = menu
+        self.menus[name] = {'menu': menu, 'items': []}
 
-    def add_menu_item(self, menu, name):
-        gmenu = self.menus.get(menu)
-        if gmenu:
-            item = Gtk.MenuItem(name)
+    def add_menu_item(self, menu_name, item_name):
+        _menu = self.menus.get(menu_name)
+        if _menu:
+            if item_name in _menu['items']:
+                return
+            gmenu = _menu['menu']
+            item = Gtk.MenuItem(item_name)
             item.props.use_underline = True
             gmenu.append(item)
             item.connect('activate', lambda *a, **kw:
                     self._dispatch_dom_event('foggerMenuCallbackEvent',
-                        {'menu': menu, 'name': name}))
+                        {'menu': menu_name, 'name': item_name}))
             item.show()

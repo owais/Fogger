@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -26,7 +26,7 @@ from gi.repository import Gdk, GLib, Gtk, WebKit, Soup # pylint: disable=E0611
 op = os.path
 logger = logging.getLogger('fogger')
 
-from fogger_lib import AppWindow, DesktopBridge, DownloadManager
+from fogger_lib import AppWindow, DesktopBridge, DownloadManager, ConfirmDialog
 from fogger_lib.helpers import get_media_file, get_or_create_directory
 from fogger.AboutFoggerDialog import AboutFoggerDialog
 from fogger.PreferencesFoggerDialog import PreferencesFoggerDialog
@@ -210,8 +210,14 @@ class FoggerAppWindow(AppWindow):
 
     def on_remove_fog_app(self, widget, data=None):
         # TODO: COnfirmation dialog
-        self.app.remove()
-        self.destroy()
+        d = ConfirmDialog(self.app.name, _('%s will be removed' % self.app.name),
+                        _('Are you sure you want to remove this app?'), self)
+        response = d.run()
+        d.destroy()
+
+        if response == Gtk.ResponseType.YES:
+            self.app.remove()
+            self.destroy()
 
     def on_show_scripts(self, widget, data=None):
         os.system('xdg-open %s' % self.app.scripts_path)

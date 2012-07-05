@@ -17,7 +17,7 @@
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="spacing">5</property>
+        <property name="spacing">4</property>
         <child>
           <object class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
@@ -116,14 +116,22 @@
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkImage" id="app_icon">
+                  <object class="GtkEventBox" id="image_eb">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="tooltip_markup" translatable="yes">&lt;tt&gt;&lt;small&gt;&lt;i&gt;You can also drop a custom icon anywhere on the window&lt;/i&gt;&lt;/small&gt;&lt;/tt&gt;</property>
-                    <property name="halign">end</property>
-                    <property name="valign">center</property>
-                    <property name="pixel_size">80</property>
-                    <property name="icon_name">foggerapp</property>
+                    <signal name="button-press-event" handler="on_icon_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="has_tooltip">True</property>
+                        <property name="tooltip_markup" translatable="yes">&lt;tt&gt;&lt;small&gt;&lt;i&gt;You can also drop a custom icon anywhere on the window&lt;/i&gt;&lt;/small&gt;&lt;/tt&gt;</property>
+                        <property name="halign">end</property>
+                        <property name="valign">center</property>
+                        <property name="pixel_size">80</property>
+                        <property name="icon_name">foggerapp</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -248,6 +256,33 @@
                 <child>
                   <placeholder/>
                 </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <object class="GtkSpinner" id="spinner">
+                    <property name="width_request">20</property>
+                    <property name="height_request">20</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <property name="active">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -295,6 +330,21 @@
           </packing>
         </child>
         <child>
+          <object class="GtkLabel" id="error">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="justify">center</property>
+            <attributes>
+              <attribute name="foreground" value="#ffff00000000"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkImage" id="bgimage">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -307,7 +357,7 @@
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="pack_type">end</property>
-            <property name="position">4</property>
+            <property name="position">6</property>
           </packing>
         </child>
       </object>
