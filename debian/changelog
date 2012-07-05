@@ -1,3 +1,12 @@
+fogger (12.07.13) precise; urgency=low
+
+  * removed print statements
+  * Fixes to JS API
+  * * Added file chooser dialog for choosing icon   * Added support for
+    apple-touch-icons   * Some fixes
+
+ -- Owais Lone <hello@owaislone.org>  Fri, 06 Jul 2012 01:39:03 +0530
+
 fogger (12.07.12) precise; urgency=low
 
   * * Improved downloads and PopUps
