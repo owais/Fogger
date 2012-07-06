@@ -26,8 +26,8 @@ CACHE_PATH = op.join(GLib.get_user_cache_dir(), 'fogger')
 class FogApp:
     name = None
     url = None
-    window_size = (800, 600,)
-    maximized = False
+    window_size = None
+    maximized = None
     icon = None
     uuid = None
     path = ''
@@ -46,8 +46,8 @@ class FogApp:
                 self.url = state['url']
                 self.uuid = state['uuid']
                 self.icon = state['icon']
-                self.window_size = state['window_size']
-                self.maximized = state['maximized']
+                self.window_size = state.get('window_size', (800, 600,))
+                self.maximized = state.get('maximized', False)
             except KeyError:
                 raise BadFogAppException()
 

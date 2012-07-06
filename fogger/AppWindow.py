@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -26,7 +26,7 @@ from gi.repository import Gdk, GLib, Gtk, WebKit, Soup # pylint: disable=E0611
 op = os.path
 logger = logging.getLogger('fogger')
 
-from fogger_lib import AppWindow, DesktopBridge, DownloadManager, ConfirmDialog
+from fogger_lib import AppWindow, DesktopBridge, ConfirmDialog, DownloadManager
 from fogger_lib.helpers import get_media_file, get_or_create_directory
 from fogger.AboutFoggerDialog import AboutFoggerDialog
 from fogger.PreferencesFoggerDialog import PreferencesFoggerDialog
@@ -48,14 +48,12 @@ class FoggerAppWindow(AppWindow):
         self.PreferencesDialog = PreferencesFoggerDialog
 
         self.ui_loading = self.builder.get_object('ui_loading')
-        self.ui_error = self.builder.get_object('ui_error')
         self.webcontainer = self.builder.get_object('webview_container')
         self.appname = self.builder.get_object('appname')
         self.menubar = self.builder.get_object('menubar')
         self.statusbar = self.builder.get_object('statusbar')
         self.status_text = self.builder.get_object('status_text')
         self.progressbar = self.builder.get_object('progressbar')
-        self.error_message = self.builder.get_object('error_message')
         self.menu_app = self.builder.get_object('mnu_app')
 
         self.downloads = DownloadManager(self)
@@ -68,10 +66,8 @@ class FoggerAppWindow(AppWindow):
         self.webview_inspector = self.webview.get_inspector()
         self.webview_inspector.connect('inspect-web-view', self.inspect_webview)
         self.inspector_window = Gtk.Window()
-        self.webview.show()
         self.webview.connect('document-load-finished', self.init_dom)
         self.webview.connect('notify::progress', self.load_progress)
-        #self.webview.connect('load-error', self.on_load_error)
         self.webview.connect('download-requested', self.downloads.requested)
         self.webview.connect('resource-request-starting', self.on_resource_request_starting)
         self.webview.connect('create-web-view', self.on_create_webview)
@@ -80,7 +76,6 @@ class FoggerAppWindow(AppWindow):
         self.webview.userscripts.append(open(get_media_file('js/fogger.js', '')).read())
         self.webview.userstyles = []
         self.webcontainer.add(self.webview)
-        self.webview.show()
 
     def setup_webkit_session(self):
         session = WebKit.get_default_session()
@@ -159,14 +154,6 @@ class FoggerAppWindow(AppWindow):
             #self.progressbar.show()
             self.statusbar.show()
 
-    def on_load_error(self, webview, frame, uri, error, data=None):
-        self.error_message.set_markup('<tt>%s</tt>' % error.message)
-        self.webcontainer.hide()
-        self.webview.hide()
-        self.statusbar.show()
-        self.progressbar.hide()
-        self.ui_error.show()
-
     def on_database_quota_exceeded(self, webview, frame, database, data=None):
         so = database.get_security_origin()
         quota = so.get_web_database_quota()
@@ -179,7 +166,7 @@ class FoggerAppWindow(AppWindow):
         self.webview.connect('notify::load-status', self.load_status_changed)
         #if not frame.props.load_status == WebKit.LoadStatus.FAILED:
         #    self.webcontainer.show()
-        self.webcontainer.show()
+        self.webcontainer.show_all()
 
     def on_create_webview(self, widget, frame, data=None):
         webview = WebKit.WebView()
@@ -247,6 +234,11 @@ class FoggerAppWindow(AppWindow):
             getattr(self.bridge, method)(*args)
             return True
 
+    def resize_window(self, MW, MH, W, H):
+        H = H if H <= MH else MH
+        W = W if W <= MW else MW
+        self.resize(W, H)
+
     def run_app(self, app, root=None):
         self.app = app
         self.root = root
@@ -259,17 +251,20 @@ class FoggerAppWindow(AppWindow):
         self.set_title(app.name or app.url or 'FogApp')
         self.set_role('FogApp:%s' % app.name)
         self.bridge = DesktopBridge(self, '%s.desktop' % self.app.uuid, self.app.icon)
+        screen = Gdk.Screen.get_default()
+        max_h = screen.get_height()
+        max_w = screen.get_width()
         if not root:
             self.appname.set_text(app.name)
             self.webview.load_uri(self.app.url)
-            self.set_default_size(*self.app.window_size)
+            self.resize_window(max_w, max_h, *self.app.window_size)
             if self.app.maximized:
                 self.maximize()
         else:
             self.appname.set_text('Loading...')
             wf = root.webview.props.window_features
             if wf.props.width and wf.props.height:
-                self.resize(wf.props.width, wf.props.height)
+                self.resize_window(max_w, max_h, wf.props.width, wf.props.height)
             else:
                 self.resize(800, 600)
             if wf.props.fullscreen:

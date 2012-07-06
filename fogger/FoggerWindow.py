@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -162,22 +162,22 @@ class FoggerWindow(Window):
             url = 'http://%s' % url
 
         try:
-            response = urllib2.urlopen(url)
+            response = urllib2.urlopen(url).read()
         except urllib2.URLError:
             logger.debug('Error downloading url %s' % url)
             GObject.idle_add(self.set_loading_url, False)
             GObject.idle_add(self.set_error_message,
-                    _("The URL %s could not be reached.\nPlease double check the URL you provided and try again." % url))
+                    _('The URL %s could not be reached.\nPlease double check'\
+                      ' the URL you provided and try again.' % url))
             return
 
         if self.icon != "foggerapp":
             return
 
         # Try to find the apple-touch-icon
-        contents = response.read()
-        response.close()
-        soup = BeautifulSoup(contents)
-        icons = soup.find('head').findAll('link', rel=re.compile('^apple-touch-icon'))
+        soup = BeautifulSoup(response)
+        icons = soup.find('head').findAll('link',
+                                    rel=re.compile('^apple-touch-icon'))
         if not icons:
             logger.debug('No apple touch icon found')
             return False
@@ -189,13 +189,14 @@ class FoggerWindow(Window):
         icon_url = None
         if href.startswith('/'):
             parsed = urlparse.urlparse(url)
-            icon_url = urlparse.urljoin('%s://%s' % (parsed.scheme, parsed.netloc),  href)
+            icon_url = urlparse.urljoin(
+                    '%s://%s' % (parsed.scheme, parsed.netloc,),  href)
         else:
-            phref = urlparse.urlparse(href)
-            if phref.scheme:
+            parsed = urlparse.urlparse(href)
+            if parsed.scheme:
                 icon_url = href
             else:
-                icon_url = urlparse.join(url, href)
+                icon_url = urlparse.urljoin(url, href)
 
         ext = os.path.splitext(icon_url)[-1]
         tmpf = tempfile.mktemp(ext)
@@ -210,9 +211,9 @@ class FoggerWindow(Window):
         except urllib2.URLError:
             logger.debug('Error dowloading apple touch icon')
         else:
-            fh = open(tmpf, 'w')
-            fh.write(icon_bytes)
-            fh.close()
+            handle = open(tmpf, 'w')
+            handle.write(icon_bytes)
+            handle.close()
             self.setup_icon(tmpf)
         GObject.idle_add(self.set_loading_url, False)
         GObject.idle_add(self.create_app, url)

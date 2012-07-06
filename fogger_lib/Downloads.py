@@ -20,7 +20,7 @@ class DownloadManager:
         self.window = self.R.builder.get_object('DownloadWindow')
         self.store = self.R.builder.get_object('downloadstore')
         self.download_view = self.R.builder.get_object('download_view')
-        self.download_view.get_column(0).props.expand = True
+        #self.download_view.get_column(0).props.expand = True
 
         self.window.connect('delete-event', self.on_delete)
 
