@@ -16,11 +16,12 @@
 
 import os
 import re
-import urllib2
+#import urllib2
+import requests
 import urlparse
 import tempfile
 import threading
-from BeautifulSoup import BeautifulSoup
+from BeautifulSoup import BeautifulSoup, SoupStrainer
 import gettext
 from gettext import gettext as _
 gettext.textdomain('fogger')
@@ -134,7 +135,9 @@ class FoggerWindow(Window):
     def on_create(self, widget, data=None):
         self.set_loading_url(True)
         self.error_message.hide()
-        threading.Thread(target=self.verify_url).start()
+        thread = threading.Thread(target=self.verify_url)
+        thread.daemon = True
+        thread.start()
 
     def set_loading_url(self, loading):
         if loading:
@@ -155,33 +158,40 @@ class FoggerWindow(Window):
     def verify_url(self):
         logger.debug('Fetching url')
         url = self.url.get_text()
-
-        if url.startswith('file://'):
-            GObject.idle_add(self.set_loading_url, False)
-            GObject.idle_add(self.create_app, url)
-            return
-        elif not url.startswith(('http://', 'https://',)):
-            url = 'http://%s' % url
-
+        verified = False
         try:
-            response = urllib2.urlopen(url).read()
-        except urllib2.URLError:
-            logger.debug('Error downloading url %s' % url)
-            GObject.idle_add(self.set_loading_url, False)
-            GObject.idle_add(self.set_error_message,
-                    _('The URL %s could not be reached.\nPlease double check'\
-                      ' the URL you provided and try again.' % url))
-            return
+            if url.startswith('file://'):
+                GObject.idle_add(self.set_loading_url, False)
+                GObject.idle_add(self.create_app, url)
+                return
+            elif not url.startswith(('http://', 'https://',)):
+                url = 'http://%s' % url
 
-        SkipIcon = type('SkipIcon', (BaseException,), {})
-        try:
+            try:
+                logger.debug('starting')
+                #response = urllib2.urlopen(url)
+                response = requests.get(url)
+                verified = True
+                logger.debug('finishing')
+            #except urllib2.URLError:
+            except requests.RequestException:
+                logger.debug('Error downloading url %s' % url)
+                GObject.idle_add(self.set_loading_url, False)
+                GObject.idle_add(self.set_error_message,
+                        _('The URL %s could not be reached.\nPlease double check'\
+                        ' the URL you provided and try again.' % url))
+                return
+
+            SkipIcon = type('SkipIcon', (BaseException,), {})
             if self.icon != "foggerapp":
                 raise SkipIcon()
 
             # Try to find the apple-touch-icon
-            soup = BeautifulSoup(response)
-            icons = soup.find('head').findAll('link',
-                                        rel=re.compile('^apple-touch-icon'))
+            logger.debug('parsing')
+            soup = BeautifulSoup(response.content, parseOnlyThese=SoupStrainer('link'))
+            icons = soup.findAll('link', rel=re.compile('^apple-touch-icon'))
+            logger.debug('finished parsing')
+            soup = BeautifulSoup(response.content)
             if not icons:
                 logger.debug('No apple touch icon found')
                 raise SkipIcon()
@@ -193,8 +203,10 @@ class FoggerWindow(Window):
             icon_url = None
             if href.startswith('/'):
                 parsed = urlparse.urlparse(url)
+                logger.debug(parsed.scheme, parsed.netloc)
                 icon_url = urlparse.urljoin(
                         '%s://%s' % (parsed.scheme, parsed.netloc,),  href)
+                logger.debug(icon_url, '<<< icon url')
             else:
                 parsed = urlparse.urlparse(href)
                 if parsed.scheme:
@@ -209,18 +221,21 @@ class FoggerWindow(Window):
             headers = {'User-Agent': 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like'\
                 ' Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko)'\
                 ' Version/4.0.4 Mobile/7B334b Safari/531.21.10'}
-            req = urllib2.Request(icon_url, None, headers)
+            #req = urllib2.Request(icon_url, None, headers)
             try:
-                icon_bytes = urllib2.urlopen(req).read()
-            except urllib2.URLError:
+                #icon_bytes = urllib2.urlopen(req).read()
+                icon_bytes = requests.get(icon_url, headers=headers).content
+            #except urllib2.URLError:
+            except requests.RequestException:
                 logger.debug('Error dowloading apple touch icon')
             else:
                 handle = open(tmpf, 'w')
                 handle.write(icon_bytes)
                 handle.close()
                 self.setup_icon(tmpf)
-        except SkipIcon:
-            pass
+        except Exception, e:
+            logger.debug("Error", e)
         finally:
             GObject.idle_add(self.set_loading_url, False)
-            GObject.idle_add(self.create_app, url)
+            if verified:
+                GObject.idle_add(self.create_app, url)
