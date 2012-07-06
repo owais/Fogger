@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -173,49 +173,54 @@ class FoggerWindow(Window):
                       ' the URL you provided and try again.' % url))
             return
 
-        if self.icon != "foggerapp":
-            return
-
-        # Try to find the apple-touch-icon
-        soup = BeautifulSoup(response)
-        icons = soup.find('head').findAll('link',
-                                    rel=re.compile('^apple-touch-icon'))
-        if not icons:
-            logger.debug('No apple touch icon found')
-            return False
-        icon = icons[0]
-        href = icon.attrMap.get('href', None)
-        if not href:
-            logger.debug('Bad apple touch icon')
-            return
-        icon_url = None
-        if href.startswith('/'):
-            parsed = urlparse.urlparse(url)
-            icon_url = urlparse.urljoin(
-                    '%s://%s' % (parsed.scheme, parsed.netloc,),  href)
-        else:
-            parsed = urlparse.urlparse(href)
-            if parsed.scheme:
-                icon_url = href
-            else:
-                icon_url = urlparse.urljoin(url, href)
-
-        ext = os.path.splitext(icon_url)[-1]
-        tmpf = tempfile.mktemp(ext)
-        logger.debug('temp file: %s' % tmpf)
-
-        headers = {'User-Agent': 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like'\
-            ' Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko)'\
-            ' Version/4.0.4 Mobile/7B334b Safari/531.21.10'}
-        req = urllib2.Request(icon_url, None, headers)
+        SkipIcon = type('SkipIcon', (BaseException,), {})
         try:
-            icon_bytes = urllib2.urlopen(req).read()
-        except urllib2.URLError:
-            logger.debug('Error dowloading apple touch icon')
-        else:
-            handle = open(tmpf, 'w')
-            handle.write(icon_bytes)
-            handle.close()
-            self.setup_icon(tmpf)
-        GObject.idle_add(self.set_loading_url, False)
-        GObject.idle_add(self.create_app, url)
+            if self.icon != "foggerapp":
+                raise SkipIcon()
+
+            # Try to find the apple-touch-icon
+            soup = BeautifulSoup(response)
+            icons = soup.find('head').findAll('link',
+                                        rel=re.compile('^apple-touch-icon'))
+            if not icons:
+                logger.debug('No apple touch icon found')
+                raise SkipIcon()
+            icon = icons[0]
+            href = icon.attrMap.get('href', None)
+            if not href:
+                logger.debug('Bad apple touch icon')
+                raise SkipIcon()
+            icon_url = None
+            if href.startswith('/'):
+                parsed = urlparse.urlparse(url)
+                icon_url = urlparse.urljoin(
+                        '%s://%s' % (parsed.scheme, parsed.netloc,),  href)
+            else:
+                parsed = urlparse.urlparse(href)
+                if parsed.scheme:
+                    icon_url = href
+                else:
+                    icon_url = urlparse.urljoin(url, href)
+
+            ext = os.path.splitext(icon_url)[-1]
+            tmpf = tempfile.mktemp(ext)
+            logger.debug('temp file: %s' % tmpf)
+
+            headers = {'User-Agent': 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like'\
+                ' Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko)'\
+                ' Version/4.0.4 Mobile/7B334b Safari/531.21.10'}
+            req = urllib2.Request(icon_url, None, headers)
+            try:
+                icon_bytes = urllib2.urlopen(req).read()
+            except urllib2.URLError:
+                logger.debug('Error dowloading apple touch icon')
+            else:
+                handle = open(tmpf, 'w')
+                handle.write(icon_bytes)
+                handle.close()
+                self.setup_icon(tmpf)
+        except SkipIcon:
+            pass
+        finally:
+            GObject.idle_add(self.set_loading_url, False)
+            GObject.idle_add(self.create_app, url)

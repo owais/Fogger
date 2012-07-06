@@ -21,13 +21,14 @@ DESKTOP_DIR = op.join(GLib.get_user_data_dir(), 'applications')
 APP_PATH = op.join(GLib.get_user_data_dir(), 'fogapps')
 CONF_PATH = op.join(GLib.get_user_config_dir(), 'fogger')
 CACHE_PATH = op.join(GLib.get_user_cache_dir(), 'fogger')
-
+DEFAULT_SIZE = (800, 600,)
+DEFAULT_STATE = False # True if maximized
 
 class FogApp:
     name = None
     url = None
-    window_size = None
-    maximized = None
+    window_size = DEFAULT_SIZE
+    maximized = DEFAULT_STATE
     icon = None
     uuid = None
     path = ''
@@ -46,8 +47,8 @@ class FogApp:
                 self.url = state['url']
                 self.uuid = state['uuid']
                 self.icon = state['icon']
-                self.window_size = state.get('window_size', (800, 600,))
-                self.maximized = state.get('maximized', False)
+                self.window_size = state.get('window_size') or DEFAULT_SIZE
+                self.maximized = state.get('maximized') or DEFAULT_STATE
             except KeyError:
                 raise BadFogAppException()
 
@@ -73,8 +74,8 @@ class FogApp:
             'url': self.url,
             'uuid': self.uuid,
             'icon': self.icon,
-            'window_size': self.window_size,
-            'maximized': self.maximized,
+            'window_size': self.window_size or DEFAULT_SIZE,
+            'maximized': self.maximized or DEFAULT_STATE,
         }
         serialized = json.dumps(state)
         handle = open(op.join(self.path, 'app.json'), 'w')

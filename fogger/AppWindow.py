@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -56,16 +56,19 @@ class FoggerAppWindow(AppWindow):
         self.progressbar = self.builder.get_object('progressbar')
         self.menu_app = self.builder.get_object('mnu_app')
 
-        self.downloads = DownloadManager(self)
         self.extra_windows = []
 
-    def setup_webview(self, webview=None):
-        self.webview = webview or WebKit.WebView()
+    def setup_webview(self):
+        self.webview = getattr(self, 'webview', None) or WebKit.WebView()
         self.setup_websettings()
         self.setup_webkit_session()
         self.webview_inspector = self.webview.get_inspector()
         self.webview_inspector.connect('inspect-web-view', self.inspect_webview)
         self.inspector_window = Gtk.Window()
+        if self.root:
+            self.downloads = self.root.downloads
+        else:
+            self.downloads = DownloadManager(self)
         self.webview.connect('document-load-finished', self.init_dom)
         self.webview.connect('notify::progress', self.load_progress)
         self.webview.connect('download-requested', self.downloads.requested)
@@ -75,6 +78,7 @@ class FoggerAppWindow(AppWindow):
         self.webview.userscripts = self.app.scripts
         self.webview.userscripts.append(open(get_media_file('js/fogger.js', '')).read())
         self.webview.userstyles = []
+        self.webview.show()
         self.webcontainer.add(self.webview)
 
     def setup_webkit_session(self):
@@ -220,6 +224,7 @@ class FoggerAppWindow(AppWindow):
              'window_size': self.app.window_size,
              'maximized': False,
              'scripts': self.app.scripts})
+        window.webview = webview
         window.run_app(app, self.root or self)
         self.popups.append(window)
 
@@ -243,7 +248,7 @@ class FoggerAppWindow(AppWindow):
         self.app = app
         self.root = root
         self.menu_app.set_label('_%s' % self.app.name)
-        self.setup_webview(root.webview if root else None)
+        self.setup_webview()
         if op.isfile(self.app.icon):
             self.set_icon_from_file(self.app.icon)
         else:
@@ -261,12 +266,14 @@ class FoggerAppWindow(AppWindow):
             if self.app.maximized:
                 self.maximize()
         else:
+            self.downloads = self.root.downloads
             self.appname.set_text('Loading...')
             wf = root.webview.props.window_features
-            if wf.props.width and wf.props.height:
+            if wf.props.width > 0 and wf.props.height > 0:
                 self.resize_window(max_w, max_h, wf.props.width, wf.props.height)
             else:
                 self.resize(800, 600)
             if wf.props.fullscreen:
                 self.fullscreen()
+        self.webcontainer.show_all()
         self.show()
