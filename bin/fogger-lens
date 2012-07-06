@@ -1,0 +1,107 @@
+#!/usr/bin/python
+# -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
+### BEGIN LICENSE
+# Copyright (C) 2012 Owais Lone <hello@owaislone.org>
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
+# by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+# PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+### END LICENSE
+
+import sys
+sys.path.insert(0, '/opt/extras.ubuntu.com/fogger/')
+
+import gettext
+from gettext import gettext as _
+gettext.textdomain('fogger')
+
+from gi.repository import GLib, GObject, Gio
+from gi.repository import Unity
+
+from fogger_lib.utils import search_fogapps
+
+BUS_NAME = "net.launchpad.lens.fogger"
+
+
+class Daemon:
+    def __init__ (self):
+        # The path for the Lens *must* also match the one in our .lens file
+        self._lens = Unity.Lens.new("/net/launchpad/lens/fogger", "fogger")
+        self._lens.props.search_hint = "Search fog apps"
+        self._lens.props.visible = True
+        self._lens.props.search_in_global = True
+
+        # create the scope
+        self._scope = Unity.Scope.new("/net/launchpad/lens/fogger/main")
+        self._scope.search_in_global = True
+        self._scope.connect("search-changed", self.on_search_changed)
+        self._scope.connect("filters-changed", self.on_search_changed)
+        self._scope.connect("activate-uri", self.on_activate_uri)
+        self._scope.export()
+
+        # Populate categories
+        cats = []
+        cats.append(Unity.Category.new('Fog Apps',
+                                       Gio.ThemedIcon.new('/opt/extras.ubuntu.com/fogger/share/fogger/media/lens-cat.svg'),
+                                       Unity.CategoryRenderer.VERTICAL_TILE))
+        self._lens.props.categories = cats
+
+        # Populate filters
+        self._lens.props.filters = []
+
+        self._lens.add_local_scope(self._scope)
+        self._lens.export()
+
+    def on_search_changed(self, scope, search, search_type, cancellable):
+        if search:
+            search_string = search.props.search_string.lower() or None
+        else:
+            search_string = None
+
+        if search_type == Unity.SearchType.DEFAULT:
+            results = self._scope.props.results_model
+        else:
+            results = self._scope.props.global_results_model
+        self.update_results_model(search_string, results)
+        results.flush_revision_queue()
+        search.finished()
+
+    def update_results_model(self, search, model):
+        model.clear()
+        apps = search_fogapps(search)
+        for app in apps:
+            model.append(app.get_filename(), app.get_icon().to_string(), 0, 'application/x-desktop', app.get_name(), '', '')
+        model.append('/usr/share/applications/extras-fogger.desktop', 'fogger', 0, 'appplication/x-desktop', _('Create a new fog app'), '', '')
+        return
+
+    def on_activate_uri (self, scope, uri):
+        Gio.DesktopAppInfo.new_from_filename(uri).launch([], None)
+        return Unity.ActivationResponse(handled=Unity.HandledType.HIDE_DASH, goto_uri='')
+
+
+if __name__ == "__main__":
+    session_bus_connection = Gio.bus_get_sync(Gio.BusType.SESSION, None)
+    session_bus = Gio.DBusProxy.new_sync(session_bus_connection, 0, None,
+                                         'org.freedesktop.DBus',
+                                         '/org/freedesktop/DBus',
+                                         'org.freedesktop.DBus', None)
+    result = session_bus.call_sync('RequestName',
+                                   GLib.Variant("(su)", (BUS_NAME, 0x4)),
+                                   0, -1, None)
+
+    # Unpack variant response with signature "(u)". 1 means we got it.
+    result = result.unpack()[0]
+
+    if result != 1 :
+        print >> sys.stderr, "Failed to own name %s. Bailing out." % BUS_NAME
+        raise SystemExit (1)
+
+    daemon = Daemon()
+    GObject.MainLoop().run()

@@ -1,0 +1,11 @@
+[Lens]
+DBusName=net.launchpad.lens.fogger
+DBusPath=/net/launchpad/lens/fogger
+Name=Fogger
+Icon=/opt/extras.ubuntu.com/fogger/share/fogger/media/lens.svg
+Description=Lens to search and launch fogapps
+SearchHint=Search for a fog app
+Shortcut=c
+
+[Desktop Entry]
+X-Ubuntu-Gettext-Domain=fogger

@@ -7,13 +7,12 @@ from hashlib import md5
 
 from gi.repository import GLib
 
-from fogger import AppWindow
 from fogger_lib.helpers import get_or_create_directory
 from fogger_lib.exceptions import BadFogAppException
 from . foggerconfig import get_data_file
 
 
-__all__ = ('FogApp', 'FogAppManager', 'app_manager')
+__all__ = ('FogApp', 'FogAppManager',)
 
 op = os.path
 logger = logging.getLogger('fogger_lib')
@@ -83,6 +82,7 @@ class FogApp:
         handle.close()
 
     def run(self):
+        from fogger import AppWindow
         self.window = AppWindow.AppWindow()
         self.window.run_app(self)
 
@@ -170,7 +170,3 @@ def setup_app_dir(uuid):
     get_or_create_directory(op.join(path, 'scripts'))
     get_or_create_directory(op.join(path, 'styles'))
     return path
-
-
-
-app_manager = FogAppManager()

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-06 19:18+0530\n"
+"POT-Creation-Date: 2012-07-07 04:41+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,16 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:1
+msgid "Fogger Preferences"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:2 ../data/ui/FoggerWindow.ui.h:6
+msgid ""
+"<tt><small><i>You can also drop a custom icon anywhere on the window</i></"
+"small></tt>"
+msgstr ""
 
 #: ../fogger_lib/Dialogs.py:19
 msgid "gtk-remove"
@@ -119,8 +129,56 @@ msgstr ""
 msgid "Are you sure you want to remove this app?"
 msgstr ""
 
-#: ../fogger/__init__.py:34
+#: ../fogger/__init__.py:33
 msgid "Show debug messages (-vv debugs fogger_lib also)"
+msgstr ""
+
+#: ../data/ui/FoggerWindow.ui.h:2
+msgid "_Fogger"
+msgstr ""
+
+#: ../data/ui/FoggerWindow.ui.h:5
+msgid "<b>Create a new fog app</b>"
+msgstr ""
+
+#: ../data/ui/FoggerWindow.ui.h:7
+msgid "<b><small>URL</small></b>"
+msgstr ""
+
+#: ../data/ui/FoggerWindow.ui.h:8
+msgid "<tt><small><i>Example: facebook.com</i></small></tt>"
+msgstr ""
+
+#: ../data/ui/FoggerWindow.ui.h:9
+msgid "<b><small>Name</small></b>"
+msgstr ""
+
+#: ../data/ui/FoggerWindow.ui.h:10
+msgid "<tt><small><i>Example: Facebook</i></small></tt>"
+msgstr ""
+
+#: ../data/ui/FoggerWindow.ui.h:11
+msgid "Create"
+msgstr ""
+
+#. Code for other initialization actions should be added here.
+#: ../bin/fogger-lens.py:81 ../fogger.desktop.in.h:1
+msgid "Create a new fog app"
+msgstr ""
+
+#: ../fogger/FoggerWindow.py:182
+#, python-format
+msgid ""
+"The URL %s could not be reached.\n"
+"Please double check the URL you provided and try again."
+msgstr ""
+
+#: ../fogger_lib/Downloads.py:96
+msgid "Error"
+msgstr ""
+
+#: ../fogger_lib/Downloads.py:101
+msgid "Download Complete"
 msgstr ""
 
 #: ../data/ui/AboutFoggerDialog.ui.h:1
@@ -146,62 +204,4 @@ msgstr ""
 
 #: ../data/ui/AboutFoggerDialog.ui.h:15
 msgid "Launchpad Translators\t"
-msgstr ""
-
-#: ../data/ui/FoggerWindow.ui.h:2
-msgid "_Fogger"
-msgstr ""
-
-#: ../data/ui/FoggerWindow.ui.h:5
-msgid "<b>Create a new fog app</b>"
-msgstr ""
-
-#: ../data/ui/FoggerWindow.ui.h:6 ../data/ui/PreferencesFoggerDialog.ui.h:2
-msgid ""
-"<tt><small><i>You can also drop a custom icon anywhere on the window</i></"
-"small></tt>"
-msgstr ""
-
-#: ../data/ui/FoggerWindow.ui.h:7
-msgid "<b><small>URL</small></b>"
-msgstr ""
-
-#: ../data/ui/FoggerWindow.ui.h:8
-msgid "<tt><small><i>Example: facebook.com</i></small></tt>"
-msgstr ""
-
-#: ../data/ui/FoggerWindow.ui.h:9
-msgid "<b><small>Name</small></b>"
-msgstr ""
-
-#: ../data/ui/FoggerWindow.ui.h:10
-msgid "<tt><small><i>Example: Facebook</i></small></tt>"
-msgstr ""
-
-#: ../data/ui/FoggerWindow.ui.h:11
-msgid "Create"
-msgstr ""
-
-#: ../data/ui/PreferencesFoggerDialog.ui.h:1
-msgid "Fogger Preferences"
-msgstr ""
-
-#: ../fogger/FoggerWindow.py:179
-#, python-format
-msgid ""
-"The URL %s could not be reached.\n"
-"Please double check the URL you provided and try again."
-msgstr ""
-
-#. Code for other initialization actions should be added here.
-#: ../fogger.desktop.in.h:1
-msgid "Create a new fog app"
-msgstr ""
-
-#: ../fogger_lib/Downloads.py:96
-msgid "Error"
-msgstr ""
-
-#: ../fogger_lib/Downloads.py:101
-msgid "Download Complete"
 msgstr ""
