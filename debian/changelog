@@ -1,3 +1,9 @@
+fogger (12.07.14ubuntu1) precise; urgency=low
+
+  * 
+
+ -- Owais Lone <hello@owaislone.org>  Fri, 06 Jul 2012 14:28:40 +0530
+
 fogger (12.07.14) precise; urgency=low
 
   * * Double clicking a download opens it   * file:/// uris not working

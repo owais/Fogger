@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-06 02:05+0530\n"
+"POT-Creation-Date: 2012-07-06 14:28+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -109,25 +109,13 @@ msgstr ""
 msgid "Contents"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:22
-msgid "Fogger encountered a problem"
-msgstr ""
-
-#: ../data/ui/FoggerAppWindow.ui.h:23
-msgid "<tt><small></small></tt>Placeholder"
-msgstr ""
-
-#: ../data/ui/FoggerAppWindow.ui.h:24
-msgid "Retry"
-msgstr ""
-
 #. TODO: COnfirmation dialog
-#: ../fogger/AppWindow.py:213
+#: ../fogger/AppWindow.py:200
 #, python-format
 msgid "%s will be removed"
 msgstr ""
 
-#: ../fogger/AppWindow.py:214
+#: ../fogger/AppWindow.py:201
 msgid "Are you sure you want to remove this app?"
 msgstr ""
 
@@ -194,7 +182,7 @@ msgstr ""
 msgid "Fogger Preferences"
 msgstr ""
 
-#: ../fogger/FoggerWindow.py:164
+#: ../fogger/FoggerWindow.py:172
 #, python-format
 msgid ""
 "The URL %s could not be reached.\n"
@@ -206,10 +194,10 @@ msgstr ""
 msgid "Create a new fog app"
 msgstr ""
 
-#: ../fogger_lib/Downloads.py:91
+#: ../fogger_lib/Downloads.py:96
 msgid "Error"
 msgstr ""
 
-#: ../fogger_lib/Downloads.py:96
+#: ../fogger_lib/Downloads.py:101
 msgid "Download Complete"
 msgstr ""
