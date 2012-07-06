@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it
-# under the terms of the GNU General Public License version 3, as published
+# This program is free software: you can redistribute it and/or modify it 
+# under the terms of the GNU General Public License version 3, as published 
 # by the Free Software Foundation.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranties of
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+# 
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranties of 
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
 # PURPOSE.  See the GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License along
+# 
+# You should have received a copy of the GNU General Public License along 
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -78,8 +78,8 @@ class FoggerAppWindow(AppWindow):
         self.webview.userscripts = self.app.scripts
         self.webview.userscripts.append(open(get_media_file('js/fogger.js', '')).read())
         self.webview.userstyles = []
-        self.webview.show()
         self.webcontainer.add(self.webview)
+        self.webview.show()
 
     def setup_webkit_session(self):
         session = WebKit.get_default_session()
@@ -170,7 +170,7 @@ class FoggerAppWindow(AppWindow):
         self.webview.connect('notify::load-status', self.load_status_changed)
         #if not frame.props.load_status == WebKit.LoadStatus.FAILED:
         #    self.webcontainer.show()
-        self.webcontainer.show_all()
+        self.webcontainer.show()
 
     def on_create_webview(self, widget, frame, data=None):
         webview = WebKit.WebView()
@@ -236,7 +236,7 @@ class FoggerAppWindow(AppWindow):
             action = method.split('/')
             method = action[0]
             args = action[1:]
-            getattr(self.bridge, method)(*args)
+            getattr(self.bridge, method)(self, *args)
             return True
 
     def resize_window(self, MW, MH, W, H):
@@ -255,17 +255,18 @@ class FoggerAppWindow(AppWindow):
             self.set_icon_name(self.app.icon)
         self.set_title(app.name or app.url or 'FogApp')
         self.set_role('FogApp:%s' % app.name)
-        self.bridge = DesktopBridge(self, '%s.desktop' % self.app.uuid, self.app.icon)
         screen = Gdk.Screen.get_default()
         max_h = screen.get_height()
         max_w = screen.get_width()
         if not root:
+            self.bridge = DesktopBridge(self, '%s.desktop' % self.app.uuid, self.app.icon)
             self.appname.set_text(app.name)
             self.webview.load_uri(self.app.url)
             self.resize_window(max_w, max_h, *self.app.window_size)
             if self.app.maximized:
                 self.maximize()
         else:
+            self.bridge = self.root.bridge
             self.downloads = self.root.downloads
             self.appname.set_text('Loading...')
             wf = root.webview.props.window_features
@@ -275,5 +276,4 @@ class FoggerAppWindow(AppWindow):
                 self.resize(800, 600)
             if wf.props.fullscreen:
                 self.fullscreen()
-        self.webcontainer.show_all()
         self.show()
