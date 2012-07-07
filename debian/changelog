@@ -1,3 +1,10 @@
+fogger (12.07.22) precise; urgency=low
+
+  * * Added support for userstyles   * Overhauled the preferences dialog
+    * Some other fixes
+
+ -- Owais Lone <hello@owaislone.org>  Sun, 08 Jul 2012 01:01:34 +0530
+
 fogger (12.07.21ubuntu1) precise; urgency=low
 
   * 
