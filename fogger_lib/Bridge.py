@@ -11,7 +11,6 @@ class DesktopBridge:
         self.W = root
         self.desktop_file = desktop_file
         self.icon_name = icon_name
-        #self.launcher_entry = Unity.LauncherEntry.get_for_desktop_file('firefox.desktop')
         self.launcher_entry = Unity.LauncherEntry.get_for_desktop_file(self.desktop_file)
         self.quicklist = Dbusmenu.Menuitem.new()
         self.launcher_entry.set_property("quicklist", self.quicklist)

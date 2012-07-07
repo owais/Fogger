@@ -72,6 +72,7 @@ class FogApp(object):
             try:
                 lines = [line.replace("'", "\\'") for line in open(op.join(path, item)).read().split('\n') if line]
             except Exception, e:
+                raise e
                 logger.error('Error reading file: %s\n %s' % (op.join(path, item), e))
             else:
                 styles.append(''.join(lines))
@@ -88,6 +89,10 @@ class FogApp(object):
     @property
     def desktop_file(self):
         return op.join(DESKTOP_DIR, 'fogger-%s.desktop' % self.uuid)
+
+    @property
+    def desktop_file_name(self):
+        return 'fogger-%s.desktop' % self.uuid
 
     @property
     def autostart(self):

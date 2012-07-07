@@ -83,6 +83,7 @@
                     <property name="halign">center</property>
                     <property name="valign">center</property>
                     <property name="border_width">5</property>
+                    <property name="row_spacing">10</property>
                     <property name="column_spacing">10</property>
                     <child>
                       <object class="GtkLabel" id="label3">
@@ -100,15 +101,6 @@
                         <property name="width">1</property>
                         <property name="height">1</property>
                       </packing>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
                     </child>
                     <child>
                       <object class="GtkButton" id="button1">

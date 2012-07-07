@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-08 00:05+0530\n"
+"POT-Creation-Date: 2012-07-08 04:47+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,18 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: ../data/ui/PreferencesFoggerDialog.ui.h:1
-msgid "Fogger Preferences"
-msgstr ""
-
-#: ../data/ui/PreferencesFoggerDialog.ui.h:2
-msgid "Autostart"
-msgstr ""
-
-#: ../data/ui/PreferencesFoggerDialog.ui.h:3
-msgid "Delete Sesssions/Data"
-msgstr ""
 
 #: ../fogger_lib/Dialogs.py:34
 msgid "Please choose an icon"
@@ -118,25 +106,25 @@ msgid "Contents"
 msgstr ""
 
 #. TODO: COnfirmation dialog
-#: ../fogger/AppWindow.py:209
+#: ../fogger/AppWindow.py:211
 #, python-format
 msgid "%s will be removed"
 msgstr ""
 
-#: ../fogger/AppWindow.py:210
+#: ../fogger/AppWindow.py:212
 msgid "Are you sure you want to remove this app?"
 msgstr ""
 
-#: ../fogger/AppWindow.py:249
+#: ../fogger/AppWindow.py:252
 msgid "Geolocation permission requested"
 msgstr ""
 
-#: ../fogger/AppWindow.py:250
+#: ../fogger/AppWindow.py:253
 #, python-format
 msgid "%s wants to know your current location. Do you want to share?"
 msgstr ""
 
-#: ../fogger/AppWindow.py:252
+#: ../fogger/AppWindow.py:255
 msgid "Share"
 msgstr ""
 
@@ -158,6 +146,36 @@ msgstr ""
 
 #: ../fogger/__init__.py:45
 msgid "Remove all fogapps"
+msgstr ""
+
+#: ../data/ui/AboutFoggerDialog.ui.h:1
+msgid "Copyright (C) 2012 Owais Lone <hello@owaislone.org>"
+msgstr ""
+
+#: ../data/ui/AboutFoggerDialog.ui.h:2
+msgid ""
+"# Copyright (C) 2012 Owais Lone <hello@owaislone.org>\n"
+"# This program is free software: you can redistribute it and/or modify it \n"
+"# under the terms of the GNU General Public License version 3, as "
+"published \n"
+"# by the Free Software Foundation.\n"
+"# \n"
+"# This program is distributed in the hope that it will be useful, but \n"
+"# WITHOUT ANY WARRANTY; without even the implied warranties of \n"
+"# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR \n"
+"# PURPOSE.  See the GNU General Public License for more details.\n"
+"# \n"
+"# You should have received a copy of the GNU General Public License along \n"
+"# with this program.  If not, see <http://www.gnu.org/licenses/>.\n"
+msgstr ""
+
+#: ../data/ui/AboutFoggerDialog.ui.h:15
+msgid "Launchpad Translators\t"
+msgstr ""
+
+#. Code for other initialization actions should be added here.
+#: ../bin/fogger-lens.py:83 ../fogger.desktop.in.h:1
+msgid "Create a new fog app"
 msgstr ""
 
 #: ../data/ui/FoggerWindow.ui.h:2
@@ -194,9 +212,26 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#. Code for other initialization actions should be added here.
-#: ../bin/fogger-lens.py:83 ../fogger.desktop.in.h:1
-msgid "Create a new fog app"
+#: ../data/ui/PreferencesFoggerDialog.ui.h:1
+msgid "Fogger Preferences"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:2
+msgid ""
+"<small>This will reset the app to it's default state. You'll be logged out "
+"of all the saved sessions and all local databases will be deleted.</small>"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:3
+msgid "Reset Application Data"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:4
+msgid "Privacy"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:5
+msgid "Autostart"
 msgstr ""
 
 #: ../fogger/FoggerWindow.py:129
@@ -226,31 +261,6 @@ msgstr ""
 
 #: ../fogger_lib/Downloads.py:101
 msgid "Download Complete"
-msgstr ""
-
-#: ../data/ui/AboutFoggerDialog.ui.h:1
-msgid "Copyright (C) 2012 Owais Lone <hello@owaislone.org>"
-msgstr ""
-
-#: ../data/ui/AboutFoggerDialog.ui.h:2
-msgid ""
-"# Copyright (C) 2012 Owais Lone <hello@owaislone.org>\n"
-"# This program is free software: you can redistribute it and/or modify it \n"
-"# under the terms of the GNU General Public License version 3, as "
-"published \n"
-"# by the Free Software Foundation.\n"
-"# \n"
-"# This program is distributed in the hope that it will be useful, but \n"
-"# WITHOUT ANY WARRANTY; without even the implied warranties of \n"
-"# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR \n"
-"# PURPOSE.  See the GNU General Public License for more details.\n"
-"# \n"
-"# You should have received a copy of the GNU General Public License along \n"
-"# with this program.  If not, see <http://www.gnu.org/licenses/>.\n"
-msgstr ""
-
-#: ../data/ui/AboutFoggerDialog.ui.h:15
-msgid "Launchpad Translators\t"
 msgstr ""
 
 #: ../fogger/PreferencesFoggerDialog.py:52
