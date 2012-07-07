@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -25,16 +25,6 @@ from . helpers import get_builder, show_uri, get_help_uri
 # common functions and some boilerplate.
 class AppWindow(Gtk.Window):
     __gtype_name__ = "AppWindow"
-
-    # To construct a new instance of this method, the following notable
-    # methods are called in this order:
-    # __new__(cls)
-    # __init__(self)
-    # finish_initializing(self, builder)
-    # __init__(self)
-    #
-    # For this reason, it's recommended you leave __init__ empty and put
-    # your initialization code in finish_initializing
 
     def __new__(cls):
         """Special static method that's automatically called by Python when
@@ -61,16 +51,9 @@ class AppWindow(Gtk.Window):
         self.preferences_dialog = None # instance
         self.AboutDialog = None # class
 
-
-        #self.settings = Gio.Settings("net.launchpad.fogger")
-        #self.settings.connect('changed', self.on_preferences_changed)
         self.root = None
         self.popups = [self]
 
-        # Optional Launchpad integration
-        # This shouldn't crash if not found as it is simply used for bug reporting.
-        # See https://wiki.ubuntu.com/UbuntuDevelopment/Internationalisation/Coding
-        # for more information about Launchpad integration.
         try:
             from gi.repository import LaunchpadIntegration # pylint: disable=E0611
             LaunchpadIntegration.add_items(self.ui.helpMenu, 1, True, True)
@@ -78,18 +61,6 @@ class AppWindow(Gtk.Window):
         except ImportError:
             pass
 
-        # Optional application indicator support
-        # Run 'quickly add indicator' to get started.
-        # More information:
-        #  http://owaislone.org/quickly-add-indicator/
-        #  https://wiki.ubuntu.com/DesktopExperienceTeam/ApplicationIndicators
-        try:
-            from fogger import indicator
-            # self is passed so methods of this class can be called from indicator.py
-            # Comment this next line out to disable appindicator
-            self.indicator = indicator.new_application_indicator(self)
-        except ImportError:
-            pass
 
     @property
     def is_popup(self):
@@ -119,13 +90,19 @@ class AppWindow(Gtk.Window):
         elif self.PreferencesDialog is not None:
             logger.debug('create new preferences_dialog')
             self.preferences_dialog = self.PreferencesDialog() # pylint: disable=E1102
+            if hasattr(self, 'app'):
+                self.preferences_dialog.set_autostart_widget(self.app.autostart)
             self.preferences_dialog.connect('destroy', self.on_preferences_dialog_destroyed)
+            self.preferences_dialog.connect('fogger-autostart-changed', self.on_fogger_autostart_changed)
+            self.preferences_dialog.connect('fogger-app-reset', self.on_fogger_app_reset)
             self.preferences_dialog.show()
-        # destroy command moved into dialog to allow for a help button
 
     def on_mnu_close_activate(self, widget, data=None):
         """Signal handler for closing the FoggerWindow."""
         self.destroy()
+
+    def on_preferences_dialog_destroyed(self, widget, data=None):
+        self.preferences_dialog = None
 
     def on_destroy(self, widget, data=None):
         """Called when the FoggerWindow is closed."""
@@ -145,17 +122,8 @@ class AppWindow(Gtk.Window):
                 Gtk.main_quit()
         return True
 
-    '''
-    def on_preferences_changed(self, settings, key, data=None):
-        logger.debug('preference changed: %s = %s' % (key, str(settings.get_value(key))))
-    '''
+    def on_fogger_app_reset(self, widget, data=None):
+        pass
 
-    def on_preferences_dialog_destroyed(self, widget, data=None):
-        '''only affects gui
-
-        logically there is no difference between the user closing,
-        minimising or ignoring the preferences dialog'''
-        logger.debug('on_preferences_dialog_destroyed')
-        # to determine whether to create or present preferences_dialog
-        self.preferences_dialog = None
-
+    def on_fogger_autostart_changed(self, widget, data=None):
+        pass

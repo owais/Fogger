@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -29,7 +29,7 @@ gettext.textdomain('fogger')
 from gi.repository import GLib, Gtk, Gdk, GdkPixbuf, GObject, Gio # pylint: disable=E0611
 import logging
 logger = logging.getLogger('fogger')
-from fogger_lib import Window, IconChooserDialog
+from fogger_lib import Window, IconChooserDialog, ConfirmDialog
 from fogger_lib import FogAppManager
 from fogger_lib.exceptions import BaseFogAppException
 from fogger.AboutFoggerDialog import AboutFoggerDialog
@@ -124,6 +124,16 @@ class FoggerWindow(Window):
     def create_app(self, url):
         name = self.name.get_text()
         manager = FogAppManager()
+        existing = manager.get_by_name(name)
+        if existing:
+            confirm = ConfirmDialog('Fogger', _('There\'s an app for that!'),
+                        _('A fog app already exists by that name. '\
+                          'Would you like to replace it with a new one?'),
+                        existing.icon, self, _('Replace'))
+            response = confirm.run()
+            confirm.destroy()
+            if response != Gtk.ResponseType.YES:
+                return
         try:
             app = manager.create(name, url, self.icon)
         except BaseFogAppException:

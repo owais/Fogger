@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -55,6 +55,7 @@ class FoggerAppWindow(AppWindow):
         self.status_text = self.builder.get_object('status_text')
         self.progressbar = self.builder.get_object('progressbar')
         self.menu_app = self.builder.get_object('mnu_app')
+
 
         self.extra_windows = []
 
@@ -167,10 +168,10 @@ class FoggerAppWindow(AppWindow):
     def init_dom(self, webview, frame, data=None):
         for script in self.webview.userscripts:
             self.webview.execute_script(script)
-        self.ui_loading.hide()
+        if self.ui_loading:
+            self.ui_loading.destroy()
+            self.ui_loading = None
         self.webview.connect('notify::load-status', self.load_status_changed)
-        #if not frame.props.load_status == WebKit.LoadStatus.FAILED:
-        #    self.webcontainer.show()
         self.webcontainer.show()
 
     def on_create_webview(self, widget, frame, data=None):
@@ -203,8 +204,8 @@ class FoggerAppWindow(AppWindow):
     def on_remove_fog_app(self, widget, data=None):
         # TODO: COnfirmation dialog
         d = ConfirmDialog(self.app.name, _('%s will be removed' % self.app.name),
-                        _('Are you sure you want to remove this app?'), self,
-                        'gtk-remove')
+                _('Are you sure you want to remove this app?'), None, self,
+                'gtk-remove')
         response = d.run()
         d.destroy()
 
@@ -243,8 +244,9 @@ class FoggerAppWindow(AppWindow):
 
     def on_request_geo_permission(self, view, frame, decision, data=None):
         d = ConfirmDialog(self.app.name, _('Geolocation permission requested'),
-                        _('%s wants to know your current location. Do you want to share?' % (frame.get_uri() or self.app.name)), self,
-                        _('Share'))
+            _('%s wants to know your current location. Do you want to share?'\
+            % (frame.get_uri() or self.app.name)), None, self,
+            _('Share'))
         response = d.run()
         d.destroy()
 
@@ -253,6 +255,13 @@ class FoggerAppWindow(AppWindow):
         else:
             WebKit.geolocation_policy_deny(decision)
         return True
+
+    def on_fogger_app_reset(self, widget, data=None):
+        self.app.reset()
+        self.webview.reload()
+
+    def on_fogger_autostart_changed(self, widget, autostart):
+        self.app.autostart = autostart
 
     def resize_window(self, MW, MH, W, H):
         H = H if H <= MH else MH
@@ -292,3 +301,4 @@ class FoggerAppWindow(AppWindow):
             if wf.props.fullscreen:
                 self.fullscreen()
         self.show()
+

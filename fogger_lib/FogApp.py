@@ -20,10 +20,11 @@ DESKTOP_DIR = op.join(GLib.get_user_data_dir(), 'applications')
 APP_PATH = op.join(GLib.get_user_data_dir(), 'fogapps')
 CONF_PATH = op.join(GLib.get_user_config_dir(), 'fogger')
 CACHE_PATH = op.join(GLib.get_user_cache_dir(), 'fogger')
+AUTOSTART_PATH = get_or_create_directory(op.join(GLib.get_user_config_dir(), 'autostart'))
 DEFAULT_SIZE = (800, 600,)
 DEFAULT_STATE = False # True if maximized
 
-class FogApp:
+class FogApp(object):
     name = None
     url = None
     window_size = DEFAULT_SIZE
@@ -41,15 +42,16 @@ class FogApp:
                 state = json.loads(open(op.join(self.path, 'app.json'), 'r').read())
             except:
                 raise BadFogAppException()
-            try:
-                self.name = state['name']
-                self.url = state['url']
-                self.uuid = state['uuid']
-                self.icon = state['icon']
-                self.window_size = state.get('window_size') or DEFAULT_SIZE
-                self.maximized = state.get('maximized') or DEFAULT_STATE
-            except KeyError:
-                raise BadFogAppException()
+            else:
+                try:
+                    self.name = state['name']
+                    self.url = state['url']
+                    self.uuid = state['uuid']
+                    self.icon = state['icon']
+                    self.window_size = state.get('window_size') or DEFAULT_SIZE
+                    self.maximized = state.get('maximized') or DEFAULT_STATE
+                except KeyError:
+                    raise BadFogAppException()
 
     @property
     def scripts(self):
@@ -65,7 +67,23 @@ class FogApp:
 
     @property
     def desktop_file(self):
-        return op.join(DESKTOP_DIR, '%s.desktop' % self.uuid)
+        return op.join(DESKTOP_DIR, 'fogger-%s.desktop' % self.uuid)
+
+    @property
+    def autostart(self):
+        filename = '%s.%s' %(self.uuid, 'desktop',)
+        autostart_file = op.join(AUTOSTART_PATH, filename)
+        return os.path.exists(autostart_file)
+
+    @autostart.setter
+    def autostart(self, autostart):
+        filename = '%s.%s' %(self.uuid, 'desktop',)
+        autostart_file = op.join(AUTOSTART_PATH, filename)
+        if autostart:
+            os.link(self.desktop_file, autostart_file)
+        else:
+            if os.path.exists(autostart_file):
+                os.remove(autostart_file)
 
     def save(self):
         state = {
@@ -104,8 +122,13 @@ class FogApp:
                 if op.exists(directory):
                     rmtree(directory)
 
+    def reset(self):
+        app_data = op.join(CACHE_PATH, self.uuid)
+        if op.exists(op.join(app_data)):
+            rmtree(app_data)
 
-class FogAppManager:
+
+class FogAppManager(object):
     apps = {}
 
     def __init__(self):
@@ -122,8 +145,21 @@ class FogAppManager:
             logger.error('No such app: %s' % uuid)
             return None
 
+    def get_by_name(self, name):
+        return self.get(md5(name.lower()).hexdigest())
+
+    def get_all(self):
+        dirs = os.listdir(APP_PATH)
+        apps = []
+        for path in dirs:
+            try:
+                apps.append(FogApp(op.join(APP_PATH, path)))
+            except BadFogAppException:
+                pass
+        return apps
+
     def create(self, name, url, icon):
-        uuid = md5(name).hexdigest()
+        uuid = md5(name.lower()).hexdigest()
         path = setup_app_dir(uuid)
         icon = setup_icon(icon, path)
         create_desktop_files(name, uuid, icon, path)
@@ -143,6 +179,8 @@ class FogAppManager:
         serialized = json.dumps(self.apps)
         open(op.join(path, 'apps.json'), 'w').write(serialized)
 
+    get_by_uuid = get
+
 
 def setup_icon(icon, path):
     if icon.startswith('/') and op.exists(icon):
@@ -159,7 +197,7 @@ def create_desktop_files(name, uuid, icon, path):
     desktop_tmpl = desktop_tmpl % {'name': name, 'icon': icon, 'uuid': uuid}
     for P in (DESKTOP_DIR, path,):
         base_dir = get_or_create_directory(P)
-        desktop_file_path = op.join(base_dir, '%s.desktop' % uuid)
+        desktop_file_path = op.join(base_dir, 'fogger-%s.desktop' % uuid)
         desktop_file = open(desktop_file_path, 'w')
         desktop_file.write(desktop_tmpl)
         desktop_file.close()

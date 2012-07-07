@@ -1,0 +1,56 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="topic1">
+
+<info>
+
+  <link type="guide" xref="index#contents"/>
+  <credit type="author">
+    <name>Owais Lone</name>
+    <email>hello@owaislone.org</email>
+    <years>2012</years>
+  </credit>
+  <desc>Creating new fog apps</desc>
+</info>
+
+<title>Creating Fog Apps</title>
+<media type="image" mime="image/png" src="figures/creating/create.png">[create_window]</media>
+
+<section id="creating">
+    <title>Creating</title>
+    <p>Creating fog apps is pretty staight forward. You enter the URL + name and fogger does the rest</p>
+
+    <section id="naming">
+        <title>Naming</title>
+        <note>
+            <p>Names are unique, URLs are not.</p>
+        </note>
+        <p>No two fogapps can have the same name but you can create multiple fogapps for the same URL.
+        This lets you create multiple profiles for the same web application like "Gmail Work" and "Gmail Home"</p>
+    </section>
+
+    <section id="icons">
+        <title>Icons</title>
+        <p>Fogger aims to keep user input to a minimum. It'll try to automatically choose an icon for you if you don't provide one.</p>
+            <steps>
+                <title>Icon selection proccess</title>
+                <item><p>Fogger looks for icons matching the app name in the current icon theme and chooses one if found.</p></item>
+                <item><p>In case the theme does not provide an icon and user has not selected one manually, fogger will parse the webpage and try to download the <code>"apple-touch-icon".</code></p></item>
+                <item><p>Default fogapp icon will be used in case nothing is found.</p></item>
+            </steps>
+        <section id="choosing-icons">
+            <title>Custom icons</title>
+            <p>
+                <media type="image" mime="image/png" src="figures/creating/browse.png">[browse]</media>
+                <media type="image" mime="image/png" src="figures/creating/drag.jpeg">[drag]</media>
+            </p>
+            <p>You can also select a custom icon by clicking the icon in the app creation window. It'll let you browse and select a custom icon from your computer or associated storage.</p>
+            <note>
+                <p>You can also drag and drop a custom icon anywhere on the creation window.</p>
+            </note>
+        </section>
+    </section>
+</section>
+
+
+</page>

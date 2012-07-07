@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-07 13:21+0530\n"
+"POT-Creation-Date: 2012-07-07 17:37+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,13 +21,15 @@ msgstr ""
 msgid "Fogger Preferences"
 msgstr ""
 
-#: ../data/ui/PreferencesFoggerDialog.ui.h:2 ../data/ui/FoggerWindow.ui.h:6
-msgid ""
-"<tt><small><i>You can also drop a custom icon anywhere on the window</i></"
-"small></tt>"
+#: ../data/ui/PreferencesFoggerDialog.ui.h:2
+msgid "Autostart"
 msgstr ""
 
-#: ../fogger_lib/Dialogs.py:28
+#: ../data/ui/PreferencesFoggerDialog.ui.h:3
+msgid "Delete Sesssions/Data"
+msgstr ""
+
+#: ../fogger_lib/Dialogs.py:34
 msgid "Please choose an icon"
 msgstr ""
 
@@ -134,7 +136,7 @@ msgstr ""
 msgid "%s wants to know your current location. Do you want to share?"
 msgstr ""
 
-#: ../fogger/AppWindow.py:247
+#: ../fogger/AppWindow.py:248
 msgid "Share"
 msgstr ""
 
@@ -148,6 +150,12 @@ msgstr ""
 
 #: ../data/ui/FoggerWindow.ui.h:5
 msgid "<b>Create a new fog app</b>"
+msgstr ""
+
+#: ../data/ui/FoggerWindow.ui.h:6
+msgid ""
+"<tt><small><i>You can also drop a custom icon anywhere on the window</i></"
+"small></tt>"
 msgstr ""
 
 #: ../data/ui/FoggerWindow.ui.h:7
@@ -175,7 +183,21 @@ msgstr ""
 msgid "Create a new fog app"
 msgstr ""
 
-#: ../fogger/FoggerWindow.py:182
+#: ../fogger/FoggerWindow.py:129
+msgid "There's an app for that!"
+msgstr ""
+
+#: ../fogger/FoggerWindow.py:130
+msgid ""
+"A fog app already exists by that name. Would you like to replace it with a "
+"new one?"
+msgstr ""
+
+#: ../fogger/FoggerWindow.py:132
+msgid "Replace"
+msgstr ""
+
+#: ../fogger/FoggerWindow.py:192
 #, python-format
 msgid ""
 "The URL %s could not be reached.\n"

@@ -179,7 +179,7 @@ Fogger.prototype.setUrgent = function(urgent) {
   this._dispatch(action);
 }
 
-Fogger.prototype.new_menu = function(name) {
+Fogger.prototype.newMenu = function(name) {
   return fogger.menus[name] || new Menu(name);
 }
 

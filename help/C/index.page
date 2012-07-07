@@ -7,9 +7,9 @@
   <title type="text">Fogger</title>
   <desc>The <app>Fogger</app> help.</desc>
   <credit type="author">
-    <name>Your Name</name>
-    <email>Your E-mail</email>
-    <years>2010</years>
+    <name>Owais Lone</name>
+    <email>hello@owaislone.org</email>
+    <years>2012</years>
   </credit>
   <license href="http://creativecommons.org/licenses/by-sa/3.0/">
   <p>Creative Commons Attribution-Share Alike 3.0 Unported License</p>
@@ -19,26 +19,21 @@
 <title>
 <!-- This shows on the page in title font -->
 <!-- the icon only shows when installed -->
-<media type="image" mime="image/png" src="figures/icon.png">[icon]</media>
+<media type="image" mime="image/svg" src="figures/icon.svg">[icon]</media>
 <app>Fogger</app> Help
 </title>
 
-<p>This is an example guide page. It's main function is to link together the help topics.</p>
+<p>Fogger acts as a bridge between web applications and the linux desktop. It exposes an easy to use JS API to webapps which can be used to interact with the host desktop environment. It can also be used to write basic desktop apps for linux in pure web style.</p>
+
+<steps>
+    <title>Desktops supported by Fogger JS API</title>
+    <item><p>Unity</p></item>
+</steps>
+
+<p>Support for other environments like Gnome Shell and KDE will be added gradually</p>
 
 <!-- This is the visible index -->
 <section id="contents" style="2column">
-<!-- other pages needs to have a link to index#contents for this to work -->
 <title>Contents</title>
 </section>
-
-<note>
-  <!-- delete this note -->
-  <p>
-    Your script or application looks better if it has help files similar to other applications in ubuntu.
-  </p>
-  <p>
-    Some people think that help files are only for apps that are difficult to use.
-  </p>
-</note>
-
 </page>

@@ -6,12 +6,18 @@ from gi.repository import Gtk
 
 
 class ConfirmDialog(Gtk.MessageDialog):
-    def __init__(self, appname, title, message, parent=None, ok='gtk-ok', cancel='gtk-cancel'):
+    def __init__(self, appname, title, message, icon=None, parent=None, ok='gtk-ok', cancel='gtk-cancel'):
         Gtk.MessageDialog.__init__(self, parent,
                 Gtk.DialogFlags.MODAL & Gtk.DialogFlags.DESTROY_WITH_PARENT,
                 Gtk.MessageType.QUESTION,
                 Gtk.ButtonsType.YES_NO,
                 title)
+        if icon:
+            image = self.get_content_area().get_children()[0].get_children()[0]
+            if icon.startswith('/'):
+                image.set_from_file(icon)
+            else:
+                image.set_from_icon_name(icon, Gtk.IconSize.DIALOG)
         self.format_secondary_text(message)
         buttons = self.action_area.get_children()
         for b in buttons:
