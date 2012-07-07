@@ -1,3 +1,9 @@
+fogger (12.07.18ubuntu1) precise; urgency=low
+
+  * 
+
+ -- Owais Lone <hello@owaislone.org>  Sat, 07 Jul 2012 11:52:13 +0530
+
 fogger (12.07.18) precise; urgency=low
 
   * * Added Unity lens for fog apps   * Some other fixes here and there

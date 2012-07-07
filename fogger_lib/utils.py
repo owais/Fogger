@@ -15,7 +15,7 @@ def search_fogapps(search):
 
     results = []
     if not search:
-        results = fogapps
+        return fogapps
 
     if not results:
         for app in fogapps:
@@ -25,4 +25,4 @@ def search_fogapps(search):
                     results.append(app)
                     app.weight = field_value.index(search)
                     break
-    return sorted(results, key=lambda app: app.weight)
+        return sorted(results, key=lambda app: app.weight)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-07 04:41+0530\n"
+"POT-Creation-Date: 2012-07-07 11:52+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -162,7 +162,7 @@ msgid "Create"
 msgstr ""
 
 #. Code for other initialization actions should be added here.
-#: ../bin/fogger-lens.py:81 ../fogger.desktop.in.h:1
+#: ../bin/fogger-lens.py:89 ../fogger.desktop.in.h:1
 msgid "Create a new fog app"
 msgstr ""
 

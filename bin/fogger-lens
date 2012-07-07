@@ -18,16 +18,21 @@
 import sys
 sys.path.insert(0, '/opt/extras.ubuntu.com/fogger/')
 
-import gettext
-from gettext import gettext as _
-gettext.textdomain('fogger')
+import locale
+from locale import gettext as _
+locale.bindtextdomain('fogger', '/opt/extras.ubuntu.com/fogger/share/locale')
+locale.textdomain('fogger')
 
 from gi.repository import GLib, GObject, Gio
 from gi.repository import Unity
 
 from fogger_lib.utils import search_fogapps
+from fogger_lib.helpers import get_media_file
 
 BUS_NAME = "net.launchpad.lens.fogger"
+
+CREATE_URI = GLib.filename_to_uri('/usr/share/applications/extras-fogger.desktop', None)
+CAT_ICON = get_media_file('lens-cat.svg')
 
 
 class Daemon:
@@ -42,15 +47,14 @@ class Daemon:
         self._scope = Unity.Scope.new("/net/launchpad/lens/fogger/main")
         self._scope.search_in_global = True
         self._scope.connect("search-changed", self.on_search_changed)
-        self._scope.connect("filters-changed", self.on_search_changed)
         self._scope.connect("activate-uri", self.on_activate_uri)
         self._scope.export()
 
         # Populate categories
         cats = []
         cats.append(Unity.Category.new('Fog Apps',
-                                       Gio.ThemedIcon.new('/opt/extras.ubuntu.com/fogger/share/fogger/media/lens-cat.svg'),
-                                       Unity.CategoryRenderer.VERTICAL_TILE))
+                        Gio.ThemedIcon.new(CAT_ICON),
+                        Unity.CategoryRenderer.VERTICAL_TILE))
         self._lens.props.categories = cats
 
         # Populate filters
@@ -77,13 +81,19 @@ class Daemon:
         model.clear()
         apps = search_fogapps(search)
         for app in apps:
-            model.append(app.get_filename(), app.get_icon().to_string(), 0, 'application/x-desktop', app.get_name(), '', '')
-        model.append('/usr/share/applications/extras-fogger.desktop', 'fogger', 0, 'appplication/x-desktop', _('Create a new fog app'), '', '')
+            model.append(GLib.filename_to_uri(app.props.filename, None),
+                         app.get_icon().to_string(), 0,
+                         'application/x-desktop', app.get_name(), '', '')
+
+        model.append(CREATE_URI, 'fogger', 0, 'appplication/x-desktop',
+                     _('Create a new fog app'), '', '')
         return
 
     def on_activate_uri (self, scope, uri):
-        Gio.DesktopAppInfo.new_from_filename(uri).launch([], None)
-        return Unity.ActivationResponse(handled=Unity.HandledType.HIDE_DASH, goto_uri='')
+        Gio.DesktopAppInfo.new_from_filename(
+                GLib.filename_from_uri(uri, '')).launch([], None)
+        return Unity.ActivationResponse(
+                handled=Unity.HandledType.HIDE_DASH, goto_uri='')
 
 
 if __name__ == "__main__":
