@@ -1,3 +1,9 @@
+fogger (12.07.23) precise; urgency=low
+
+  * Now styles and scripts are updated without restarting the whole app
+
+ -- Owais Lone <hello@owaislone.org>  Sun, 08 Jul 2012 01:17:14 +0530
+
 fogger (12.07.22) precise; urgency=low
 
   * * Added support for userstyles   * Overhauled the preferences dialog
