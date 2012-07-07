@@ -1,3 +1,11 @@
+fogger (12.07.21) precise; urgency=low
+
+  * * Added preferences for fog apps   * Added command line interface
+    * Added a help topic   * New icons
+  * Updated package descriptions
+
+ -- Owais Lone <hello@owaislone.org>  Sat, 07 Jul 2012 19:33:50 +0530
+
 fogger (12.07.20) precise; urgency=low
 
   * * Added Geolocation permission support   * Changed fogapp lens to
