@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -79,9 +79,6 @@ class FoggerAppWindow(AppWindow):
         self.webview.connect('create-web-view', self.on_create_webview)
         self.webview.connect('database-quota-exceeded', self.on_database_quota_exceeded)
 
-        self.webview.userscripts = self.app.scripts
-        self.webview.userscripts.append(open(get_media_file('js/fogger.js', '')).read())
-        self.webview.userstyles = self.app.styles
         self.webcontainer.add(self.webview)
         self.webview.show()
 
@@ -168,9 +165,13 @@ class FoggerAppWindow(AppWindow):
         so.set_web_database_quota(quota + 5242880) # Increase by 5mb
 
     def init_dom(self, webview, frame, data=None):
-        for script in self.webview.userscripts:
+        userscripts = self.app.scripts
+        userscripts.append(open(get_media_file('js/fogger.js', '')).read())
+        userstyles = self.app.styles
+
+        for script in userscripts:
             self.webview.execute_script(script)
-        for style in self.webview.userstyles:
+        for style in userstyles:
             self.webview.execute_script(INJECT_CSS_SNIPPET % style)
         if self.ui_loading:
             self.ui_loading.destroy()
