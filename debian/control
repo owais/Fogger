@@ -27,5 +27,7 @@ Depends: ${misc:Depends},
  gir1.2-webkit-3.0,
  gir1.2-launchpad-integration-3.0,
  yelp
-Description: UNKNOWN
- UNKNOWN
+Description: Fogger lets you create sandboxed web apps that behave like regular desktop applications.
+ Fogger acts as a bridge between webapps and the linux desktop. It
+ exposes an easy to use JS API to webapps which can be used to interact
+ with the host desktop environment.
