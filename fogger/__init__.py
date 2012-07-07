@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 import optparse
@@ -38,6 +38,9 @@ def parse_options():
         "-r", "--remove", action="store", dest="remove",
         help=_("Remove a fogapp"))
     parser.add_option(
+        "-R", "--remove-all", action="store", dest="remove_all",
+        help=_("Remove all fogapp"))
+    parser.add_option(
         "-c", "--clean", action="store_true", dest="clean",
         help=_("Remove all fogapps"))
     (options, args) = parser.parse_args()
@@ -48,27 +51,44 @@ def parse_options():
 def main():
     options, args = parse_options()
 
+    option_selected = False
     if options.list:
+        option_selected = True
         manager = FogAppManager()
         apps = manager.get_all()
         for app in apps:
             print '\033[1m%s\033[0m' % app.name, '\t', app.uuid, '\n'
-        return
 
     if options.remove:
+        option_selected = True
         manager = FogAppManager()
         app = manager.get(options.remove)
         if app:
             app.remove()
             print 'Removed app %s (%s)' % (app.name, app.uuid)
-        return
 
-    if options.clean:
+    if options.remove_all:
+        option_selected = True
         manager = FogAppManager()
         for app in manager.get_all():
             app.remove()
             print 'Removed app %s (%s)' % (app.name, app.uuid)
-        return
+
+    if options.clean:
+        import os
+        option_selected = True
+        manager = FogAppManager()
+        apps = [app.desktop_file for app in  manager.get_all()]
+        all_apps = [app for app in Gio.AppInfo.get_all() if 'fogapp' in app.get_keywords()]
+        for app in all_apps:
+            if not app.props.filename in apps:
+                try:
+                    os.remove(app.props.filename)
+                except:
+                    print 'Could not delete file %s' % app.props.filename
+                else:
+                    print 'Cleaned stale file: %s' % app.props.filename
+
 
     # Run the application.
     if len(args) > 0:
@@ -85,14 +105,11 @@ def main():
         if g_app.get_is_remote():
             return
         manager = FogAppManager()
-        app = manager.get(args[0])
+        app = manager.get(args[0]) or manager.get_by_name(args[0])
         if app:
             app.run()
-            window = app.window
-        else:
-            return
-    else:
+            Gtk.main()
+    elif not option_selected:
         window = FoggerWindow.FoggerWindow()
         window.show()
-
-    Gtk.main()
+        Gtk.main()

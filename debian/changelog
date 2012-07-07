@@ -1,3 +1,9 @@
+fogger (12.07.21ubuntu1) precise; urgency=low
+
+  * 
+
+ -- Owais Lone <hello@owaislone.org>  Sun, 08 Jul 2012 00:05:38 +0530
+
 fogger (12.07.21) precise; urgency=low
 
   * * Added preferences for fog apps   * Added command line interface

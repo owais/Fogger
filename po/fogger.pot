@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-07 17:37+0530\n"
+"POT-Creation-Date: 2012-07-08 00:05+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -118,30 +118,46 @@ msgid "Contents"
 msgstr ""
 
 #. TODO: COnfirmation dialog
-#: ../fogger/AppWindow.py:205
+#: ../fogger/AppWindow.py:209
 #, python-format
 msgid "%s will be removed"
 msgstr ""
 
-#: ../fogger/AppWindow.py:206
+#: ../fogger/AppWindow.py:210
 msgid "Are you sure you want to remove this app?"
 msgstr ""
 
-#: ../fogger/AppWindow.py:245
+#: ../fogger/AppWindow.py:249
 msgid "Geolocation permission requested"
 msgstr ""
 
-#: ../fogger/AppWindow.py:246
+#: ../fogger/AppWindow.py:250
 #, python-format
 msgid "%s wants to know your current location. Do you want to share?"
 msgstr ""
 
-#: ../fogger/AppWindow.py:248
+#: ../fogger/AppWindow.py:252
 msgid "Share"
 msgstr ""
 
 #: ../fogger/__init__.py:33
 msgid "Show debug messages (-vv debugs fogger_lib also)"
+msgstr ""
+
+#: ../fogger/__init__.py:36
+msgid "List all fogapps"
+msgstr ""
+
+#: ../fogger/__init__.py:39
+msgid "Remove a fogapp"
+msgstr ""
+
+#: ../fogger/__init__.py:42
+msgid "Remove all fogapp"
+msgstr ""
+
+#: ../fogger/__init__.py:45
+msgid "Remove all fogapps"
 msgstr ""
 
 #: ../data/ui/FoggerWindow.ui.h:2
@@ -235,4 +251,12 @@ msgstr ""
 
 #: ../data/ui/AboutFoggerDialog.ui.h:15
 msgid "Launchpad Translators\t"
+msgstr ""
+
+#: ../fogger/PreferencesFoggerDialog.py:52
+msgid "Are you sure you want to reset the app?"
+msgstr ""
+
+#: ../fogger/PreferencesFoggerDialog.py:53
+msgid "This will log you out of all websites and delete all local data"
 msgstr ""

@@ -20,7 +20,7 @@ DESKTOP_DIR = op.join(GLib.get_user_data_dir(), 'applications')
 APP_PATH = op.join(GLib.get_user_data_dir(), 'fogapps')
 CONF_PATH = op.join(GLib.get_user_config_dir(), 'fogger')
 CACHE_PATH = op.join(GLib.get_user_cache_dir(), 'fogger')
-AUTOSTART_PATH = get_or_create_directory(op.join(GLib.get_user_config_dir(), 'autostart'))
+AUTOSTART_PATH = op.join(GLib.get_user_config_dir(), 'autostart')
 DEFAULT_SIZE = (800, 600,)
 DEFAULT_STATE = False # True if maximized
 
@@ -58,12 +58,32 @@ class FogApp(object):
         scripts = []
         path = self.scripts_path
         for item in os.listdir(path):
-            scripts.append(open(op.join(path, item)).read())
+            try:
+                scripts.append(open(op.join(path, item)).read())
+            except:
+                logger.error('Error reading file: %s', op.join(path, item))
         return scripts
+
+    @property
+    def styles(self):
+        styles = []
+        path = self.styles_path
+        for item in os.listdir(path):
+            try:
+                lines = [line.replace("'", "\\'") for line in open(op.join(path, item)).read().split('\n') if line]
+            except Exception, e:
+                logger.error('Error reading file: %s\n %s' % (op.join(path, item), e))
+            else:
+                styles.append(''.join(lines))
+        return styles
 
     @property
     def scripts_path(self):
         return op.join(self.path, 'scripts')
+
+    @property
+    def styles_path(self):
+        return op.join(self.path, 'styles')
 
     @property
     def desktop_file(self):
@@ -72,8 +92,8 @@ class FogApp(object):
     @property
     def autostart(self):
         filename = '%s.%s' %(self.uuid, 'desktop',)
-        autostart_file = op.join(AUTOSTART_PATH, filename)
-        return os.path.exists(autostart_file)
+        autostart_file = op.join(get_or_create_directory(AUTOSTART_PATH), filename)
+        return op.exists(autostart_file)
 
     @autostart.setter
     def autostart(self, autostart):
@@ -82,7 +102,7 @@ class FogApp(object):
         if autostart:
             os.link(self.desktop_file, autostart_file)
         else:
-            if os.path.exists(autostart_file):
+            if op.exists(autostart_file):
                 os.remove(autostart_file)
 
     def save(self):
@@ -124,8 +144,13 @@ class FogApp(object):
 
     def reset(self):
         app_data = op.join(CACHE_PATH, self.uuid)
-        if op.exists(op.join(app_data)):
-            rmtree(app_data)
+        if op.exists(app_data):
+            for child in os.listdir(app_data):
+                child = op.join(app_data, child)
+                if op.isfile(child):
+                    os.remove(child)
+                else:
+                    rmtree(child)
 
 
 class FogAppManager(object):

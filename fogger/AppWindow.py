@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -28,6 +28,7 @@ logger = logging.getLogger('fogger')
 
 from fogger_lib import AppWindow, DesktopBridge, ConfirmDialog, DownloadManager
 from fogger_lib.helpers import get_media_file, get_or_create_directory
+from fogger_lib.consts import INJECT_CSS_SNIPPET
 from fogger.AboutFoggerDialog import AboutFoggerDialog
 from fogger.PreferencesFoggerDialog import PreferencesFoggerDialog
 
@@ -77,9 +78,10 @@ class FoggerAppWindow(AppWindow):
         self.webview.connect('geolocation-policy-decision-requested', self.on_request_geo_permission)
         self.webview.connect('create-web-view', self.on_create_webview)
         self.webview.connect('database-quota-exceeded', self.on_database_quota_exceeded)
+
         self.webview.userscripts = self.app.scripts
         self.webview.userscripts.append(open(get_media_file('js/fogger.js', '')).read())
-        self.webview.userstyles = []
+        self.webview.userstyles = self.app.styles
         self.webcontainer.add(self.webview)
         self.webview.show()
 
@@ -168,6 +170,8 @@ class FoggerAppWindow(AppWindow):
     def init_dom(self, webview, frame, data=None):
         for script in self.webview.userscripts:
             self.webview.execute_script(script)
+        for style in self.webview.userstyles:
+            self.webview.execute_script(INJECT_CSS_SNIPPET % style)
         if self.ui_loading:
             self.ui_loading.destroy()
             self.ui_loading = None
