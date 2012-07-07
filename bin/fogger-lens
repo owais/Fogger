@@ -41,11 +41,11 @@ class Daemon:
         self._lens = Unity.Lens.new("/net/launchpad/lens/fogger", "fogger")
         self._lens.props.search_hint = "Search fog apps"
         self._lens.props.visible = True
-        self._lens.props.search_in_global = True
+        self._lens.props.search_in_global = False
 
         # create the scope
         self._scope = Unity.Scope.new("/net/launchpad/lens/fogger/main")
-        self._scope.search_in_global = True
+        self._scope.search_in_global = False
         self._scope.connect("search-changed", self.on_search_changed)
         self._scope.connect("activate-uri", self.on_activate_uri)
         self._scope.export()
@@ -64,15 +64,9 @@ class Daemon:
         self._lens.export()
 
     def on_search_changed(self, scope, search, search_type, cancellable):
-        if search:
-            search_string = search.props.search_string.lower() or None
-        else:
-            search_string = None
-
-        if search_type == Unity.SearchType.DEFAULT:
-            results = self._scope.props.results_model
-        else:
-            results = self._scope.props.global_results_model
+        search_string = \
+            (search.props.search_string.lower() if search else None) or None
+        results = self._scope.props.results_model
         self.update_results_model(search_string, results)
         results.flush_revision_queue()
         search.finished()
