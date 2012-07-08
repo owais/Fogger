@@ -27,7 +27,7 @@ op = os.path
 logger = logging.getLogger('fogger')
 
 from fogger_lib import AppWindow, DesktopBridge, ConfirmDialog, DownloadManager
-from fogger_lib.helpers import get_media_file, get_or_create_directory, show_uri
+from fogger_lib.helpers import get_media_file, get_or_create_directory
 
 from fogger_lib.consts import INJECT_CSS_SNIPPET
 from fogger.AboutFoggerDialog import AboutFoggerDialog
@@ -167,6 +167,10 @@ class FoggerAppWindow(AppWindow):
         so.set_web_database_quota(quota + 5242880) # Increase by 5mb
 
     def init_dom(self, webview, frame, data=None):
+        # FIXME: Get rid of the hack and use  JavaScriptCore APIs
+        # Blocking on https://bugs.webkit.org/show_bug.cgi?id=63768
+        # TODO: Try WebKit2 API and see if it's exposed there. Start work on
+        # a better alternate solution if not.
         userscripts = self.app.scripts
         userscripts.append(open(get_media_file('js/fogger.js', '')).read())
         userstyles = self.app.styles

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-08 06:05+0530\n"
+"POT-Creation-Date: 2012-07-08 20:37+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,60 +58,56 @@ msgid "_Export"
 msgstr ""
 
 #: ../data/ui/FoggerAppWindow.ui.h:10
-msgid "_User Scripts"
-msgstr ""
-
-#: ../data/ui/FoggerAppWindow.ui.h:11
 msgid "_Remove"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:12
+#: ../data/ui/FoggerAppWindow.ui.h:11
 msgid "_Go"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:13
+#: ../data/ui/FoggerAppWindow.ui.h:12
 msgid "_Back"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:14
+#: ../data/ui/FoggerAppWindow.ui.h:13
 msgid "_Forward"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:15
+#: ../data/ui/FoggerAppWindow.ui.h:14
 msgid "_Reload"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:16
+#: ../data/ui/FoggerAppWindow.ui.h:15
 msgid "_View"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:17
+#: ../data/ui/FoggerAppWindow.ui.h:16
 msgid "Zoom _In"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:18
+#: ../data/ui/FoggerAppWindow.ui.h:17
 msgid "Zoom _Out"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:19
+#: ../data/ui/FoggerAppWindow.ui.h:18
 msgid "Zoom _Reset"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:20 ../data/ui/FoggerWindow.ui.h:3
+#: ../data/ui/FoggerAppWindow.ui.h:19 ../data/ui/FoggerWindow.ui.h:3
 msgid "_Help"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:21 ../data/ui/FoggerWindow.ui.h:4
+#: ../data/ui/FoggerAppWindow.ui.h:20 ../data/ui/FoggerWindow.ui.h:4
 msgid "Contents"
 msgstr ""
 
 #. TODO: COnfirmation dialog
-#: ../fogger/AppWindow.py:211
+#: ../fogger/AppWindow.py:214
 #, python-format
 msgid "%s will be removed"
 msgstr ""
 
-#: ../fogger/AppWindow.py:212
+#: ../fogger/AppWindow.py:215
 msgid "Are you sure you want to remove this app?"
 msgstr ""
 
@@ -231,6 +227,32 @@ msgid "Privacy"
 msgstr ""
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:5
+msgid ""
+"<small>User scripts are JavaScript files that are injected into the webapps "
+"upon load. This enables us to add desktop integration to any web application."
+"</small>"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:6
+msgid "User Scripts"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:7
+msgid "User Styles"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:8
+msgid ""
+"<small>User styles are CSS files that are applied to the web apps upon "
+"load.  This allows us to customize the look and feel of any webapp running "
+"inside fogger.</small>"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:9
+msgid "Customization"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:10
 msgid "Autostart"
 msgstr ""
 
@@ -255,18 +277,18 @@ msgid ""
 "Please double check the URL you provided and try again."
 msgstr ""
 
-#: ../fogger_lib/Downloads.py:96
+#: ../fogger_lib/Downloads.py:95
 msgid "Error"
 msgstr ""
 
-#: ../fogger_lib/Downloads.py:101
+#: ../fogger_lib/Downloads.py:100
 msgid "Download Complete"
 msgstr ""
 
-#: ../fogger/PreferencesFoggerDialog.py:52
+#: ../fogger/PreferencesFoggerDialog.py:55
 msgid "Are you sure you want to reset the app?"
 msgstr ""
 
-#: ../fogger/PreferencesFoggerDialog.py:53
+#: ../fogger/PreferencesFoggerDialog.py:56
 msgid "This will log you out of all websites and delete all local data"
 msgstr ""
