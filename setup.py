@@ -85,7 +85,7 @@ class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
 
 DistUtilsExtra.auto.setup(
     name='fogger',
-    version='12.07.34',
+    version='12.07.35',
     license='GPL-3',
     author='Owais Lone',
     author_email='hello@owaislone.org',
