@@ -25,10 +25,10 @@
 
 <p>Fogger acts as a bridge between web applications and the linux desktop. It exposes an easy to use JS API to webapps which can be used to interact with the host desktop environment. It can also be used to write basic desktop apps for linux in pure web style.</p>
 
-<steps>
+<list>
     <title>Desktops supported by Fogger JS API</title>
     <item><p>Unity</p></item>
-</steps>
+</list>
 
 <p>Support for other environments like Gnome Shell and KDE will be added gradually</p>
 

@@ -49,6 +49,244 @@ The image above shows how a website can export menus to the desktop and have a c
                     });
             });
         </code>
+        <note>
+            <p>You should register the event handler as early as possible. Do not wait for the document to register this.</p>
+        </note>
+    </section>
+    <section>
+        <title>Available Classes</title>
+        <list>
+        <title>Classes</title>
+        <item><p><link type="section" xref="Web API#docs-classes-Fogger">Fogger</link></p></item>
+        <item><p><link type="section" xref="Web API#docs-classes-Menu">Menu</link></p></item>
+        <item><p><link type="section" xref="Web API#docs-classes-MenuItem">Menu Item</link></p></item>
+        <item><p><link type="section" xref="Web API#docs-classes-Quicklist">Quicklist</link></p></item>
+        <item><p><link type="section" xref="Web API#docs-classes-QuicklistItem">QuicklistItem</link></p></item>
+        </list>
+    </section>
+    <section>
+        <title>Class Documentation</title>
+        <section id="docs-classes-Fogger">
+            <title>Foggger</title>
+            <p>This is the main fogger class. You can access all the API functions from an instance of this class.</p>
+            <section>
+                <list>
+                <title>Methods</title>
+                    <item>
+                        <title>notify(summary, body)</title>
+                        <media type="image" mime="image/jpg" src="figures/webapi/example-notification.jpeg">[webapi-example]</media>
+                        <p>Used to send a desktop notification.</p>
+                        <steps>
+                            <item>
+                                <title>summary</title>
+                                <p>The summary or title of the notification</p>
+                            </item>
+                            <item>
+                                <title>body</title>
+                                <p>The body of the notification</p>
+                            </item>
+                        </steps>
+                    </item>
+                    <item>
+                        <title>setProgress(progress)</title>
+                        <media type="image" mime="image/jpg" src="figures/webapi/progress-example.jpeg">[webapi-example]</media>
+                        <p>Sets the progress level on the launcher entry progress bar.</p>
+                        <steps>
+                            <item>
+                                <title>progress</title>
+                                <p>A number between 0 and 1 where 0.5 means 50%.</p>
+                            </item>
+                        </steps>
+                    </item>
+
+                    <item>
+                        <title>setProgressVisible(visible)</title>
+                        <p>Shows or hides the progress on the launcher entry.</p>
+                        <steps>
+                            <item>
+                                <title>visible</title>
+                                <p><code>true</code> or <code>false</code></p>
+                            </item>
+                        </steps>
+                    </item>
+
+                    <item>
+                        <title>setCount(count)</title>
+                        <media type="image" mime="image/jpg" src="figures/webapi/count-example.jpeg">[webapi-example]</media>
+                        <p>Sets a number as a badge on the launcher entry.</p>
+                        <steps>
+                            <item>
+                                <title>count</title>
+                                <p>Any valid number.</p>
+                            </item>
+                        </steps>
+                    </item>
+
+                    <item>
+                        <title>setCountVisible(visible)</title>
+                        <p>Shows or hides the launcher entry count badge.</p>
+                        <steps>
+                            <item>
+                                <title>visible</title>
+                                <p><code>true</code> or <code>false</code></p>
+                            </item>
+                        </steps>
+                    </item>
+
+                    <item>
+                        <title>setUrgent(urgent)</title>
+                        <media type="image" mime="image/jpg" src="figures/webapi/example-urgent.jpeg">[webapi-example]</media>
+                        <p>Changes to launcher entry state to urgent, trying to grab user's attention.</p>
+                        <steps>
+                            <item>
+                                <title>urgent</title>
+                                <p><code>true</code> or <code>false</code></p>
+                            </item>
+                        </steps>
+                    </item>
+
+                    <item>
+                        <title>newMenu(name)</title>
+                        <media type="image" mime="image/jpg" src="figures/webapi/example.jpeg">[webapi-example]</media>
+                        <p>Returns a newly created <link type="section" xref="Web API#docs-classes-Menu">menu</link>. The menu becomes visible when you add menu items to it.</p>
+                        <steps>
+                            <item>
+                                <title>name</title>
+                                <p>A string containing the name of the menu. An underscore (_) in the name represents a mnemonic key. For example, '_My Reddit' will set 'alt+m' as the keyboard shortcut for the menu.</p>
+                            </item>
+                        </steps>
+                    </item>
+                </list>
+
+                <list>
+                <title>Properties</title>
+                    <item>
+                        <title>quiclist</title>
+                        <media type="image" mime="image/jpg" src="figures/webapi/example-quicklist.jpeg">[webapi-example]</media>
+                        <p>A reference to the launcher entry <link type="section" xref="Web API#docs-classes-Quicklist">quicklist</link>.</p>
+                        <steps>
+                            <item>
+                                <title>name</title>
+                                <p>A string containing the name of the menu. An underscore (_) in the name represents a mnemonic key. For example, '_My Reddit' will set 'alt+m' as the keyboard shortcut for the menu.</p>
+                            </item>
+                        </steps>
+                        <note>
+                        <p>You should not create new instances from this class. <code>Fogger</code> class already contains an instance as a property so you should use that instead</p>
+                        <p>Example</p>
+                        <code>
+                        var bridge = new fogger.Fogger();
+                        bridge.quicklist.addItem(...);
+                        </code>
+                        </note>
+                    </item>
+                </list>
+            </section>
+
+        <section id="docs-classes-Menu">
+            <title>Menu</title>
+            <p>This class implements the Menu object.</p>
+            <list>
+                <title>Methods</title>
+
+                <item>
+                    <title>addItem(item)</title>
+                    <p>Returns a newly created <link type="section" xref="Web API#docs-classes-MenuItem">menu item</link> and makes the menu visible if it is hidden.</p>
+                    <steps>
+                        <item>
+                            <title>item</title>
+                            <p>An object with the <code>name</code> and <code>callback</code> properties.</p>
+                            <p>Example</p>
+                            <code>
+{
+    name: 'My menu entry',
+    callback: function(menu, item) {
+        // This is called when the item is clicked
+        // menu refers to the parent menu
+        // item refers to the item being clicked.
+        };
+}
+</code>
+                        </item>
+                    </steps>
+                </item>
+
+                <item>
+                    <title>removeItem(item)</title>
+                    <steps>
+                        <item>
+                            <title>item</title>
+                            <p>A <link type="section" xref="Web API#docs-classes-MenuItem">menuItem</link> instance or a similar object as the one used in the <code>addItem</code> method.</p>
+                        </item>
+                    </steps>
+                </item>
+
+                <item>
+                    <title>remove()</title>
+                    <p>Removes the menu and all of it's child items.</p>
+                </item>
+            </list>
+        </section>
+
+        <section id="docs-classes-MenuItem">
+            <title>Menu Item</title>
+            <list>
+                <title>Properties</title>
+                <item>
+                    <title>callback</title>
+                    <p>A function that is called everytime the menu item is clicked.</p>
+                </item>
+            </list>
+        </section>
+
+        <section id="docs-classes-Quicklist">
+            <title>Quicklist</title>
+            <list>
+                <title>Methods</title>
+
+                <item>
+                    <title>addItem(item)</title>
+                    <p>Returns a newly created <link type="section" xref="Web API#docs-classes-QuicklistItem">quicklist item</link>.</p>
+                    <steps>
+                        <item>
+                            <title>item</title>
+                            <p>An object with the <code>name</code> and <code>callback</code> properties.</p>
+                            <p>Example</p>
+                            <code>
+{
+    name: 'My quicklist entry',
+    callback: function(item) {
+        // This is called when the item is clicked
+        // item refers to the item being clicked.
+        };
+}
+</code>
+                        </item>
+                    </steps>
+                </item>
+
+                <item>
+                    <title>removeItem(item)</title>
+                    <steps>
+                        <item>
+                            <title>item</title>
+                            <p>A <link type="section" xref="Web API#docs-classes-QuicklistItem">quicklistItem</link> instance or a similar object as the one used in the <code>addItem</code> method.</p>
+                        </item>
+                    </steps>
+                </item>
+            </list>
+        </section>
+
+        <section id="docs-classes-QuicklistItem">
+            <title>Quicklist Item</title>
+            <list>
+                <title>Properties</title>
+                <item>
+                    <title>callback</title>
+                    <p>A function that is called everytime the menu item is clicked.</p>
+                </item>
+            </list>
+        </section>
+        </section>
     </section>
 </section>
 </page>

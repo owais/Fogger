@@ -24,6 +24,7 @@
         <title>Naming</title>
         <note>
             <p>Names are unique, URLs are not.</p>
+            <p>Names are case-insensitive so <code>GMAIL</code> and <code>gmail</code> are one and the same.</p>
         </note>
         <p>No two fogapps can have the same name but you can create multiple fogapps for the same URL.
         This lets you create multiple profiles for the same web application like "Gmail Work" and "Gmail Home"</p>

@@ -172,7 +172,7 @@ class FogAppManager(object):
         if op.exists(path):
             return FogApp(path)
         else:
-            logger.error('No such app: %s' % uuid)
+            logger.debug('No such app: %s' % uuid)
             return None
 
     def get_by_name(self, name):

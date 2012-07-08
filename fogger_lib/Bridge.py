@@ -22,7 +22,6 @@ class DesktopBridge:
             W.webview.execute_script(jscode)
         else:
             for win in self.W.popups:
-                print 'injecting js event', win
                 win.webview.execute_script(jscode)
 
     def _dispatch_dom_event(self, W, event, params):

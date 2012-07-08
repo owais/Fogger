@@ -38,33 +38,33 @@ document.addEventListener('foggerQLCallbackEvent', function(e) {
   };
 });
 
-/*
-window.webkitNotifications = function() {};
+var webkitNotifications = function() {};
 
-window.webkitNotifications.Notification = function(icon, title, content) {
+webkitNotifications.Notification = function(icon, title, content) {
     this.icon = icon;
     this.title = title;
     this.content = content;
 };
 
-window.webkitNotifications.Notification.prototype.show = function() {
+webkitNotifications.Notification.prototype.show = function() {
   new Fogger().notify(this.title, this.content);
 };
 
-window.webkitNotifications.checkPermission = function() {
+webkitNotifications.checkPermission = function() {
   return 0;
 };
 
-window.webkitNotifications.requestPermission = function() {};
+webkitNotifications.requestPermission = function() {};
 
-window.webkitNotifications.createNotification = function(icon, title, content) {
+webkitNotifications.createNotification = function(icon, title, content) {
   return new webkitNotifications.Notification(icon, title, content);
 };
 
-window.webkitNotifications.createHTMLNotification = function(content) {
+webkitNotifications.createHTMLNotification = function(content) {
   return new webkitNotifications.Notification('', '', content);
 };
-*/
+
+window.webkitNotifications = webkitNotifications;
 
 var QuicklistItem = function(name, callback) {
   this.name = name;
@@ -186,6 +186,10 @@ Fogger.prototype.newMenu = function(name) {
 Fogger.prototype.quicklist = new Quicklist();
 
 fogger.Fogger = Fogger;
+fogger.Menu = Menu;
+fogger.MenuItem = MenuItem;
+fogger.Quicklist = Quicklist;
+fogger.QuicklistItem = QuicklistItem;
 window.fogger = fogger;
 
 document.dispatchEvent(fogger.events.readyEvent);
