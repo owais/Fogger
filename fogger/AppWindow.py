@@ -184,8 +184,8 @@ class FoggerAppWindow(AppWindow):
         if self.ui_loading:
             self.ui_loading.destroy()
             self.ui_loading = None
-        self.webview.connect('notify::load-status', self.load_status_changed)
-        self.webcontainer.show()
+            self.webview.connect('notify::load-status', self.load_status_changed)
+            self.webcontainer.show()
 
     def on_create_webview(self, widget, frame, data=None):
         webview = WebKit.WebView()
