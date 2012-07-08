@@ -1,0 +1,27 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="customization">
+
+<info>
+  <link type="guide" xref="index#contents"/>
+  <credit type="author">
+    <name>Owais Lone</name>
+    <email>hello@owaislone.org</email>
+    <years>2012</years>
+  </credit>
+  <desc>Scripts and Styles</desc>
+</info>
+
+<title>Scripts and Styles</title>
+<media type="image" mime="image/jpg" src="figures/customization/userscripts-shortcut.jpeg">[scripts shortcut]</media>
+<section>
+<title>Scripts</title>
+<p>These are JavaScript files places in the <code>scripts</code> folder inside the app folder. This folder can be reached from the main app menu. The JS code in these files is injected into the web app. This can be used to provide integration functionality to webapps which don't support fogger out of the box.</p>
+
+</section>
+<section>
+<title>Styles</title>
+<p>Styles are CSS files which are applied to the web app. The styles directory is located at the same level as the scripts directory.</p>
+</section>
+
+</page>

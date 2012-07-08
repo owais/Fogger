@@ -16,7 +16,7 @@
 <p>Fogger has a few useful functions which are only exposed as part of the command line interface.</p>
 
 <note>
-<p>Fogger executable is not installed into any directories which are on the system PATH. To use the command line interface, you'll need to specify the complete path of the eecutable. Most probably it should be <code>/opt/extras.ubuntu.com/fogger/bin/fogger</code>
+<p>Fogger executable is not installed into any directories which are on the system PATH. To use the command line interface, you'll need to specify the complete path of the executable. Most probably it should be <code>/opt/extras.ubuntu.com/fogger/bin/fogger</code>
 </p>
 </note>
 

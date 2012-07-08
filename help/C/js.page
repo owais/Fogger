@@ -13,7 +13,7 @@
 </info>
 
 <title>Web API</title>
-<p>Fogger exposes a special Javascript API to webapps. This API exposes some of the functions of the host desktop environment to the web app running inside fogger.</p>
+<p>Fogger exposes a special JavaScript API to webapps. This API exposes some of the functions of the host desktop environment to the web app running inside fogger.</p>
 
 <note><p>
 The current JS API is very much experimental. This is more of a proof-of-concept implementation and as a result only a few desktop functions are exposed. A proper implementation will follow in the coming versions.
@@ -25,10 +25,10 @@ The image above shows how a website can export menus to the desktop and have a c
 </p>
 
 <section id="js-api">
-    <title>Javascript API</title>
+    <title>JavaScript API</title>
     <note><p>This is just a preliminary proof-of-concept API. Expect changes and breakage.</p></note>
     <section id="js-initialization">
-        <title>Javascript initialization</title>
+        <title>JavaScript initialization</title>
         <p>Fogger emits a DOM Event when the API has finished initialization and is ready to be used. Your JS code should wait for this event before attempting to use the API.</p>
         <p>Example</p>
         <code>
@@ -161,7 +161,7 @@ The image above shows how a website can export menus to the desktop and have a c
                 <list>
                 <title>Properties</title>
                     <item>
-                        <title>quiclist</title>
+                        <title>quicklist</title>
                         <media type="image" mime="image/jpg" src="figures/webapi/example-quicklist.jpeg">[webapi-example]</media>
                         <p>A reference to the launcher entry <link type="section" xref="Web API#docs-classes-Quicklist">quicklist</link>.</p>
                         <steps>
@@ -282,7 +282,7 @@ The image above shows how a website can export menus to the desktop and have a c
                 <title>Properties</title>
                 <item>
                     <title>callback</title>
-                    <p>A function that is called everytime the menu item is clicked.</p>
+                    <p>A function that is called every time the menu item is clicked.</p>
                 </item>
             </list>
         </section>
