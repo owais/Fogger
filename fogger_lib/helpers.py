@@ -124,31 +124,3 @@ def get_or_create_directory(path):
             get_or_create_directory(base)
             os.mkdir(path)
     return path
-
-    def _setup_icon(self, icon, path):
-        if icon.startswith('/') and op.exists(icon):
-            _, ext = op.splitext(icon)
-            path = op.join(path, 'icon%s' % ext)
-            data = open(icon).read()
-            open(path, 'w').write(data)
-            return path
-        else:
-            return icon
-
-    def _create_desktop_file(self, name, uuid, icon, path):
-        desktop_tmpl = open(get_data_file('templates/fogapp.desktop.tmpl')).read()
-        desktop_tmpl = desktop_tmpl % {'name': name, 'icon': icon, 'uuid': uuid}
-        for P in (DESKTOP_DIR, path,):
-            base_dir = get_or_create_directory(P)
-            desktop_file_path = op.join(base_dir, '%s.desktop' % uuid)
-            desktop_file = open(desktop_file_path, 'w')
-            desktop_file.write(desktop_tmpl)
-            desktop_file.close()
-            os.chmod(desktop_file_path, 0755)
-
-    def _setup_app_dir(self, uuid):
-        path = get_or_create_directory(op.join(APP_PATH, uuid))
-        get_or_create_directory(op.join(path, 'scripts'))
-        get_or_create_directory(op.join(path, 'styles'))
-        return path
-

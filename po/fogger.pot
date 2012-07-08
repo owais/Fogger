@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-08 20:37+0530\n"
+"POT-Creation-Date: 2012-07-08 21:52+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -102,25 +102,25 @@ msgid "Contents"
 msgstr ""
 
 #. TODO: COnfirmation dialog
-#: ../fogger/AppWindow.py:214
+#: ../fogger/AppWindow.py:219
 #, python-format
 msgid "%s will be removed"
 msgstr ""
 
-#: ../fogger/AppWindow.py:215
+#: ../fogger/AppWindow.py:220
 msgid "Are you sure you want to remove this app?"
 msgstr ""
 
-#: ../fogger/AppWindow.py:252
+#: ../fogger/AppWindow.py:257
 msgid "Geolocation permission requested"
 msgstr ""
 
-#: ../fogger/AppWindow.py:253
+#: ../fogger/AppWindow.py:258
 #, python-format
 msgid "%s wants to know your current location. Do you want to share?"
 msgstr ""
 
-#: ../fogger/AppWindow.py:255
+#: ../fogger/AppWindow.py:260
 msgid "Share"
 msgstr ""
 

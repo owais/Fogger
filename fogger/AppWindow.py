@@ -171,14 +171,16 @@ class FoggerAppWindow(AppWindow):
         # Blocking on https://bugs.webkit.org/show_bug.cgi?id=63768
         # TODO: Try WebKit2 API and see if it's exposed there. Start work on
         # a better alternate solution if not.
-        userscripts = self.app.scripts
-        userscripts.append(open(get_media_file('js/fogger.js', '')).read())
-        userstyles = self.app.styles
+        if frame == webview.get_main_frame():
+            userscripts = self.app.scripts
+            userscripts.append(open(get_media_file('js/fogger.js', '')).read())
+            userstyles = self.app.styles
 
-        for script in userscripts:
-            self.webview.execute_script(script)
-        for style in userstyles:
-            self.webview.execute_script(INJECT_CSS_SNIPPET % style)
+            for script in userscripts:
+                self.webview.execute_script(script)
+            for style in userstyles:
+                self.webview.execute_script(INJECT_CSS_SNIPPET % style)
+
         if self.ui_loading:
             self.ui_loading.destroy()
             self.ui_loading = None
