@@ -1,3 +1,10 @@
+fogger (12.07.24) precise; urgency=low
+
+  * Added some more help topics
+  * Fixed broken JS launcher api
+
+ -- Owais Lone <hello@owaislone.org>  Sun, 08 Jul 2012 06:00:34 +0530
+
 fogger (12.07.23ubuntu1) precise; urgency=low
 
   * 
