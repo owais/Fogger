@@ -18,58 +18,62 @@
 <note><p>
 The current JS API is very much experimental. This is more of a proof-of-concept implementation and as a result only a few desktop functions are exposed. A proper implementation will follow in the coming versions.
 </p></note>
+
 <media type="image" mime="image/jpg" src="figures/webapi/example.jpeg">[webapi-example]</media>
 
 <p>
 The image above shows how a website can export menus to the desktop and have a callback function called upon activation just like a regular desktop app.
 </p>
 
+<section>
+<title>Debugging</title>
+<media type="image" mime="image/jpg" src="figures/webapi/inspector.jpeg">[webapi-example]</media>
+<p>Fogger gives you access to the WebKit Inspector if you run the app in the debug mode.</p>
+<p>To run in debug mode, start fogger from the command line using the <code>'-v'</code> option</p>
+<p><link type="page" xref="cli">More on command line interface</link></p>
+</section>
+
 <section id="js-api">
     <title>JavaScript API</title>
-    <note><p>This is just a preliminary proof-of-concept API. Expect changes and breakage.</p></note>
     <section id="js-initialization">
         <title>JavaScript initialization</title>
-        <p>Fogger emits a DOM Event when the API has finished initialization and is ready to be used. Your JS code should wait for this event before attempting to use the API.</p>
-        <p>Example</p>
+        <p>Fogger tries to make the API available as early as possible in the page load process. It also fires a DOM event in order to mark it's presense. It's highly unlikely but possible that local user scripts are interpreted by the JS engine before it interpretes the fogger libs. Therefore, it's always better to wait for the <code>foggerReady</code> event when <code>fogger</code> API is missing.</p>
+        <p>Recommended way to initialize the desktop integration code</p>
         <code>
-    // Check if fogger JS API is present
-    if (window['fogger']) {
+    var initializeDesktop = function() {
+        // Create a new object from the Fogger class
+        var desktop = new fogger.Fogger();
 
-        // Initialize here
+        // Create a new menu
+        var my_reddits_menu = desktop.newMenu('My Reddits');
 
-    } else {
-        // If the fogger API is not present, wait for the 'foggerReady' 
-        // and initialize once it is ready
-
-        document.addEventListener('foggerReady', function() {
-            // Initialize here
-
-            // Create a new object from the Fogger class
-            var desktop = new fogger.Fogger();
-
-            // Create a new menu
-            var my_reddits_menu = desktop.newMenu('My Reddits');
-
-            // Add an item to the menu
-            my_reddits_menu.addItem({
-                    name: 'Ubuntu',
-                    callback: function(menu, item) {
-                        alert('Item ' + item + ' from menu ' + menu + ' was clicked');
-                    };
-                });
+        // Add an item to the menu
+        my_reddits_menu.addItem({
+                name: 'Ubuntu',
+                callback: function(menu, item) {
+                    alert('Item ' + item + ' from menu ' + menu + ' was clicked');
+            }
         });
+
+        // Add an item to the quicklist
+        desktop.quicklist.addItem({
+            name: 'Submit a link',
+            callback: function() {
+                $('#submit-button').click();
+            }
+        });
+    };
+
+    // Initialize if fogger API is present otherwise wait for it
+    // to become available
+    if (window['fogger']) {
+        initializeDesktop();
+    } else {
+        document.addEventListener('foggerReady', initializeDesktop);
     }
-        </code>
-        <note>
-            <p>Currently, the JS might fire the events or inject a userscript multitple times while the page loads. This will be fixed soon. Fogger API takes care of duplicate API calls, you can safely export the same menu multitple times without worrying about duplication or JS object polution.</p>
-            <p> If you really don't want to have your code execute more than once, you can do something like this to avoid it</p>
-<code>
-if (window['__myCodeInitialized'] === undefined) {
-        // Initialize here
-        window.__myCodeInitialized = true;
-};
 </code>
-        <p>All these tiny quirks will be fixed once the JS API is finalized and fogger comes out of the experimental stage.</p>
+        <note>
+            <p>Fogger API takes care of duplicate API calls. For example, you can safely export the same quicklist multitple times, from multiple popup windows without worrying about duplication or JS object polution.</p>
         </note>
     </section>
     <section>
@@ -247,7 +251,7 @@ if (window['__myCodeInitialized'] === undefined) {
             <title>Quicklist</title>
 
             <note>
-            <p>You should not create new instances from this class. <code>Fogger</code> class already contains an instance as a property so you should use that instead</p>
+            <p>You should not create new instances directly from this class. <code>Fogger</code> class already carries a refernce to an instance of <code>Quicklist</code> class. You should use that instead.</p>
             <p>Example</p>
             <code>
 var desktop = new fogger.Fogger();

@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -72,16 +72,34 @@ class FoggerAppWindow(AppWindow):
             self.downloads = self.root.downloads
         else:
             self.downloads = DownloadManager(self)
-        self.webview.connect('document-load-finished', self.init_dom)
-        self.webview.connect('notify::progress', self.load_progress)
+        self.webview.connect('notify::progress', self.on_load_progress)
         self.webview.connect('download-requested', self.downloads.requested)
         self.webview.connect('resource-request-starting', self.on_resource_request_starting)
         self.webview.connect('geolocation-policy-decision-requested', self.on_request_geo_permission)
         self.webview.connect('create-web-view', self.on_create_webview)
         self.webview.connect('database-quota-exceeded', self.on_database_quota_exceeded)
+        frame = self.webview.get_main_frame()
+        frame.connect('notify::load-status', self.on_frame_load_status)
 
         self.webcontainer.add(self.webview)
         self.webview.show()
+
+        try:
+            self.js_lib = open(get_media_file('js/fogger.js', '')).read()
+        except:
+            logger.error('Error reading fogger.js')
+            self.js_lib = ""
+
+    def inject_scripts(self):
+        userscripts = self.app.scripts
+        userscripts.insert(0, self.js_lib)
+        for script in userscripts:
+            self.webview.execute_script(script)
+
+    def inject_styles(self):
+        userstyles = self.app.styles
+        for style in userstyles:
+            self.webview.execute_script(INJECT_CSS_SNIPPET % style)
 
     def setup_webkit_session(self):
         session = WebKit.get_default_session()
@@ -113,7 +131,8 @@ class FoggerAppWindow(AppWindow):
         self.websettings.props.enable_webgl = True
         self.websettings.props.enable_page_cache = True
         self.websettings.props.enable_plugins = True
-        self.websettings.props.enable_developer_extras = True
+        if logger.level == logging.DEBUG:
+            self.websettings.props.enable_developer_extras = True
         self.webview.set_settings(self.websettings)
 
     def inspect_webview(self, inspector, widget, data=None):
@@ -149,16 +168,14 @@ class FoggerAppWindow(AppWindow):
             self.app.window_size = self.get_size()
             self.app.save()
 
-    def load_progress(self, widget, propname):
+    def on_load_progress(self, widget, propname):
         self.progressbar.set_fraction(self.webview.props.progress)
 
-    def load_status_changed(self, widget, propname):
+    def on_load_status_changed(self, widget, propname):
         if self.webview.props.load_status in \
-                (WebKit.LoadStatus.FINISHED,):
-            #self.progressbar.hide()
+                (WebKit.LoadStatus.FINISHED, WebKit.LoadStatus.FAILED):
             self.statusbar.hide()
         else:
-            #self.progressbar.show()
             self.statusbar.show()
 
     def on_database_quota_exceeded(self, webview, frame, database, data=None):
@@ -166,26 +183,58 @@ class FoggerAppWindow(AppWindow):
         quota = so.get_web_database_quota()
         so.set_web_database_quota(quota + 5242880) # Increase by 5mb
 
-    def init_dom(self, webview, frame, data=None):
-        # FIXME: Get rid of the hack and use  JavaScriptCore APIs
-        # Blocking on https://bugs.webkit.org/show_bug.cgi?id=63768
-        # TODO: Try WebKit2 API and see if it's exposed there. Start work on
-        # a better alternate solution if not.
-        if frame == webview.get_main_frame():
-            userscripts = self.app.scripts
-            userscripts.append(open(get_media_file('js/fogger.js', '')).read())
-            userstyles = self.app.styles
+    def on_frame_load_status(self, frame, value):
+        if frame.props.load_status == WebKit.LoadStatus.COMMITTED:
+            self.inject_scripts()
+        elif frame.props.load_status == WebKit.LoadStatus.FINISHED:
+            self.inject_styles()
+        elif frame.props.load_status == WebKit.LoadStatus.FIRST_VISUALLY_NON_EMPTY_LAYOUT:
+            if self.ui_loading:
+                self.ui_loading.destroy()
+                self.ui_loading = None
+                self.webview.connect('notify::load-status', self.on_load_status_changed)
+                self.webcontainer.show()
 
-            for script in userscripts:
-                self.webview.execute_script(script)
-            for style in userstyles:
-                self.webview.execute_script(INJECT_CSS_SNIPPET % style)
+    def on_web_view_ready(self, webview, data=None):
+        window = self.__class__()
+        # FIXME: Fix this hack and create proper support for popups
+        app = type('FogApp', tuple(),
+            {'icon': self.app.icon,
+             'name': self.app.name,
+             'url': webview.get_uri(),
+             'uuid': self.app.uuid,
+             'window_size': self.app.window_size,
+             'maximized': False,
+             'scripts': self.app.scripts,
+             'styles': self.app.styles})
+        window.webview = webview
+        window.run_app(app, self.root or self)
+        self.popups.append(window)
 
-        if self.ui_loading:
-            self.ui_loading.destroy()
-            self.ui_loading = None
-            self.webview.connect('notify::load-status', self.load_status_changed)
-            self.webcontainer.show()
+    def on_resource_request_starting(self, widget, frame, resource, request, response, data=None):
+        uri = urllib.unquote(request.props.uri)
+        if uri.startswith('http://fogger.local/'):
+            request.props.uri = 'about:blank'
+            method = uri.replace('http://fogger.local/', '')
+            action = method.split('///')
+            method = action[0]
+            args = action[1:]
+            getattr(self.bridge, method)(self, *args)
+            return True
+
+    def on_request_geo_permission(self, view, frame, decision, data=None):
+        d = ConfirmDialog(self.app.name, _('Geolocation permission requested'),
+            _('%s wants to know your current location. Do you want to share?'\
+            % (frame.get_uri() or self.app.name)), None, self,
+            _('Share'))
+        response = d.run()
+        d.destroy()
+
+        if response == Gtk.ResponseType.YES:
+            WebKit.geolocation_policy_allow(decision)
+        else:
+            WebKit.geolocation_policy_deny(decision)
+        return True
 
     def on_create_webview(self, widget, frame, data=None):
         webview = WebKit.WebView()
@@ -225,47 +274,6 @@ class FoggerAppWindow(AppWindow):
         if response == Gtk.ResponseType.YES:
             self.app.remove()
             self.destroy()
-
-    def on_web_view_ready(self, webview, data=None):
-        window = self.__class__()
-        # FIXME: Fix this hack and create proper support for popups
-        app = type('FogApp', tuple(),
-            {'icon': self.app.icon,
-             'name': self.app.name,
-             'url': webview.get_uri(),
-             'uuid': self.app.uuid,
-             'window_size': self.app.window_size,
-             'maximized': False,
-             'scripts': self.app.scripts,
-             'styles': self.app.styles})
-        window.webview = webview
-        window.run_app(app, self.root or self)
-        self.popups.append(window)
-
-    def on_resource_request_starting(self, widget, frame, resource, request, response, data=None):
-        uri = urllib.unquote(request.props.uri)
-        if uri.startswith('http://fogger.local/'):
-            request.props.uri = 'about:blank'
-            method = uri.replace('http://fogger.local/', '')
-            action = method.split('/')
-            method = action[0]
-            args = action[1:]
-            getattr(self.bridge, method)(self, *args)
-            return True
-
-    def on_request_geo_permission(self, view, frame, decision, data=None):
-        d = ConfirmDialog(self.app.name, _('Geolocation permission requested'),
-            _('%s wants to know your current location. Do you want to share?'\
-            % (frame.get_uri() or self.app.name)), None, self,
-            _('Share'))
-        response = d.run()
-        d.destroy()
-
-        if response == Gtk.ResponseType.YES:
-            WebKit.geolocation_policy_allow(decision)
-        else:
-            WebKit.geolocation_policy_deny(decision)
-        return True
 
     def on_fogger_app_reset(self, widget, data=None):
         self.app.reset()

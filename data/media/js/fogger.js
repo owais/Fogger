@@ -88,7 +88,7 @@ Quicklist.prototype.addItem = function(conf) {
   } else {
     var item = new QuicklistItem(conf.name, conf.callback);
     this.items[conf.name] = item;
-    this._dispatch('add_quicklist_item/' + conf.name)
+    this._dispatch('add_quicklist_item///' + conf.name)
     return this;
   }
 }
@@ -98,7 +98,7 @@ Quicklist.prototype.removeItem = function(conf) {
     console.error('Conf must contain "name"');
     return;
   }
-  this._dispatch('remove_quicklist_item/' + conf.name);
+  this._dispatch('remove_quicklist_item///' + conf.name);
   delete(this.items[conf.name]);
 }
 
@@ -112,12 +112,12 @@ var Menu = function(name) {
   this.name = name;
   this.items = {};
   this._dispatch = dispatch;
-  this._dispatch('add_menu/' + this.name)
+  this._dispatch('add_menu///' + this.name)
   fogger.menus[name] = this;
 };
 
 Menu.prototype.remove = function() {
-  this._dispatch('remove_menu/' + this.name);
+  this._dispatch('remove_menu///' + this.name);
   delete(fogger.menus[this.name]);
 }
 
@@ -132,7 +132,7 @@ Menu.prototype.addItem = function(conf) {
   } else {
     var item = new MenuItem(conf.name, conf.callback);
     this.items[conf.name] = item;
-    this._dispatch('add_menu_item/' + this.name + '/' + conf.name)
+    this._dispatch('add_menu_item///' + this.name + '///' + conf.name)
     return item;
   }
 };
@@ -142,7 +142,7 @@ Menu.prototype.removeItem = function(conf) {
     console.error('Conf must contain "name"');
     return;
   }
-  this._dispatch('remove_menu_item/' + this.name + '/' + conf.name);
+  this._dispatch('remove_menu_item///' + this.name + '///' + conf.name);
   delete(this.items[conf.name]);
 }
 
@@ -153,7 +153,7 @@ var Fogger = function() {
 };
 
 Fogger.prototype.setProgress = function(progress) {
-  this._dispatch('set_progress/' + progress);
+  this._dispatch('set_progress///' + progress);
 }
 
 Fogger.prototype.setProgressVisible = function(visible) {
@@ -162,7 +162,7 @@ Fogger.prototype.setProgressVisible = function(visible) {
 }
 
 Fogger.prototype.setCount = function(count) {
-  this._dispatch('set_count/' + count);
+  this._dispatch('set_count///' + count);
 }
 
 Fogger.prototype.setCountVisible = function(visible) {
@@ -171,7 +171,7 @@ Fogger.prototype.setCountVisible = function(visible) {
 }
 
 Fogger.prototype.notify = function(summary, body) {
-  this._dispatch('notify/' + summary + '/' + body);
+  this._dispatch('notify///' + summary + '///' + body);
 }
 
 Fogger.prototype.setUrgent = function(urgent) {

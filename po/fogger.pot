@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-08 21:52+0530\n"
+"POT-Creation-Date: 2012-07-09 02:29+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -101,27 +101,27 @@ msgstr ""
 msgid "Contents"
 msgstr ""
 
-#. TODO: COnfirmation dialog
-#: ../fogger/AppWindow.py:219
-#, python-format
-msgid "%s will be removed"
-msgstr ""
-
-#: ../fogger/AppWindow.py:220
-msgid "Are you sure you want to remove this app?"
-msgstr ""
-
-#: ../fogger/AppWindow.py:257
+#: ../fogger/AppWindow.py:225
 msgid "Geolocation permission requested"
 msgstr ""
 
-#: ../fogger/AppWindow.py:258
+#: ../fogger/AppWindow.py:226
 #, python-format
 msgid "%s wants to know your current location. Do you want to share?"
 msgstr ""
 
-#: ../fogger/AppWindow.py:260
+#: ../fogger/AppWindow.py:228
 msgid "Share"
+msgstr ""
+
+#. TODO: COnfirmation dialog
+#: ../fogger/AppWindow.py:267
+#, python-format
+msgid "%s will be removed"
+msgstr ""
+
+#: ../fogger/AppWindow.py:268
+msgid "Are you sure you want to remove this app?"
 msgstr ""
 
 #: ../fogger/__init__.py:33
@@ -256,17 +256,17 @@ msgstr ""
 msgid "Autostart"
 msgstr ""
 
-#: ../fogger/FoggerWindow.py:129
+#: ../fogger/FoggerWindow.py:128
 msgid "There's an app for that!"
 msgstr ""
 
-#: ../fogger/FoggerWindow.py:130
+#: ../fogger/FoggerWindow.py:129
 msgid ""
 "A fog app already exists by that name. Would you like to replace it with a "
 "new one?"
 msgstr ""
 
-#: ../fogger/FoggerWindow.py:132
+#: ../fogger/FoggerWindow.py:131
 msgid "Replace"
 msgstr ""
 

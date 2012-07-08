@@ -26,7 +26,7 @@
         <p>Apps can be launched from the command line by passing the app uuid as an argument to fogger.</p>
         <p>Apps and uuids can be listed using the <link type="list" xref="cli#docs-commands-list">list</link> option</p>
         <p>For example, the command</p>
-        <screen><input>fogger 5e8a5709f662f8d401f7a00e6137f9ca</input></screen>
+        <screen><input>$ fogger 5e8a5709f662f8d401f7a00e6137f9ca</input></screen>
         <p>will launch the app represented by the uuid <code>5e8a5709f662f8d401f7a00e6137f9ca</code>.</p>
     </item>
     <item>
@@ -34,7 +34,7 @@
         <p>To list all the apps and their uuids, use the <code>--list</code> or <code>-l</code> option.</p>
         <p>Example</p>
         <screen>
-<input>fogger -l</input>
+<input>$ fogger -l</input>
 <output>            
 Reddit 	5e8a5709f662f8d401f7a00e6137f9ca 
 Gmail 	de01c1d48db6c321c637457113ed80d5 
@@ -47,7 +47,7 @@ Gmail 	de01c1d48db6c321c637457113ed80d5
         <p>Individual apps can be removed using the <code>--remove</code> or <code>-r</code> option with the uuid as an argument.</p>
         <p>Example</p>
         <screen>
-<input>fogger -r de01c1d48db6c321c637457113ed80d5</input>
+<input>$ fogger -r de01c1d48db6c321c637457113ed80d5</input>
 <output>            
 Removed app Gmail (de01c1d48db6c321c637457113ed80d5)
 </output>
@@ -59,7 +59,7 @@ Removed app Gmail (de01c1d48db6c321c637457113ed80d5)
         <p>You can also remove all the fogapps in a single go using the <code>--remove-all</code> or <code>-R</code> option.</p>
         <p>Example</p>
         <screen>
-<input>fogger --remove-all</input>
+<input>$ fogger --remove-all</input>
 <output>            
 Removed app Gmail (de01c1d48db6c321c637457113ed80d5)
 Removed app Reddit (5e8a5709f662f8d401f7a00e6137f9ca)
@@ -73,9 +73,32 @@ Removed app Reddit (5e8a5709f662f8d401f7a00e6137f9ca)
         <p>In case you manually deleted some apps but the desktop entries are left behind, you can clean them up using the <code>--clean</code> or <code>-c</code> option.</p>
         <p>Example</p>
         <screen>
-<input>fogger --clean</input>
+<input>$ fogger --clean</input>
 <output>            
 Cleaned stale file: ~/.local/share/applications/fogger-2f42211bf8cfa8915ff646d6eb7b5205.desktop
+</output>
+        </screen>
+    </item>
+
+
+    <item>
+        <title>List all entries</title>
+        <p>You can use the <code>--help</code> or <code>-h</code> option to list all the options supported by fogger.</p>
+        <p>Example</p>
+        <screen>
+<input>$ fogger --help</input>
+<output>            
+Usage: fogger [options]
+
+Options:
+  --version             show program's version number and exit
+  -h, --help            show this help message and exit
+  -v, --verbose         Show debug messages (-vv debugs fogger_lib also)
+  -l, --list            List all fogapps
+  -r REMOVE, --remove=REMOVE
+                        Remove a fogapp
+  -R, --remove-all      Remove all fogapp
+  -c, --clean           Remove all fogapps
 </output>
         </screen>
     </item>

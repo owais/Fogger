@@ -1,22 +1,21 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
 import os
 import re
-#import urllib2
 import requests
 import urlparse
 import tempfile
@@ -88,12 +87,6 @@ class FoggerWindow(Window):
     def on_url_changed(self, widget, data=None):
         pass
 
-    def setup_icon(self, path):
-        pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
-        self.image.props.pixbuf = pixbuf.scale_simple(80, 80, GdkPixbuf.InterpType.BILINEAR)
-        self.icon = path
-        self.icon_selected = True
-
     def on_icon_clicked(self, widget, data=None):
         icon_chooser = IconChooserDialog(self)
         response = icon_chooser.run()
@@ -121,7 +114,13 @@ class FoggerWindow(Window):
             self.icon = 'foggerapp'
         self.image.set_from_gicon(gicon, ICON_SIZE)
 
-    def create_app(self, url):
+    def setup_icon(self, path):
+        pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
+        self.image.props.pixbuf = pixbuf.scale_simple(80, 80, GdkPixbuf.InterpType.BILINEAR)
+        self.icon = path
+        self.icon_selected = True
+
+    def on_create(self, widget, data=None):
         name = self.name.get_text()
         manager = FogAppManager()
         existing = manager.get_by_name(name)
@@ -133,7 +132,16 @@ class FoggerWindow(Window):
             response = confirm.run()
             confirm.destroy()
             if response != Gtk.ResponseType.YES:
+                self.name.grab_focus()
                 return
+        self.set_loading_url(True)
+        self.error_message.hide()
+        thread = threading.Thread(target=self.verify_url)
+        thread.daemon = True
+        thread.start()
+
+    def create_app(self, url, name):
+        manager = FogAppManager()
         try:
             app = manager.create(name, url, self.icon)
         except BaseFogAppException:
@@ -143,24 +151,17 @@ class FoggerWindow(Window):
             app.launch([], Gio.AppLaunchContext())
             self.destroy()
 
-    def on_create(self, widget, data=None):
-        self.set_loading_url(True)
-        self.error_message.hide()
-        thread = threading.Thread(target=self.verify_url)
-        thread.daemon = True
-        thread.start()
-
     def set_loading_url(self, loading):
         if loading:
             self.spinner.show()
-            #self.create_button.set_sensitive(False)
             self.create_button.hide()
             self.url.set_sensitive(False)
+            self.name.set_sensitive(False)
         else:
             self.spinner.hide()
             self.create_button.show()
-            #self.create_button.set_sensitive(True)
             self.url.set_sensitive(True)
+            self.name.set_sensitive(True)
 
     def set_error_message(self, message):
         self.error_message.set_markup('<tt><small>%s</small></tt>' % message)
@@ -169,22 +170,21 @@ class FoggerWindow(Window):
     def verify_url(self):
         logger.debug('Fetching url')
         url = self.url.get_text()
+        name = self.name.get_text()
         verified = False
         try:
             if url.startswith('file://'):
                 GObject.idle_add(self.set_loading_url, False)
-                GObject.idle_add(self.create_app, url)
+                GObject.idle_add(self.create_app, url, name)
                 return
             elif not url.startswith(('http://', 'https://',)):
                 url = 'http://%s' % url
 
             try:
                 logger.debug('starting')
-                #response = urllib2.urlopen(url)
                 response = requests.get(url)
                 verified = True
                 logger.debug('finishing')
-            #except urllib2.URLError:
             except requests.RequestException:
                 logger.debug('Error downloading url %s' % url)
                 GObject.idle_add(self.set_loading_url, False)
@@ -232,11 +232,8 @@ class FoggerWindow(Window):
             headers = {'User-Agent': 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like'\
                 ' Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko)'\
                 ' Version/4.0.4 Mobile/7B334b Safari/531.21.10'}
-            #req = urllib2.Request(icon_url, None, headers)
             try:
-                #icon_bytes = urllib2.urlopen(req).read()
                 icon_bytes = requests.get(icon_url, headers=headers).content
-            #except urllib2.URLError:
             except requests.RequestException:
                 logger.debug('Error dowloading apple touch icon')
             else:
@@ -249,4 +246,4 @@ class FoggerWindow(Window):
         finally:
             GObject.idle_add(self.set_loading_url, False)
             if verified:
-                GObject.idle_add(self.create_app, url)
+                GObject.idle_add(self.create_app, url, name)
