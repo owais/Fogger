@@ -164,20 +164,6 @@ The image above shows how a website can export menus to the desktop and have a c
                         <title>quicklist</title>
                         <media type="image" mime="image/jpg" src="figures/webapi/example-quicklist.jpeg">[webapi-example]</media>
                         <p>A reference to the launcher entry <link type="section" xref="Web API#docs-classes-Quicklist">quicklist</link>.</p>
-                        <steps>
-                            <item>
-                                <title>name</title>
-                                <p>A string containing the name of the menu. An underscore (_) in the name represents a mnemonic key. For example, '_My Reddit' will set 'alt+m' as the keyboard shortcut for the menu.</p>
-                            </item>
-                        </steps>
-                        <note>
-                        <p>You should not create new instances from this class. <code>Fogger</code> class already contains an instance as a property so you should use that instead</p>
-                        <p>Example</p>
-                        <code>
-                        var bridge = new fogger.Fogger();
-                        bridge.quicklist.addItem(...);
-                        </code>
-                        </note>
                     </item>
                 </list>
             </section>
@@ -202,7 +188,7 @@ The image above shows how a website can export menus to the desktop and have a c
     callback: function(menu, item) {
         // This is called when the item is clicked
         // menu refers to the parent menu
-        // item refers to the item being clicked.
+        // item refers to the menu item that was clicked.
         };
 }
 </code>
@@ -240,6 +226,15 @@ The image above shows how a website can export menus to the desktop and have a c
 
         <section id="docs-classes-Quicklist">
             <title>Quicklist</title>
+
+            <note>
+            <p>You should not create new instances from this class. <code>Fogger</code> class already contains an instance as a property so you should use that instead</p>
+            <p>Example</p>
+            <code>
+var bridge = new fogger.Fogger();
+bridge.quicklist.addItem(...);
+            </code>
+            </note>
             <list>
                 <title>Methods</title>
 
@@ -256,7 +251,7 @@ The image above shows how a website can export menus to the desktop and have a c
     name: 'My quicklist entry',
     callback: function(item) {
         // This is called when the item is clicked
-        // item refers to the item being clicked.
+        // item refers to the quicklist item that was clicked.
         };
 }
 </code>
