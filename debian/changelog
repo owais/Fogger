@@ -1,11 +1,5 @@
 fogger (0.1) precise; urgency=low
 
-  * * Improved JS and CSS injection   * Updated docs
-
- -- Owais Lone <hello@owaislone.org>  Mon, 09 Jul 2012 04:03:59 +0530
-
-fogger (0.1) precise; urgency=low
-
   * Initial release.
 
- -- Owais Lone <hello@owaislone.org>  Mon, 09 Jul 2012 04:00:48 +0530
+ -- Owais Lone <hello@owaislone.org>  Mon, 09 Jul 2012 04:18:49 +0530
