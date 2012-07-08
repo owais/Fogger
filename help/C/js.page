@@ -32,25 +32,37 @@ The image above shows how a website can export menus to the desktop and have a c
         <p>Fogger emits a DOM Event when the API has finished initialization and is ready to be used. Your JS code should wait for this event before attempting to use the API.</p>
         <p>Example</p>
         <code>
-            // Register a callback for the foggerReady event and initialize there
-            document.addEventListener('foggerReady', function() {
-                // Create a new object from the Fogger class
-                var bridge = new fogger.Fogger();
+    // Check if fogger JS API is present
+    if (window['fogger']) {
 
-                // Create a new menu
-                var my_reddits_menu = bridge.newMenu('My Reddits');
+        // Initialize here
 
-                // Add an item to the menu
-                my_reddits_menu.addItem({
-                        name: 'Ubuntu',
-                        callback: function(menu, item) {
-                            alert('Item ' + item + ' from menu ' + menu + ' was clicked');
-                        };
-                    });
-            });
+    } else {
+        // If the fogger API is not present, wait for the 'foggerReady' 
+        // and initialize once it is ready
+
+        document.addEventListener('foggerReady', function() {
+            // Initialize here
+
+            // Create a new object from the Fogger class
+            var desktop = new fogger.Fogger();
+
+            // Create a new menu
+            var my_reddits_menu = desktop.newMenu('My Reddits');
+
+            // Add an item to the menu
+            my_reddits_menu.addItem({
+                    name: 'Ubuntu',
+                    callback: function(menu, item) {
+                        alert('Item ' + item + ' from menu ' + menu + ' was clicked');
+                    };
+                });
+        });
+    }
         </code>
         <note>
-            <p>You should register the event handler as early as possible. Do not wait for the document to register this.</p>
+            <p>Currently, the JS might fire the events or inject a userscript multitple times while the page loads. This will be fixed soon. Fogger API takes care of duplicate API calls, you can safely export the same menu multitple times without worrying about duplication or JS object polution.</p>
+            <p>It might be a good idea to wait for the document to load before trying to initialize the code for desktop integration.</p>
         </note>
     </section>
     <section>
@@ -231,8 +243,8 @@ The image above shows how a website can export menus to the desktop and have a c
             <p>You should not create new instances from this class. <code>Fogger</code> class already contains an instance as a property so you should use that instead</p>
             <p>Example</p>
             <code>
-var bridge = new fogger.Fogger();
-bridge.quicklist.addItem(...);
+var desktop = new fogger.Fogger();
+desktop.quicklist.addItem(...);
             </code>
             </note>
             <list>
