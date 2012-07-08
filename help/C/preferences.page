@@ -5,14 +5,18 @@
 <info>
   <link type="guide" xref="index#contents"/>
   <credit type="author">
-    <name>Your Name</name>
-    <email>Your E-mail</email>
-    <years>2010</years>
+    <name>Owais Lone</name>
+    <email>hello@owaislone.org</email>
+    <years>2012</years>
   </credit>
-  <desc>Optional short description of Preferences for contents page</desc>
+  <desc>Fogger preferences help</desc>
 </info>
 
 <title>Preferences</title>
-<p>This is the preferences page.</p>
+<media type="image" mime="image/jpg" src="figures/prefs/app.jpeg">[app-preferences]</media>
+<p>Preferences can be reached to from the main app menu. For a fogapp names <code>Reddit</code>, you can access the preferences by clicking the entry <code>Reddit</code> in the app menu and then clicking preferences.</p>
+
+<p>Usually this is the first menu in the menu bar.</p>
+<media type="image" mime="image/jpg" src="figures/prefs/menu.jpeg">[app-preferences-menu]</media>
 
 </page>

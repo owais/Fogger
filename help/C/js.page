@@ -1,0 +1,54 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="Web API">
+
+<info>
+  <link type="guide" xref="index#contents"/>
+  <credit type="author">
+    <name>Owais Lone</name>
+    <email>hello@owaislone.org</email>
+    <years>2012</years>
+  </credit>
+  <desc>Fogger Web API</desc>
+</info>
+
+<title>Web API</title>
+<p>Fogger exposes a special Javascript API to webapps. This API exposes some of the functions of the host desktop environment to the web app running inside fogger.</p>
+
+<note><p>
+The current JS API is very much experimental. This is more of a proof-of-concept implementation and as a result only a few desktop functions are exposed. A proper implementation will follow in the coming versions.
+</p></note>
+<media type="image" mime="image/jpg" src="figures/webapi/example.jpeg">[webapi-example]</media>
+
+<p>
+The image above shows how a website can export menus to the desktop and have a callback function called upon activation just like a regular desktop app.
+</p>
+
+<section id="js-api">
+    <title>Javascript API</title>
+    <note><p>This is just a preliminary proof-of-concept API. Expect changes and breakage.</p></note>
+    <section id="js-initialization">
+        <title>Javascript initialization</title>
+        <p>Fogger emits a DOM Event when the API has finished initialization and is ready to be used. Your JS code should wait for this event before attempting to use the API.</p>
+        <p>Example</p>
+        <code>
+            // Register a callback for the foggerReady event and initialize there
+            document.addEventListener('foggerReady', function() {
+                // Create a new object from the Fogger class
+                var bridge = new fogger.Fogger();
+
+                // Create a new menu
+                var my_reddits_menu = bridge.newMenu('My Reddits');
+
+                // Add an item to the menu
+                my_reddits_menu.addItem({
+                        name: 'Ubuntu',
+                        callback: function(menu, item) {
+                            alert('Item ' + item + ' from menu ' + menu + ' was clicked');
+                        };
+                    });
+            });
+        </code>
+    </section>
+</section>
+</page>

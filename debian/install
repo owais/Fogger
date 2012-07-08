@@ -1,3 +1,4 @@
 /data/icons/* /usr/share/icons/hicolor/
 /data/unity/extras-unity-lens-fogger.lens /usr/share/unity/lenses/extras-unity-lens-fogger/
 /data/unity/extras-unity-lens-fogger.service /usr/share/dbus-1/services/
+/help/C/figures/* /opt/extras.ubuntu.com/fogger/share/gnome/help/fogger/C/figures/
