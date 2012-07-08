@@ -1,3 +1,9 @@
+fogger (12.07.37) precise; urgency=low
+
+  * Fixed docs
+
+ -- Owais Lone <hello@owaislone.org>  Sun, 08 Jul 2012 21:21:09 +0530
+
 fogger (12.07.36) precise; urgency=low
 
   * New release.
