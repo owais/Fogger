@@ -38,16 +38,16 @@ CAT_ICON = get_media_file('lens-cat.svg')
 class Daemon:
     def __init__ (self):
         # The path for the Lens *must* also match the one in our .lens file
-        self._lens = Unity.Lens.new("/net/launchpad/lens/fogger", "fogger")
-        self._lens.props.search_hint = "Search fog apps"
+        self._lens = Unity.Lens.new('/net/launchpad/lens/fogger', 'fogger')
+        self._lens.props.search_hint = 'Search fog apps'
         self._lens.props.visible = True
         self._lens.props.search_in_global = False
 
         # create the scope
-        self._scope = Unity.Scope.new("/net/launchpad/lens/fogger/main")
+        self._scope = Unity.Scope.new('/net/launchpad/lens/fogger/main')
         self._scope.search_in_global = False
-        self._scope.connect("search-changed", self.on_search_changed)
-        self._scope.connect("activate-uri", self.on_activate_uri)
+        self._scope.connect('search-changed', self.on_search_changed)
+        self._scope.connect('activate-uri', self.on_activate_uri)
         self._scope.export()
 
         # Populate categories
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     result = result.unpack()[0]
 
     if result != 1 :
-        print >> sys.stderr, "Failed to own name %s. Bailing out." % BUS_NAME
+        print >> sys.stderr, 'Failed to own name %s. Bailing out.' % BUS_NAME
         raise SystemExit (1)
 
     daemon = Daemon()

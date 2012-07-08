@@ -6,8 +6,7 @@ gettext.textdomain('fogger')
 
 from gi.repository import GLib, WebKit, Notify
 
-
-#from fogger_lib.widgets import DownloadCancelButton
+from . helpers import show_uri
 
 op = os.path
 DOWNLOAD_DIR = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DOWNLOAD)
@@ -32,7 +31,7 @@ class DownloadManager:
         return True
 
     def open_folder(self, widget, data=None):
-        os.system('xdg-open %s' % DOWNLOAD_DIR)
+        show_uri(self.R, DOWNLOAD_DIR)
 
     def cancel_all(self):
         for row in self.store:
@@ -80,7 +79,7 @@ class DownloadManager:
             _iter = self.store.get_iter(path)
             download = self.store.get_value(_iter, 3)
             if download.props.status == WebKit.DownloadStatus.FINISHED:
-                os.system('xdg-open %s' % download.props.destination_uri)
+                show_uri(self.R, download.props.destination_uri)
 
     def on_download_progress(self, download, progress, data=None):
         for d in self.store:

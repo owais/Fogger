@@ -13,15 +13,16 @@
 </info>
 
 <title>Scripts and Styles</title>
-<media type="image" mime="image/jpg" src="figures/customization/userscripts-shortcut.jpeg">[scripts shortcut]</media>
+<media type="image" mime="image/jpg" src="figures/customization/customization.jpeg">[scripts shortcut]</media>
+<p>The preferences dialog contains shortcut button for these folders.</p>
 <section>
 <title>Scripts</title>
-<p>These are JavaScript files places in the <code>scripts</code> folder inside the app folder. This folder can be reached from the main app menu. The JS code in these files is injected into the web app. This can be used to provide integration functionality to webapps which don't support fogger out of the box.</p>
+<p>These are JavaScript files places in the <code>scripts</code> folder inside the app folder. The JS code in these files is injected into the web app. This can be used to provide integration functionality to webapps which don't support fogger out of the box.</p>
 
 </section>
 <section>
 <title>Styles</title>
-<p>Styles are CSS files which are applied to the web app. The styles directory is located at the same level as the scripts directory.</p>
+<p>These are CSS stylesheet applied to the webapp. This allows use to easily change the look and feel of the webapps.</p>
 </section>
 
 </page>

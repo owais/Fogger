@@ -13,7 +13,7 @@
 </info>
 
 <title>Preferences</title>
-<media type="image" mime="image/jpg" src="figures/prefs/app.jpeg">[app-preferences]</media>
+<media type="image" mime="image/jpg" src="figures/prefs/prefs.jpeg">[app-preferences]</media>
 <p>Preferences can be reached to from the main app menu. For a fogapp names <code>Reddit</code>, you can access the preferences by clicking the entry <code>Reddit</code> in the app menu and then clicking preferences.</p>
 
 <p>Usually this is the first menu in the menu bar.</p>

@@ -125,6 +125,8 @@ class FogApp(object):
         handle.close()
 
     def run(self):
+        # TODO: Move all inter object communication to GSignals and stop
+        # passing around object references
         from fogger import AppWindow
         self.window = AppWindow.AppWindow()
         self.window.run_app(self)
