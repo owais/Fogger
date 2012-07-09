@@ -124,7 +124,6 @@ Menu.prototype.addItem = function(conf) {
     console.error('Conf must contain "name" and "callback"');
     return;
   }
-  console.log(Boolean(this.items[conf.name]))
   if (Boolean(this.items[conf.name])) {
     this.items[conf.name].callback = conf.callback;
     return this.items[conf.name];
