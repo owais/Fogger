@@ -101,7 +101,9 @@ class DesktopBridge:
 
     def add_menu_item(self, W, menu_name, item_name):
         _menu = self.menus.get(W, {}).get(menu_name)
-        if not _menu and _menu['items'].get(item_name):
+        if not _menu:
+            return
+        if _menu['items'].get(item_name):
             return
         gmenu = _menu['menu']
         item = Gtk.MenuItem(item_name)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-09 04:18+0530\n"
+"POT-Creation-Date: 2012-07-09 20:58+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,23 +58,23 @@ msgid "_Export"
 msgstr ""
 
 #: ../data/ui/FoggerAppWindow.ui.h:10
-msgid "_Remove"
-msgstr ""
-
-#: ../data/ui/FoggerAppWindow.ui.h:11
 msgid "_Go"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:12
+#: ../data/ui/FoggerAppWindow.ui.h:11
 msgid "_Back"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:13
+#: ../data/ui/FoggerAppWindow.ui.h:12
 msgid "_Forward"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:14
+#: ../data/ui/FoggerAppWindow.ui.h:13
 msgid "_Reload"
+msgstr ""
+
+#: ../data/ui/FoggerAppWindow.ui.h:14
+msgid "_Home"
 msgstr ""
 
 #: ../data/ui/FoggerAppWindow.ui.h:15
@@ -93,35 +93,29 @@ msgstr ""
 msgid "Zoom _Reset"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:19 ../data/ui/FoggerWindow.ui.h:3
+#: ../data/ui/FoggerAppWindow.ui.h:19
+msgid "_Fullscreen"
+msgstr ""
+
+#: ../data/ui/FoggerAppWindow.ui.h:20 ../data/ui/FoggerWindow.ui.h:3
 msgid "_Help"
 msgstr ""
 
-#: ../data/ui/FoggerAppWindow.ui.h:20 ../data/ui/FoggerWindow.ui.h:4
+#: ../data/ui/FoggerAppWindow.ui.h:21 ../data/ui/FoggerWindow.ui.h:4
 msgid "Contents"
 msgstr ""
 
-#: ../fogger/AppWindow.py:226
+#: ../fogger/AppWindow.py:237
 msgid "Geolocation permission requested"
 msgstr ""
 
-#: ../fogger/AppWindow.py:227
+#: ../fogger/AppWindow.py:238
 #, python-format
 msgid "%s wants to know your current location. Do you want to share?"
 msgstr ""
 
-#: ../fogger/AppWindow.py:229
+#: ../fogger/AppWindow.py:240
 msgid "Share"
-msgstr ""
-
-#. TODO: COnfirmation dialog
-#: ../fogger/AppWindow.py:268
-#, python-format
-msgid "%s will be removed"
-msgstr ""
-
-#: ../fogger/AppWindow.py:269
-msgid "Are you sure you want to remove this app?"
 msgstr ""
 
 #: ../fogger/__init__.py:33
@@ -193,7 +187,7 @@ msgid "<b><small>URL</small></b>"
 msgstr ""
 
 #: ../data/ui/FoggerWindow.ui.h:8
-msgid "<tt><small><i>Example: facebook.com</i></small></tt>"
+msgid "<tt><small><i>Example: www.facebook.com</i></small></tt>"
 msgstr ""
 
 #: ../data/ui/FoggerWindow.ui.h:9
@@ -215,45 +209,65 @@ msgstr ""
 #: ../data/ui/PreferencesFoggerDialog.ui.h:2
 msgid ""
 "<small>This will reset the app to it's default state. You'll be logged out "
-"of all the saved sessions and all local databases will be deleted.</small>"
+"of all sessions and all local databases will be deleted.</small>"
 msgstr ""
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:3
 msgid "Reset Application Data"
 msgstr ""
 
-#: ../data/ui/PreferencesFoggerDialog.ui.h:4
+#: ../data/ui/PreferencesFoggerDialog.ui.h:5
+#, no-c-format
+msgid "<small><tt>%s MB of space will be freed.</tt></small>"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:6
+msgid "Remove Permanently"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:7
+msgid ""
+"<small><span color=\"red\">This will completely remove the app and any data "
+"associated with it.</span></small>"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:8
 msgid "Privacy"
 msgstr ""
 
-#: ../data/ui/PreferencesFoggerDialog.ui.h:5
+#: ../data/ui/PreferencesFoggerDialog.ui.h:9
 msgid ""
 "<small>User scripts are JavaScript files that are injected into the webapps "
 "upon load. This enables us to add desktop integration to any web application."
 "</small>"
 msgstr ""
 
-#: ../data/ui/PreferencesFoggerDialog.ui.h:6
+#: ../data/ui/PreferencesFoggerDialog.ui.h:10
 msgid "User Scripts"
 msgstr ""
 
-#: ../data/ui/PreferencesFoggerDialog.ui.h:7
+#: ../data/ui/PreferencesFoggerDialog.ui.h:11
 msgid "User Styles"
 msgstr ""
 
-#: ../data/ui/PreferencesFoggerDialog.ui.h:8
+#: ../data/ui/PreferencesFoggerDialog.ui.h:12
 msgid ""
 "<small>User styles are CSS files that are applied to the web apps upon "
 "load.  This allows us to customize the look and feel of any webapp running "
 "inside fogger.</small>"
 msgstr ""
 
-#: ../data/ui/PreferencesFoggerDialog.ui.h:9
+#: ../data/ui/PreferencesFoggerDialog.ui.h:13
 msgid "Customization"
 msgstr ""
 
-#: ../data/ui/PreferencesFoggerDialog.ui.h:10
+#: ../data/ui/PreferencesFoggerDialog.ui.h:14
 msgid "Autostart"
+msgstr ""
+
+#: ../fogger_lib/AppWindow.py:99
+#, python-format
+msgid "%s will be freed."
 msgstr ""
 
 #: ../fogger/FoggerWindow.py:128
@@ -285,10 +299,20 @@ msgstr ""
 msgid "Download Complete"
 msgstr ""
 
-#: ../fogger/PreferencesFoggerDialog.py:55
+#: ../fogger/PreferencesFoggerDialog.py:57
 msgid "Are you sure you want to reset the app?"
 msgstr ""
 
-#: ../fogger/PreferencesFoggerDialog.py:56
+#: ../fogger/PreferencesFoggerDialog.py:58
 msgid "This will log you out of all websites and delete all local data"
+msgstr ""
+
+#: ../fogger/PreferencesFoggerDialog.py:67
+msgid "Are you sure you want to remove the app?"
+msgstr ""
+
+#: ../fogger/PreferencesFoggerDialog.py:68
+msgid ""
+"This will permanently remove the app and delete all the data associated with "
+"it."
 msgstr ""
