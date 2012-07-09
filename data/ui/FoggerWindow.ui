@@ -202,7 +202,7 @@
                           <object class="GtkLabel" id="label4">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">&lt;tt&gt;&lt;small&gt;&lt;i&gt;Example: facebook.com&lt;/i&gt;&lt;/small&gt;&lt;/tt&gt;</property>
+                            <property name="label" translatable="yes">&lt;tt&gt;&lt;small&gt;&lt;i&gt;Example: www.facebook.com&lt;/i&gt;&lt;/small&gt;&lt;/tt&gt;</property>
                             <property name="use_markup">True</property>
                           </object>
                           <packing>

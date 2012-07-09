@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -34,6 +34,7 @@ from fogger.AboutFoggerDialog import AboutFoggerDialog
 from fogger.PreferencesFoggerDialog import PreferencesFoggerDialog
 
 MAXIMIZED = Gdk.WindowState.MAXIMIZED
+FULLSCREEN = Gdk.WindowState.FULLSCREEN
 
 
 # TODO: Move WebView and DownloadManager to their own classes and tidy up
@@ -162,6 +163,12 @@ class FoggerAppWindow(AppWindow):
         else:
             return False
 
+    def is_fullscreen(self):
+        if self.props.window:
+            return self.props.window.get_state() & FULLSCREEN == FULLSCREEN
+        else:
+            return False
+
     def do_window_state_event(self, widget, data=None):
         if self.app and not self.is_popup:
             self.app.maximized = self.is_maximized()
@@ -257,9 +264,22 @@ class FoggerAppWindow(AppWindow):
 
     def on_reload(self, widget, data=None):
         self.webview.reload()
+    on_retry = on_reload
 
-    def on_retry(self, widget, data=None):
-        self.webview.reload()
+    def on_go_home(self, widget, data=None):
+        l = self.webview.get_back_forward_list()
+        steps = l.get_back_length()
+        if self.is_popup:
+            self.parent.webview.go_back_or_forward(steps * -1)
+            self.parent.preset()
+        else:
+            self.webview.go_back_or_forward(steps * -1)
+
+    def on_go_fullscreen(self, widget, data=None):
+        if self.is_fullscreen():
+            self.unfullscreen()
+        else:
+            self.fullscreen()
 
     def on_go_back(self, widget, data=None):
         self.webview.go_back()
