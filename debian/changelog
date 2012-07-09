@@ -1,3 +1,10 @@
+fogger (0.1.2) precise; urgency=low
+
+  * * Added webpages title to the window title   * Displayed the number
+    of bytes that will be freed after resetting app data
+
+ -- Owais Lone <hello@owaislone.org>  Mon, 09 Jul 2012 05:47:51 +0530
+
 fogger (0.1.1) precise; urgency=low
 
   * New release.
