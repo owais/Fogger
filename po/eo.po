@@ -1,0 +1,298 @@
+# Esperanto translation for fogger
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the fogger package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: fogger\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-07-09 04:18+0530\n"
+"PO-Revision-Date: 2012-07-07 00:25+0000\n"
+"Last-Translator: Michael Moroni <michael.moroni@mailoo.org>\n"
+"Language-Team: Esperanto <eo@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2012-07-09 05:10+0000\n"
+"X-Generator: Launchpad (build 15558)\n"
+
+#: ../fogger_lib/Dialogs.py:34
+msgid "Please choose an icon"
+msgstr ""
+
+#: ../data/ui/FoggerAppWindow.ui.h:1
+msgid "Downloads"
+msgstr "Elŝutujo"
+
+#: ../data/ui/FoggerAppWindow.ui.h:2
+msgid "Progress"
+msgstr "Progreso"
+
+#: ../data/ui/FoggerAppWindow.ui.h:3
+msgid "Size"
+msgstr "Grando"
+
+#: ../data/ui/FoggerAppWindow.ui.h:4
+msgid "Cancel"
+msgstr "Nuligi"
+
+#: ../data/ui/FoggerAppWindow.ui.h:5
+msgid "Show Downloads"
+msgstr "Montri elŝutojn"
+
+#: ../data/ui/FoggerAppWindow.ui.h:6 ../data/ui/FoggerWindow.ui.h:1
+msgid "Fogger"
+msgstr "Fogero"
+
+#: ../data/ui/FoggerAppWindow.ui.h:7
+msgid "_App"
+msgstr "_Aplikaĵo"
+
+#: ../data/ui/FoggerAppWindow.ui.h:8
+msgid "_Downloads"
+msgstr "_Elŝutoj"
+
+#: ../data/ui/FoggerAppWindow.ui.h:9
+msgid "_Export"
+msgstr "_Eksporti"
+
+#: ../data/ui/FoggerAppWindow.ui.h:10
+msgid "_Remove"
+msgstr "Fo_rigi"
+
+#: ../data/ui/FoggerAppWindow.ui.h:11
+msgid "_Go"
+msgstr "_Iri"
+
+#: ../data/ui/FoggerAppWindow.ui.h:12
+msgid "_Back"
+msgstr "_Reen"
+
+#: ../data/ui/FoggerAppWindow.ui.h:13
+msgid "_Forward"
+msgstr "_Antaŭen"
+
+#: ../data/ui/FoggerAppWindow.ui.h:14
+msgid "_Reload"
+msgstr "_Reŝargi"
+
+#: ../data/ui/FoggerAppWindow.ui.h:15
+msgid "_View"
+msgstr "_Vido"
+
+#: ../data/ui/FoggerAppWindow.ui.h:16
+msgid "Zoom _In"
+msgstr "Pl_igrandigi"
+
+#: ../data/ui/FoggerAppWindow.ui.h:17
+msgid "Zoom _Out"
+msgstr "_Malpligrandigi"
+
+#: ../data/ui/FoggerAppWindow.ui.h:18
+msgid "Zoom _Reset"
+msgstr "_Reagordi pligrandigon"
+
+#: ../data/ui/FoggerAppWindow.ui.h:19 ../data/ui/FoggerWindow.ui.h:3
+msgid "_Help"
+msgstr "_Helpo"
+
+#: ../data/ui/FoggerAppWindow.ui.h:20 ../data/ui/FoggerWindow.ui.h:4
+msgid "Contents"
+msgstr "Enhavo"
+
+#: ../fogger/AppWindow.py:226
+msgid "Geolocation permission requested"
+msgstr ""
+
+#: ../fogger/AppWindow.py:227
+#, python-format
+msgid "%s wants to know your current location. Do you want to share?"
+msgstr ""
+
+#: ../fogger/AppWindow.py:229
+msgid "Share"
+msgstr ""
+
+#. TODO: COnfirmation dialog
+#: ../fogger/AppWindow.py:268
+#, python-format
+msgid "%s will be removed"
+msgstr "%s estos forigita"
+
+#: ../fogger/AppWindow.py:269
+msgid "Are you sure you want to remove this app?"
+msgstr "Ĉu vi certe volas forigi ĉi tiun aplikaĵon?"
+
+#: ../fogger/__init__.py:33
+msgid "Show debug messages (-vv debugs fogger_lib also)"
+msgstr "Montri sencimigajn mesaĝojn (-vv sencimigas ankaŭ fogger_lib)"
+
+#: ../fogger/__init__.py:36
+msgid "List all fogapps"
+msgstr ""
+
+#: ../fogger/__init__.py:39
+msgid "Remove a fogapp"
+msgstr ""
+
+#: ../fogger/__init__.py:42
+msgid "Remove all fogapp"
+msgstr ""
+
+#: ../fogger/__init__.py:45
+msgid "Remove all fogapps"
+msgstr ""
+
+#: ../data/ui/AboutFoggerDialog.ui.h:1
+msgid "Copyright (C) 2012 Owais Lone <hello@owaislone.org>"
+msgstr "Kopirajto (C) 2012 Owais LONE <hello@owaislone.org>"
+
+#: ../data/ui/AboutFoggerDialog.ui.h:2
+msgid ""
+"# Copyright (C) 2012 Owais Lone <hello@owaislone.org>\n"
+"# This program is free software: you can redistribute it and/or modify it \n"
+"# under the terms of the GNU General Public License version 3, as published "
+"\n"
+"# by the Free Software Foundation.\n"
+"# \n"
+"# This program is distributed in the hope that it will be useful, but \n"
+"# WITHOUT ANY WARRANTY; without even the implied warranties of \n"
+"# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR \n"
+"# PURPOSE.  See the GNU General Public License for more details.\n"
+"# \n"
+"# You should have received a copy of the GNU General Public License along \n"
+"# with this program.  If not, see <http://www.gnu.org/licenses/>.\n"
+msgstr ""
+
+#: ../data/ui/AboutFoggerDialog.ui.h:15
+msgid "Launchpad Translators\t"
+msgstr "Laŭnĉpadaj tradukistoj\t"
+
+#. Code for other initialization actions should be added here.
+#: ../bin/fogger-lens.py:83 ../fogger.desktop.in.h:1
+msgid "Create a new fog app"
+msgstr ""
+
+#: ../data/ui/FoggerWindow.ui.h:2
+msgid "_Fogger"
+msgstr "_Fogero"
+
+#: ../data/ui/FoggerWindow.ui.h:5
+msgid "<b>Create a new fog app</b>"
+msgstr ""
+
+#: ../data/ui/FoggerWindow.ui.h:6
+msgid ""
+"<tt><small><i>You can also drop a custom icon anywhere on the "
+"window</i></small></tt>"
+msgstr ""
+"<tt><small><i>Vi povas ankaŭ demeti personan piktogramon ie ajn sur la "
+"fenestro</i></small></tt>"
+
+#: ../data/ui/FoggerWindow.ui.h:7
+msgid "<b><small>URL</small></b>"
+msgstr "<b><small>URL</small></b>"
+
+#: ../data/ui/FoggerWindow.ui.h:8
+msgid "<tt><small><i>Example: facebook.com</i></small></tt>"
+msgstr "<tt><small><i>Ekzemple: vikipedio.org</i></small></tt>"
+
+#: ../data/ui/FoggerWindow.ui.h:9
+msgid "<b><small>Name</small></b>"
+msgstr "<b><small>Nomo</small></b>"
+
+#: ../data/ui/FoggerWindow.ui.h:10
+msgid "<tt><small><i>Example: Facebook</i></small></tt>"
+msgstr "<tt><small><i>Ekzemple: Vikipedio</i></small></tt>"
+
+#: ../data/ui/FoggerWindow.ui.h:11
+msgid "Create"
+msgstr "Krei"
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:1
+msgid "Fogger Preferences"
+msgstr "Agordoj de Fogero"
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:2
+msgid ""
+"<small>This will reset the app to it's default state. You'll be logged out "
+"of all the saved sessions and all local databases will be deleted.</small>"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:3
+msgid "Reset Application Data"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:4
+msgid "Privacy"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:5
+msgid ""
+"<small>User scripts are JavaScript files that are injected into the webapps "
+"upon load. This enables us to add desktop integration to any web "
+"application.</small>"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:6
+msgid "User Scripts"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:7
+msgid "User Styles"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:8
+msgid ""
+"<small>User styles are CSS files that are applied to the web apps upon load. "
+" This allows us to customize the look and feel of any webapp running inside "
+"fogger.</small>"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:9
+msgid "Customization"
+msgstr ""
+
+#: ../data/ui/PreferencesFoggerDialog.ui.h:10
+msgid "Autostart"
+msgstr ""
+
+#: ../fogger/FoggerWindow.py:128
+msgid "There's an app for that!"
+msgstr ""
+
+#: ../fogger/FoggerWindow.py:129
+msgid ""
+"A fog app already exists by that name. Would you like to replace it with a "
+"new one?"
+msgstr ""
+
+#: ../fogger/FoggerWindow.py:131
+msgid "Replace"
+msgstr ""
+
+#: ../fogger/FoggerWindow.py:192
+#, python-format
+msgid ""
+"The URL %s could not be reached.\n"
+"Please double check the URL you provided and try again."
+msgstr ""
+"La URL %s ne atigeblas.\n"
+"Bonvole duoble kontrolu la URL, kiun vi provizis, kaj provu denove."
+
+#: ../fogger_lib/Downloads.py:95
+msgid "Error"
+msgstr "Eraro"
+
+#: ../fogger_lib/Downloads.py:100
+msgid "Download Complete"
+msgstr "Elŝuto finiĝis"
+
+#: ../fogger/PreferencesFoggerDialog.py:55
+msgid "Are you sure you want to reset the app?"
+msgstr ""
+
+#: ../fogger/PreferencesFoggerDialog.py:56
+msgid "This will log you out of all websites and delete all local data"
+msgstr ""
