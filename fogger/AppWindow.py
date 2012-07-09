@@ -148,7 +148,7 @@ class FoggerAppWindow(AppWindow):
         self.downloads.open_folder(*args, **kwargs)
 
     def on_title_changed(self, webview, title, data=None):
-        self.set_title('%s: %s' %(self.app.name, webview.props.title))
+        self.set_title('%s: %s' %(self.app.name, webview.props.title or ''))
 
     def on_download_clicked(self, *args, **kwargs):
         return self.downloads.on_download_clicked(*args, **kwargs)
