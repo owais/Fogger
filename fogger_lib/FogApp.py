@@ -159,6 +159,21 @@ class FogApp(object):
                 else:
                     rmtree(child)
 
+    @property
+    def data_size(self):
+        size = 0
+        path = op.join(CACHE_PATH, self.uuid)
+        if not op.exists(path):
+            return
+        for _path, _dirs, _files in os.walk(path):
+            for _file in _files:
+                size += op.getsize(op.join(_path, _file))
+        size = size / 1000.0 #1024 returns wrong size. Probably ubuntu uses 1000
+        if size > 1000:
+            return '%d MB' % (size / 1000.0)
+        else:
+            return '%d KB' % (size)
+
 
 class FogAppManager(object):
     apps = {}

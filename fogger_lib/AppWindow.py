@@ -1,22 +1,26 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
 from gi.repository import Gio, Gtk # pylint: disable=E0611
 import logging
 logger = logging.getLogger('fogger_lib')
+
+import gettext
+from gettext import gettext as _
+gettext.textdomain('fogger')
 
 from . helpers import get_builder, show_uri, get_help_uri
 
@@ -91,6 +95,9 @@ class AppWindow(Gtk.Window):
             logger.debug('create new preferences_dialog')
             self.preferences_dialog = self.PreferencesDialog() # pylint: disable=E1102
             if hasattr(self, 'app'):
+                sl = self.preferences_dialog.space_label
+                sl.set_markup('<small><tt>%s</tt></small>' % (_('%s will be freed.' % self.app.data_size)))
+                sl.show()
                 self.preferences_dialog.set_autostart_widget(self.app.autostart)
                 self.preferences_dialog.scripts_path = self.app.scripts_path
                 self.preferences_dialog.styles_path = self.app.styles_path
