@@ -24,17 +24,15 @@ fogger.events.readyEvent.initEvent('foggerReady', true, true);
 document.addEventListener('foggerMenuCallbackEvent', function(e) {
   var menu = fogger.menus[e.foggerData.menu];
   var item = menu.items[e.foggerData.name];
-  var callback = item['callback'];
-  if (callback) {
-    callback(menu, item);
+  if (item.callback !== undefined) {
+    item.callback(menu, item);
   };
 });
 
 document.addEventListener('foggerQLCallbackEvent', function(e) {
   var item = fogger.quicklist.items[e.foggerData.name];
-  var callback = item['callback'];
-  if (callback) {
-    callback(item);
+  if (item.callback !== undefined) {
+    item.callback(item);
   };
 });
 
