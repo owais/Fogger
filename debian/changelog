@@ -1,3 +1,9 @@
+fogger (0.1.3) precise; urgency=low
+
+  * New release.
+
+ -- Owais Lone <hello@owaislone.org>  Mon, 09 Jul 2012 06:15:01 +0530
+
 fogger (0.1.2) precise; urgency=low
 
   * * Added webpages title to the window title   * Displayed the number
