@@ -216,16 +216,6 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="remove">
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Remove</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_remove_fog_app" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
                         <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
@@ -297,8 +287,8 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">_Reload</property>
                         <property name="use_underline">True</property>
-                        <accelerator key="F5" signal="activate"/>
                         <accelerator key="r" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="F5" signal="activate"/>
                         <signal name="activate" handler="on_reload" swapped="no"/>
                       </object>
                     </child>
@@ -342,8 +332,8 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Zoom _In</property>
                         <property name="use_underline">True</property>
-                        <accelerator key="plus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="equal" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="plus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_zoom_in" swapped="no"/>
                       </object>
                     </child>
