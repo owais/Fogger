@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -195,11 +195,13 @@ class FoggerAppWindow(AppWindow):
         so.set_web_database_quota(quota + 5242880) # Increase by 5mb
 
     def on_frame_load_status(self, frame, value):
-        if frame.props.load_status == WebKit.LoadStatus.COMMITTED:
+        status = frame.props.load_status
+        if status == WebKit.LoadStatus.COMMITTED:
             self.inject_scripts()
-        elif frame.props.load_status == WebKit.LoadStatus.FINISHED:
+        elif status == WebKit.LoadStatus.FINISHED:
             self.inject_styles()
-        elif frame.props.load_status == WebKit.LoadStatus.FIRST_VISUALLY_NON_EMPTY_LAYOUT:
+        elif status in (WebKit.LoadStatus.FIRST_VISUALLY_NON_EMPTY_LAYOUT,
+                        WebKit.LoadStatus.FAILED):
             if self.ui_loading:
                 self.ui_loading.destroy()
                 self.ui_loading = None
