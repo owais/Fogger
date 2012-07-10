@@ -1,4 +1,4 @@
-# Esperanto translation for fogger
+# Spanish translation for fogger
 # Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
 # This file is distributed under the same license as the fogger package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: fogger\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-07-09 22:35+0530\n"
-"PO-Revision-Date: 2012-07-07 00:25+0000\n"
-"Last-Translator: Michael Moroni <michael.moroni@mailoo.org>\n"
-"Language-Team: Esperanto <eo@li.org>\n"
+"PO-Revision-Date: 2012-07-09 06:25+0000\n"
+"Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
+"Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,11 +19,11 @@ msgstr ""
 
 #: ../fogger_lib/Dialogs.py:34
 msgid "Please choose an icon"
-msgstr ""
+msgstr "Elija un icono"
 
 #: ../data/ui/FoggerAppWindow.ui.h:1
 msgid "Downloads"
-msgstr "Elŝutujo"
+msgstr "Descargas"
 
 #: ../data/ui/FoggerAppWindow.ui.h:2
 msgid "Progress"
@@ -31,47 +31,47 @@ msgstr "Progreso"
 
 #: ../data/ui/FoggerAppWindow.ui.h:3
 msgid "Size"
-msgstr "Grando"
+msgstr "Tamaño"
 
 #: ../data/ui/FoggerAppWindow.ui.h:4
 msgid "Cancel"
-msgstr "Nuligi"
+msgstr "Cancelar"
 
 #: ../data/ui/FoggerAppWindow.ui.h:5
 msgid "Show Downloads"
-msgstr "Montri elŝutojn"
+msgstr "Mostrar las descargas"
 
 #: ../data/ui/FoggerAppWindow.ui.h:6 ../data/ui/FoggerWindow.ui.h:1
 msgid "Fogger"
-msgstr "Fogero"
+msgstr "Fogger"
 
 #: ../data/ui/FoggerAppWindow.ui.h:7
 msgid "_App"
-msgstr "_Aplikaĵo"
+msgstr "_Aplicación"
 
 #: ../data/ui/FoggerAppWindow.ui.h:8
 msgid "_Downloads"
-msgstr "_Elŝutoj"
+msgstr "_Descargas"
 
 #: ../data/ui/FoggerAppWindow.ui.h:9
 msgid "_Export"
-msgstr "_Eksporti"
+msgstr "_Exportar"
 
 #: ../data/ui/FoggerAppWindow.ui.h:10
 msgid "_Go"
-msgstr "_Iri"
+msgstr "_Ir"
 
 #: ../data/ui/FoggerAppWindow.ui.h:11
 msgid "_Back"
-msgstr "_Reen"
+msgstr "_Atrás"
 
 #: ../data/ui/FoggerAppWindow.ui.h:12
 msgid "_Forward"
-msgstr "_Antaŭen"
+msgstr "A_delante"
 
 #: ../data/ui/FoggerAppWindow.ui.h:13
 msgid "_Reload"
-msgstr "_Reŝargi"
+msgstr "_Recargar"
 
 #: ../data/ui/FoggerAppWindow.ui.h:14
 msgid "_Home"
@@ -79,19 +79,19 @@ msgstr ""
 
 #: ../data/ui/FoggerAppWindow.ui.h:15
 msgid "_View"
-msgstr "_Vido"
+msgstr "_Ver"
 
 #: ../data/ui/FoggerAppWindow.ui.h:16
 msgid "Zoom _In"
-msgstr "Pl_igrandigi"
+msgstr "_Ampliar"
 
 #: ../data/ui/FoggerAppWindow.ui.h:17
 msgid "Zoom _Out"
-msgstr "_Malpligrandigi"
+msgstr "Re_ducir"
 
 #: ../data/ui/FoggerAppWindow.ui.h:18
 msgid "Zoom _Reset"
-msgstr "_Reagordi pligrandigon"
+msgstr "_Restablecer zoom"
 
 #: ../data/ui/FoggerAppWindow.ui.h:19
 msgid "_Fullscreen"
@@ -99,11 +99,11 @@ msgstr ""
 
 #: ../data/ui/FoggerAppWindow.ui.h:20 ../data/ui/FoggerWindow.ui.h:3
 msgid "_Help"
-msgstr "_Helpo"
+msgstr "Ay_uda"
 
 #: ../data/ui/FoggerAppWindow.ui.h:21 ../data/ui/FoggerWindow.ui.h:4
 msgid "Contents"
-msgstr "Enhavo"
+msgstr "Contenido"
 
 #: ../fogger/AppWindow.py:237
 msgid "Geolocation permission requested"
@@ -112,15 +112,15 @@ msgstr ""
 #: ../fogger/AppWindow.py:238
 #, python-format
 msgid "%s wants to know your current location. Do you want to share?"
-msgstr ""
+msgstr "%s quiere saber su ubicación actual. ¿Quiere compartirla?"
 
 #: ../fogger/AppWindow.py:240
 msgid "Share"
-msgstr ""
+msgstr "Compartir"
 
 #: ../fogger/__init__.py:33
 msgid "Show debug messages (-vv debugs fogger_lib also)"
-msgstr "Montri sencimigajn mesaĝojn (-vv sencimigas ankaŭ fogger_lib)"
+msgstr "Mostrar mensajes de depuración (-vv depura fogger_lib también)"
 
 #: ../fogger/__init__.py:36
 msgid "List all fogapps"
@@ -140,7 +140,7 @@ msgstr ""
 
 #: ../data/ui/AboutFoggerDialog.ui.h:1
 msgid "Copyright (C) 2012 Owais Lone <hello@owaislone.org>"
-msgstr "Kopirajto (C) 2012 Owais LONE <hello@owaislone.org>"
+msgstr "Copyright (C) 2012 Owais Lone <hello@owaislone.org>"
 
 #: ../data/ui/AboutFoggerDialog.ui.h:2
 msgid ""
@@ -158,10 +158,24 @@ msgid ""
 "# You should have received a copy of the GNU General Public License along \n"
 "# with this program.  If not, see <http://www.gnu.org/licenses/>.\n"
 msgstr ""
+"# Copyright (C) 2012 Owais Lone <hello@owaislone.org>\n"
+"# Este programa es software libre: puede redistribuirlo y/o modificarlo\n"
+"# bajo los términos de la Licencia Púbica General de GNU versión 3, como la\n"
+"# publica la Free Software Foundation.\n"
+"# \n"
+"# Este programa se distribuye con la esperanza de que será útil, pero\n"
+"# SIN NINGUNA GARANTÍA; sin siquiera las garantías implícitas de\n"
+"# COMERCIABILIDAD, CALIDAD SATISFACTORIA o IDONEIDAD PARA UN\n"
+"# PROPÓSITO PARTICULAR. Vea la Licencia Pública General de GNU para más "
+"detalles.\n"
+"# \n"
+"# Debería haber recibido una copia de la Licencia Pública General de GNU "
+"con\n"
+"# este programa.  Si no, consulte <http://www.gnu.org/licenses/>.\n"
 
 #: ../data/ui/AboutFoggerDialog.ui.h:15
 msgid "Launchpad Translators\t"
-msgstr "Laŭnĉpadaj tradukistoj\t"
+msgstr "Traductores de Launchpad\t"
 
 #. Code for other initialization actions should be added here.
 #: ../bin/fogger-lens.py:83 ../fogger.desktop.in.h:1
@@ -170,7 +184,7 @@ msgstr ""
 
 #: ../data/ui/FoggerWindow.ui.h:2
 msgid "_Fogger"
-msgstr "_Fogero"
+msgstr "_Fogger"
 
 #: ../data/ui/FoggerWindow.ui.h:5
 msgid "<b>Create a new fog app</b>"
@@ -181,8 +195,8 @@ msgid ""
 "<tt><small><i>You can also drop a custom icon anywhere on the "
 "window</i></small></tt>"
 msgstr ""
-"<tt><small><i>Vi povas ankaŭ demeti personan piktogramon ie ajn sur la "
-"fenestro</i></small></tt>"
+"<tt><small><i>También puede soltar un icono personalizado en cualquier parte "
+"de la ventana</i></small></tt>"
 
 #: ../data/ui/FoggerWindow.ui.h:7
 msgid "<b><small>URL</small></b>"
@@ -194,19 +208,19 @@ msgstr ""
 
 #: ../data/ui/FoggerWindow.ui.h:9
 msgid "<b><small>Name</small></b>"
-msgstr "<b><small>Nomo</small></b>"
+msgstr "<b><small>Nombre</small></b>"
 
 #: ../data/ui/FoggerWindow.ui.h:10
 msgid "<tt><small><i>Example: Facebook</i></small></tt>"
-msgstr "<tt><small><i>Ekzemple: Vikipedio</i></small></tt>"
+msgstr "<tt><small><i>Ejemplo: Facebook</i></small></tt>"
 
 #: ../data/ui/FoggerWindow.ui.h:11
 msgid "Create"
-msgstr "Krei"
+msgstr "Crear"
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:1
 msgid "Fogger Preferences"
-msgstr "Agordoj de Fogero"
+msgstr "Preferencias de Fogger"
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:2
 msgid ""
@@ -216,7 +230,7 @@ msgstr ""
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:3
 msgid "Reset Application Data"
-msgstr ""
+msgstr "Restablecer datos de aplicación"
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:5
 #, no-c-format
@@ -235,7 +249,7 @@ msgstr ""
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:8
 msgid "Privacy"
-msgstr ""
+msgstr "Privacidad"
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:9
 msgid ""
@@ -246,11 +260,11 @@ msgstr ""
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:10
 msgid "User Scripts"
-msgstr ""
+msgstr "Scripts del usuario"
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:11
 msgid "User Styles"
-msgstr ""
+msgstr "Estilos del usuario"
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:12
 msgid ""
@@ -261,11 +275,11 @@ msgstr ""
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:13
 msgid "Customization"
-msgstr ""
+msgstr "Personalización"
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:14
 msgid "Autostart"
-msgstr ""
+msgstr "Inicio automático"
 
 #: ../fogger_lib/AppWindow.py:99
 #, python-format
@@ -284,7 +298,7 @@ msgstr ""
 
 #: ../fogger/FoggerWindow.py:131
 msgid "Replace"
-msgstr ""
+msgstr "Reemplazar"
 
 #: ../fogger/FoggerWindow.py:192
 #, python-format
@@ -292,24 +306,24 @@ msgid ""
 "The URL %s could not be reached.\n"
 "Please double check the URL you provided and try again."
 msgstr ""
-"La URL %s ne atigeblas.\n"
-"Bonvole duoble kontrolu la URL, kiun vi provizis, kaj provu denove."
 
 #: ../fogger_lib/Downloads.py:95
 msgid "Error"
-msgstr "Eraro"
+msgstr "Error"
 
 #: ../fogger_lib/Downloads.py:100
 msgid "Download Complete"
-msgstr "Elŝuto finiĝis"
+msgstr "Descarga completada"
 
 #: ../fogger/PreferencesFoggerDialog.py:57
 msgid "Are you sure you want to reset the app?"
-msgstr ""
+msgstr "¿Está seguro de que quiere restablecer la aplicación?"
 
 #: ../fogger/PreferencesFoggerDialog.py:58
 msgid "This will log you out of all websites and delete all local data"
 msgstr ""
+"Esto cerrará su sesión de todos los sitios web y eliminará todos los datos "
+"locales"
 
 #: ../fogger/PreferencesFoggerDialog.py:67
 msgid "Are you sure you want to remove the app?"
