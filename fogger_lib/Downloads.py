@@ -31,7 +31,7 @@ class DownloadManager:
         return True
 
     def open_folder(self, widget, data=None):
-        show_uri(self.R, DOWNLOAD_DIR)
+        show_uri(self.R, GLib.filename_to_uri(DOWNLOAD_DIR, 'file'))
 
     def cancel_all(self):
         for row in self.store:
