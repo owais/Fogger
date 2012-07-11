@@ -211,6 +211,7 @@ Desktop.prototype.newMenu = function(name) {
 Desktop.prototype.quicklist = new Quicklist();
 
 fogger.Desktop = Desktop;
+fogger.Fogger = Desktop; // Remove this after some time
 fogger.Menu = Menu;
 fogger.MenuItem = MenuItem;
 fogger.Quicklist = Quicklist;
