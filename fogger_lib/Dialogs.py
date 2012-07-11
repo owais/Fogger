@@ -2,8 +2,9 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('fogger')
 
-from gi.repository import Gtk
+from gi.repository import Gtk, GdkPixbuf
 
+ICON_SIZE = Gtk.icon_size_register('FoggerIconSize', 80, 80)
 
 class ConfirmDialog(Gtk.MessageDialog):
     def __init__(self, appname, title, message, icon=None, parent=None, ok='gtk-ok', cancel='gtk-cancel'):
@@ -15,9 +16,11 @@ class ConfirmDialog(Gtk.MessageDialog):
         if icon:
             image = self.get_content_area().get_children()[0].get_children()[0]
             if icon.startswith('/'):
-                image.set_from_file(icon)
+		pixbuf = GdkPixbuf.Pixbuf.new_from_file(icon)
+	        image.props.pixbuf = pixbuf.scale_simple(80, 80, GdkPixbuf.InterpType.BILINEAR)
+        	
             else:
-                image.set_from_icon_name(icon, Gtk.IconSize.DIALOG)
+                image.set_from_icon_name(icon, ICON_SIZE)
         self.format_secondary_text(message)
         buttons = self.action_area.get_children()
         for b in buttons:
