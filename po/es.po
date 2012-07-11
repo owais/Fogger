@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fogger\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-07-09 22:35+0530\n"
+"POT-Creation-Date: 2012-07-10 05:30+0530\n"
 "PO-Revision-Date: 2012-07-09 06:25+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-07-10 05:56+0000\n"
-"X-Generator: Launchpad (build 15558)\n"
+"X-Launchpad-Export-Date: 2012-07-11 05:37+0000\n"
+"X-Generator: Launchpad (build 15593)\n"
 
 #: ../fogger_lib/Dialogs.py:34
 msgid "Please choose an icon"
@@ -105,16 +105,16 @@ msgstr "Ay_uda"
 msgid "Contents"
 msgstr "Contenido"
 
-#: ../fogger/AppWindow.py:237
+#: ../fogger/AppWindow.py:239
 msgid "Geolocation permission requested"
 msgstr ""
 
-#: ../fogger/AppWindow.py:238
+#: ../fogger/AppWindow.py:240
 #, python-format
 msgid "%s wants to know your current location. Do you want to share?"
 msgstr "%s quiere saber su ubicación actual. ¿Quiere compartirla?"
 
-#: ../fogger/AppWindow.py:240
+#: ../fogger/AppWindow.py:242
 msgid "Share"
 msgstr "Compartir"
 
