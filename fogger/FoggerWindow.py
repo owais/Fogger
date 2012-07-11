@@ -31,6 +31,7 @@ logger = logging.getLogger('fogger')
 from fogger_lib import Window, IconChooserDialog, ConfirmDialog
 from fogger_lib import FogAppManager
 from fogger_lib.exceptions import BaseFogAppException
+from fogger_lib.helpers import get_network_proxies
 from fogger.AboutFoggerDialog import AboutFoggerDialog
 
 
@@ -172,6 +173,7 @@ class FoggerWindow(Window):
         url = self.url.get_text()
         name = self.name.get_text()
         verified = False
+        proxies = get_network_proxies()
         try:
             if url.startswith('file://'):
                 GObject.idle_add(self.set_loading_url, False)
@@ -182,7 +184,7 @@ class FoggerWindow(Window):
 
             try:
                 logger.debug('starting')
-                response = requests.get(url)
+                response = requests.get(url, proxies=proxies)
                 verified = True
                 logger.debug('finishing')
             except requests.RequestException:
@@ -233,7 +235,8 @@ class FoggerWindow(Window):
                 ' Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko)'\
                 ' Version/4.0.4 Mobile/7B334b Safari/531.21.10'}
             try:
-                icon_bytes = requests.get(icon_url, headers=headers).content
+                icon_bytes = requests.get(icon_url, headers=headers,
+                                          proxies=proxies).content
             except requests.RequestException:
                 logger.debug('Error dowloading apple touch icon')
             else:

@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -124,3 +124,30 @@ def get_or_create_directory(path):
             get_or_create_directory(base)
             os.mkdir(path)
     return path
+
+
+def get_network_proxies(self):
+    from gi.repository import Gio
+    proxies = {}
+    settings = Gio.Settings.new('org.gnome.system.proxy.https')
+    host, port =  settings.get_string('host') , settings.get_int('port')
+    if host and port:
+        https = ':'.join(host, port)
+        proxies['https'] = https
+
+    settings = Gio.Settings.new('org.gnome.system.proxy.http')
+    host, port =  settings.get_string('host') , settings.get_int('port')
+
+    if host and port:
+        http = ':'.join(host, port)
+        auth = None
+        username = settings.get_string('authentication-user')
+        password = settings.get_string('authentication-password')
+        if username and password:
+            auth = ':'.join([username, password])
+        elif username:
+            auth = username
+        if auth:
+            http = 'http://%s@%s' % (auth, http)
+        proxies['http'] = http
+    return proxies
