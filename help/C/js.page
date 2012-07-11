@@ -41,8 +41,8 @@ The image above shows how a website can export menus to the desktop and have a c
         <p>Recommended way to initialize the desktop integration code</p>
         <code>
     var initializeDesktop = function() {
-        // Create a new object from the Fogger class
-        var desktop = new fogger.Fogger();
+        // Create a new object from the Desktop class
+        var desktop = new fogger.Desktop();
 
         // Create a new menu
         var my_reddits_menu = desktop.newMenu('My Reddits');
@@ -76,20 +76,39 @@ The image above shows how a website can export menus to the desktop and have a c
             <p>Fogger API takes care of duplicate API calls. For example, you can safely export the same quicklist multitple times, from multiple popup windows without worrying about duplication or JS object polution.</p>
         </note>
     </section>
+
+    <section>
+        <title>Events</title>
+        <list>
+            <item>
+                <title>foggerWindowStateChange</title>
+                <note><p>This refers to the window at the desktop shell level, not at DOM level.</p></note>
+                <p>This event is fired whenever the parent desktop window changes it's state. A window has the following properties</p>
+                <list>
+                    <item>
+                        <title>active</title>
+                        <p>If the window is active or not</p>
+                    </item>
+                </list>
+            </item>
+        </list>
+    </section>
+
     <section>
         <title>Available Classes</title>
         <list>
         <title>Classes</title>
-        <item><p><link type="section" xref="Web API#docs-classes-Fogger">Fogger</link></p></item>
+        <item><p><link type="section" xref="Web API#docs-classes-Fogger">Desktop</link></p></item>
         <item><p><link type="section" xref="Web API#docs-classes-Menu">Menu</link></p></item>
         <item><p><link type="section" xref="Web API#docs-classes-MenuItem">Menu Item</link></p></item>
         <item><p><link type="section" xref="Web API#docs-classes-Quicklist">Quicklist</link></p></item>
         <item><p><link type="section" xref="Web API#docs-classes-QuicklistItem">QuicklistItem</link></p></item>
         </list>
     </section>
+
     <section>
         <title>Class Documentation</title>
-        <section id="docs-classes-Fogger">
+        <section id="docs-classes-Desktop">
             <title>Foggger</title>
             <p>This is the main fogger class. You can access all the API functions from an instance of this class.</p>
             <section>
@@ -251,10 +270,10 @@ The image above shows how a website can export menus to the desktop and have a c
             <title>Quicklist</title>
 
             <note>
-            <p>You should not create new instances directly from this class. <code>Fogger</code> class already carries a refernce to an instance of <code>Quicklist</code> class. You should use that instead.</p>
+            <p>You should not create new instances directly from this class. <code>Desktop</code> class already carries a refernce to an instance of <code>Quicklist</code> class. You should use that instead.</p>
             <p>Example</p>
             <code>
-var desktop = new fogger.Fogger();
+var desktop = new fogger.Desktop();
 desktop.quicklist.addItem(...);
             </code>
             </note>

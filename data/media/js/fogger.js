@@ -14,6 +14,9 @@ var fogger = {
   callbackStore: {},
   menus: {},
   indicators: {},
+  desktopWindow: {
+    active: true,
+  },
   quicklist: null
 };
 
@@ -56,6 +59,10 @@ document.addEventListener('foggerQLCallbackEvent', function(e) {
   };
 });
 
+document.addEventListener('foggerWindowStateChange', function(e){
+  fogger.desktopWindow.active = e.foggerData.active;
+});
+
 var webkitNotifications = function() {};
 
 webkitNotifications.Notification = function(icon, title, content) {
@@ -65,7 +72,7 @@ webkitNotifications.Notification = function(icon, title, content) {
 };
 
 webkitNotifications.Notification.prototype.show = function() {
-  new Fogger().notify(this.title, this.content);
+  new Desktop().notify(this.title, this.content);
 };
 
 webkitNotifications.checkPermission = function() {
@@ -165,45 +172,45 @@ Menu.prototype.removeItem = function(conf) {
 }
 
 
-var Fogger = function() {
+var Desktop = function() {
   this.__version__  = 12.07;
   this._dispatch = dispatch;
 };
 
-Fogger.prototype.setProgress = function(progress) {
+Desktop.prototype.setProgress = function(progress) {
   this._dispatch('set_progress///' + progress);
 }
 
-Fogger.prototype.setProgressVisible = function(visible) {
+Desktop.prototype.setProgressVisible = function(visible) {
   var action = 'set_progress_' + (visible == true ? 'visible': 'invisible');
   this._dispatch(action);
 }
 
-Fogger.prototype.setCount = function(count) {
+Desktop.prototype.setCount = function(count) {
   this._dispatch('set_count///' + count);
 }
 
-Fogger.prototype.setCountVisible = function(visible) {
+Desktop.prototype.setCountVisible = function(visible) {
   var action = 'set_count_' + (visible == true ? 'visible': 'invisible');
   this._dispatch(action);
 }
 
-Fogger.prototype.notify = function(summary, body) {
+Desktop.prototype.notify = function(summary, body) {
   this._dispatch('notify///' + summary + '///' + body);
 }
 
-Fogger.prototype.setUrgent = function(urgent) {
+Desktop.prototype.setUrgent = function(urgent) {
   var action = urgent == true ? 'set_urgent': 'unset_urgent';
   this._dispatch(action);
 }
 
-Fogger.prototype.newMenu = function(name) {
+Desktop.prototype.newMenu = function(name) {
   return fogger.menus[name] || new Menu(name);
 }
 
-Fogger.prototype.quicklist = new Quicklist();
+Desktop.prototype.quicklist = new Quicklist();
 
-fogger.Fogger = Fogger;
+fogger.Desktop = Desktop;
 fogger.Menu = Menu;
 fogger.MenuItem = MenuItem;
 fogger.Quicklist = Quicklist;

@@ -17,6 +17,8 @@ class DesktopBridge:
         self.quicklist_items = {}
         self.indicator = None
 
+        self.W.connect('notify::is-active', self.notify_window_state)
+
     def _js(self, W, jscode):
         if W:
             W.webview.execute_script(jscode)
@@ -30,6 +32,11 @@ class DesktopBridge:
             js = js + 'params.%s = "%s";' % (k, v,)
         js = js + 'e.foggerData = params; document.dispatchEvent(e);'
         self._js(W, js)
+
+    def notify_window_state(self, window, active):
+        self._dispatch_dom_event(self.W, 'foggerWindowStateChange', {
+                'active': self.W.props.is_active
+            })
 
     def notify(self, W, title, body):
         Notify.Notification.new(title, body, self.icon_name).show()
