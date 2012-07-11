@@ -17,6 +17,26 @@ var fogger = {
   quicklist: null
 };
 
+fogger.injectCSS = function(css_string) {
+  var waitForHeadAndInject = function() {
+    if(document.head === null) {
+      setTimeout(waitForHeadAndInject, 1000);
+      return;
+    } else {
+      var style_id = '__foggerInjectedStyleSheet';
+      var style = document.getElementById(style_id);
+      if (style === null) {
+        style = document.createElement('style');
+        style.setAttribute('id', style_id);
+      }
+      style.innerHTML = css_string;
+      style.setAttribute('type', 'text/css');
+      document.head.appendChild(style);
+    }
+  };
+  waitForHeadAndInject();
+}
+
 // Events
 fogger.events.readyEvent = document.createEvent('Event');
 fogger.events.readyEvent.initEvent('foggerReady', true, true);

@@ -1,16 +1,16 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2012 Owais Lone <hello@owaislone.org>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
 # by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
+#
+# You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
@@ -99,9 +99,11 @@ class FoggerAppWindow(AppWindow):
             self.webview.execute_script(script)
 
     def inject_styles(self):
-        userstyles = self.app.styles
-        for style in userstyles:
-            self.webview.execute_script(INJECT_CSS_SNIPPET % style)
+        style = '\n'.join([S for S in self.app.styles]);
+        self.webview.execute_script("fogger.injectCSS('%s')" % style)
+        #userstyles = self.app.styles
+        #for style in userstyles:
+        #    self.webview.execute_script(INJECT_CSS_SNIPPET % style)
 
     def setup_webkit_session(self):
         session = WebKit.get_default_session()
@@ -198,8 +200,9 @@ class FoggerAppWindow(AppWindow):
         status = frame.props.load_status
         if status == WebKit.LoadStatus.COMMITTED:
             self.inject_scripts()
-        elif status == WebKit.LoadStatus.FINISHED:
             self.inject_styles()
+        #elif status == WebKit.LoadStatus.FINISHED:
+            #self.inject_styles()
         elif status in (WebKit.LoadStatus.FIRST_VISUALLY_NON_EMPTY_LAYOUT,
                         WebKit.LoadStatus.FAILED):
             if self.ui_loading:
