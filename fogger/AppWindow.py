@@ -335,8 +335,8 @@ class FoggerAppWindow(AppWindow):
         else:
             self.set_icon_name(self.app.icon)
         self.set_title(app.name or app.url or 'FogApp')
-        self.set_role('FogApp:%s' % app.name)
-        self.set_wmclass('fogger:%s' % app.name, app.name)
+        self.set_role('fogger-%s' % app.uuid)
+        self.set_wmclass('fogger-%s' % app.uuid, app.uuid)
         screen = Gdk.Screen.get_default()
         max_h = screen.get_height()
         max_w = screen.get_width()
