@@ -30,6 +30,8 @@ The image above shows how a website can export menus to the desktop and have a c
 <media type="image" mime="image/jpg" src="figures/webapi/inspector.jpeg">[webapi-example]</media>
 <p>Fogger gives you access to the WebKit Inspector if you run the app in the debug mode.</p>
 <p>To run in debug mode, start fogger from the command line using the <code>'-v'</code> option</p>
+<p>Debug mode enables webkit inspector and forces reading scripts/styles on every page load.
+Normally, scrips and styles are read only once from disk and then stored in memory.</p>
 <p><link type="page" xref="cli">More on command line interface</link></p>
 </section>
 
