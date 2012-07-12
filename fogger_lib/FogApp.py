@@ -130,6 +130,8 @@ class FogApp(object):
                 os.remove(autostart_file)
 
     def save(self):
+        if not self.path.startswith(USER_APP_PATH):
+            return
         state = {
             'name': self.name,
             'url': self.url,
