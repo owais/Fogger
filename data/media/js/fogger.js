@@ -20,6 +20,7 @@ var fogger = {
   quicklist: null
 };
 
+
 fogger.injectCSS = function(css_string) {
   var waitForHeadAndInject = function() {
     if(document.head === null) {
@@ -63,33 +64,6 @@ document.addEventListener('foggerWindowStateChange', function(e){
   fogger.desktopWindow.active = e.foggerData.active;
 });
 
-var webkitNotifications = function() {};
-
-webkitNotifications.Notification = function(icon, title, content) {
-    this.icon = icon;
-    this.title = title;
-    this.content = content;
-};
-
-webkitNotifications.Notification.prototype.show = function() {
-  new Desktop().notify(this.title, this.content);
-};
-
-webkitNotifications.checkPermission = function() {
-  return 0;
-};
-
-webkitNotifications.requestPermission = function() {};
-
-webkitNotifications.createNotification = function(icon, title, content) {
-  return new webkitNotifications.Notification(icon, title, content);
-};
-
-webkitNotifications.createHTMLNotification = function(content) {
-  return new webkitNotifications.Notification('', '', content);
-};
-
-window.webkitNotifications = webkitNotifications;
 
 var QuicklistItem = function(name, callback) {
   this.name = name;
@@ -172,6 +146,7 @@ Menu.prototype.removeItem = function(conf) {
 }
 
 
+/* Desktop */
 var Desktop = function() {
   this.__version__  = 12.07;
   this._dispatch = dispatch;
@@ -211,7 +186,7 @@ Desktop.prototype.newMenu = function(name) {
 Desktop.prototype.quicklist = new Quicklist();
 
 fogger.Desktop = Desktop;
-fogger.Fogger = Desktop; // Remove this after some time
+fogger.Fogger = Desktop; // TODO: Remove this once all scripts move to fogger.Desktop;
 fogger.Menu = Menu;
 fogger.MenuItem = MenuItem;
 fogger.Quicklist = Quicklist;
@@ -219,5 +194,36 @@ fogger.QuicklistItem = QuicklistItem;
 window.fogger = fogger;
 
 document.dispatchEvent(fogger.events.readyEvent);
+
+
+/* Experimental WebKit notifications support */
+var webkitNotifications = function() {};
+
+webkitNotifications.Notification = function(icon, title, content) {
+    this.icon = icon;
+    this.title = title;
+    this.content = content;
+};
+
+webkitNotifications.Notification.prototype.show = function() {
+  new Desktop().notify(this.title, this.content);
+};
+
+webkitNotifications.checkPermission = function() {
+  return 0;
+};
+
+webkitNotifications.requestPermission = function() {};
+
+webkitNotifications.createNotification = function(icon, title, content) {
+  return new webkitNotifications.Notification(icon, title, content);
+};
+
+webkitNotifications.createHTMLNotification = function(content) {
+  return new webkitNotifications.Notification('', '', content);
+};
+
+window.webkitNotifications = webkitNotifications;
+
 
 })();

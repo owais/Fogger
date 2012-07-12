@@ -1,9 +1,8 @@
-import urlparse
 import os
-import logging
 from shutil import rmtree
 import simplejson as json
 from hashlib import md5
+import logging
 
 from gi.repository import GLib
 
@@ -24,6 +23,7 @@ AUTOSTART_PATH = op.join(GLib.get_user_config_dir(), 'autostart')
 DEFAULT_SIZE = (800, 600,)
 DEFAULT_STATE = False # True if maximized
 
+
 class FogApp(object):
     name = None
     url = None
@@ -32,8 +32,11 @@ class FogApp(object):
     icon = None
     uuid = None
     path = ''
+    __style_cache = __script_cache = ''
+    DEBUG = False
 
     def __init__(self, path=None):
+        self.DEBUG = logging.getLogger('fogger').level == logging.DEBUG
         if not path:
             return
         self.path = path
@@ -55,28 +58,37 @@ class FogApp(object):
 
     @property
     def scripts(self):
-        scripts = []
-        path = self.scripts_path
-        for item in os.listdir(path):
-            try:
-                scripts.append(open(op.join(path, item)).read())
-            except:
-                logger.error('Error reading file: %s', op.join(path, item))
-        return scripts
+        if self.DEBUG or not self.__script_cache:
+            scripts = []
+            path = self.scripts_path
+            for item in os.listdir(path):
+                try:
+                    scripts.append(open(op.join(path, item)).read())
+                    logger.info('READING %s' % item)
+                except:
+                    logger.error('Error reading file: %s', op.join(path, item))
+                self.__script_cache = scripts
+        return self.__script_cache
 
     @property
     def styles(self):
-        styles = []
-        path = self.styles_path
-        for item in os.listdir(path):
-            try:
-                lines = [line.replace("'", "\\'") for line in open(op.join(path, item)).read().split('\n') if line]
-            except Exception, e:
-                raise e
-                logger.error('Error reading file: %s\n %s' % (op.join(path, item), e))
-            else:
-                styles.append(''.join(lines))
-        return styles
+        if self.DEBUG or not self.__style_cache:
+            styles = []
+            path = self.styles_path
+            for item in os.listdir(path):
+                try:
+                    lines = [line.replace("'", "\\'")
+                            for line in open(op.join(path, item)).readlines()]
+                    logger.info('READING %s' % item)
+                except Exception, e:
+                    raise e
+                    logger.error('Error reading file: %s\n %s' % \
+                                  (op.join(path, item), e))
+                else:
+                    styles.append('\n'.join([l for l in lines]))
+                self.__style_cache = styles
+
+        return self.__style_cache
 
     @property
     def scripts_path(self):

@@ -1,1 +1,1 @@
-INJECT_CSS_SNIPPET = '''var ___fogger_style = document.createElement('style');___fogger_style.innerHTML = '%s';___fogger_style.setAttribute('type', 'text/css');document.head.appendChild(___fogger_style);'''
+

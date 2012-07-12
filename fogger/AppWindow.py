@@ -21,7 +21,7 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('fogger')
 
-from gi.repository import Gdk, GLib, Gtk, WebKit, Soup # pylint: disable=E0611
+from gi.repository import Gdk, GObject, GLib, Gtk, WebKit, Soup # pylint: disable=E0611
 
 op = os.path
 logger = logging.getLogger('fogger')
@@ -29,7 +29,6 @@ logger = logging.getLogger('fogger')
 from fogger_lib import AppWindow, DesktopBridge, ConfirmDialog, DownloadManager
 from fogger_lib.helpers import get_media_file, get_or_create_directory
 
-from fogger_lib.consts import INJECT_CSS_SNIPPET
 from fogger.AboutFoggerDialog import AboutFoggerDialog
 from fogger.PreferencesFoggerDialog import PreferencesFoggerDialog
 
@@ -99,11 +98,28 @@ class FoggerAppWindow(AppWindow):
             self.webview.execute_script(script)
 
     def inject_styles(self):
-        style = '\n'.join([S for S in self.app.styles]);
-        self.webview.execute_script("fogger.injectCSS('%s')" % style)
-        #userstyles = self.app.styles
-        #for style in userstyles:
-        #    self.webview.execute_script(INJECT_CSS_SNIPPET % style)
+        style_string = '\n'.join([S for S in self.app.styles if S and S != '\n'])
+
+        doc = self.webview.get_dom_document()
+        style = doc.create_element('style')
+        style.set_attribute('rel', 'stylesheet')
+        style.set_attribute('type', 'text/css')
+        style.set_inner_html(style_string)
+
+        def wait_for_head_and_inject(style):
+            head = doc.get_head()
+            if head:
+                head.append_child(style)
+                return False
+            return True
+        GObject.timeout_add(50, wait_for_head_and_inject, style)
+
+    def wait_for_head_and_inject(self, element):
+        head = self.webview.get_dom_document.get_head()
+        if head:
+            head.append_child(element)
+            return False
+        return True
 
     def setup_webkit_session(self):
         session = WebKit.get_default_session()
@@ -136,6 +152,7 @@ class FoggerAppWindow(AppWindow):
         self.websettings.props.enable_page_cache = True
         self.websettings.props.enable_plugins = True
         if logger.level == logging.DEBUG:
+            print 'DEBUGGING'
             self.websettings.props.enable_developer_extras = True
         self.webview.set_settings(self.websettings)
 
