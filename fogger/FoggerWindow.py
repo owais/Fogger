@@ -195,7 +195,7 @@ class FoggerWindow(Window):
                         ' the URL you provided and try again.' % url))
                 return
 
-            SkipIcon = type('SkipIcon', (BaseException, Exception), {})
+            SkipIcon = type('SkipIcon', (Exception,), {})
             if self.icon != "foggerapp":
                 raise SkipIcon()
 
@@ -216,10 +216,8 @@ class FoggerWindow(Window):
             icon_url = None
             if href.startswith('/'):
                 parsed = urlparse.urlparse(url)
-                logger.debug(parsed.scheme, parsed.netloc)
                 icon_url = urlparse.urljoin(
                         '%s://%s' % (parsed.scheme, parsed.netloc,),  href)
-                logger.debug(icon_url, '<<< icon url')
             else:
                 parsed = urlparse.urlparse(href)
                 if parsed.scheme:
