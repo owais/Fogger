@@ -7,27 +7,27 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fogger\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-07-10 05:30+0530\n"
-"PO-Revision-Date: 2012-07-07 00:25+0000\n"
+"POT-Creation-Date: 2012-07-11 22:29+0530\n"
+"PO-Revision-Date: 2012-07-11 23:58+0000\n"
 "Last-Translator: Michael Moroni <michael.moroni@mailoo.org>\n"
 "Language-Team: Esperanto <eo@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-07-11 05:37+0000\n"
+"X-Launchpad-Export-Date: 2012-07-12 05:10+0000\n"
 "X-Generator: Launchpad (build 15593)\n"
 
 #: ../fogger_lib/Dialogs.py:34
 msgid "Please choose an icon"
-msgstr ""
+msgstr "Bonvole elektu piktogramon"
 
 #: ../data/ui/FoggerAppWindow.ui.h:1
 msgid "Downloads"
-msgstr "Elŝutujo"
+msgstr "Elŝutoj"
 
 #: ../data/ui/FoggerAppWindow.ui.h:2
 msgid "Progress"
-msgstr "Progreso"
+msgstr "Farata"
 
 #: ../data/ui/FoggerAppWindow.ui.h:3
 msgid "Size"
@@ -75,7 +75,7 @@ msgstr "_Reŝargi"
 
 #: ../data/ui/FoggerAppWindow.ui.h:14
 msgid "_Home"
-msgstr ""
+msgstr "_Hejmo"
 
 #: ../data/ui/FoggerAppWindow.ui.h:15
 msgid "_View"
@@ -107,16 +107,16 @@ msgstr "Enhavo"
 
 #: ../fogger/AppWindow.py:239
 msgid "Geolocation permission requested"
-msgstr ""
+msgstr "Permeso de terlokalizo postulata"
 
 #: ../fogger/AppWindow.py:240
 #, python-format
 msgid "%s wants to know your current location. Do you want to share?"
-msgstr ""
+msgstr "%s volas koni vian aktualan lokon. Ĉu vi volas kunhavigi ĝin?"
 
 #: ../fogger/AppWindow.py:242
 msgid "Share"
-msgstr ""
+msgstr "Kunhavigi"
 
 #: ../fogger/__init__.py:33
 msgid "Show debug messages (-vv debugs fogger_lib also)"
@@ -124,19 +124,19 @@ msgstr "Montri sencimigajn mesaĝojn (-vv sencimigas ankaŭ fogger_lib)"
 
 #: ../fogger/__init__.py:36
 msgid "List all fogapps"
-msgstr ""
+msgstr "Listigi ĉiujn fogeraplikaĵojn"
 
 #: ../fogger/__init__.py:39
 msgid "Remove a fogapp"
-msgstr ""
+msgstr "Forigi fogeraplikaĵon"
 
 #: ../fogger/__init__.py:42
 msgid "Remove all fogapp"
-msgstr ""
+msgstr "Forigi ĉiun fogeraplikaĵon"
 
 #: ../fogger/__init__.py:45
 msgid "Remove all fogapps"
-msgstr ""
+msgstr "Forigi ĉiujn fogeraplikaĵojn"
 
 #: ../data/ui/AboutFoggerDialog.ui.h:1
 msgid "Copyright (C) 2012 Owais Lone <hello@owaislone.org>"
@@ -166,7 +166,7 @@ msgstr "Laŭnĉpadaj tradukistoj\t"
 #. Code for other initialization actions should be added here.
 #: ../bin/fogger-lens.py:83 ../fogger.desktop.in.h:1
 msgid "Create a new fog app"
-msgstr ""
+msgstr "Krei novan fogeraplikaĵon"
 
 #: ../data/ui/FoggerWindow.ui.h:2
 msgid "_Fogger"
@@ -174,7 +174,7 @@ msgstr "_Fogero"
 
 #: ../data/ui/FoggerWindow.ui.h:5
 msgid "<b>Create a new fog app</b>"
-msgstr ""
+msgstr "<b>Krei novan fogeraplikaĵon</b>"
 
 #: ../data/ui/FoggerWindow.ui.h:6
 msgid ""
@@ -190,7 +190,7 @@ msgstr "<b><small>URL</small></b>"
 
 #: ../data/ui/FoggerWindow.ui.h:8
 msgid "<tt><small><i>Example: www.facebook.com</i></small></tt>"
-msgstr ""
+msgstr "<tt><small><i>Ekzemple: eo.wikipedia.org</i></small></tt>"
 
 #: ../data/ui/FoggerWindow.ui.h:9
 msgid "<b><small>Name</small></b>"
@@ -216,16 +216,16 @@ msgstr ""
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:3
 msgid "Reset Application Data"
-msgstr ""
+msgstr "Reagordi datumojn de aplikaĵoj"
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:5
 #, no-c-format
 msgid "<small><tt>%s MB of space will be freed.</tt></small>"
-msgstr ""
+msgstr "<small><tt>%s MB de spaco estos liberigita.</tt></small>"
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:6
 msgid "Remove Permanently"
-msgstr ""
+msgstr "Daŭre forigi"
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:7
 msgid ""
@@ -235,7 +235,7 @@ msgstr ""
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:8
 msgid "Privacy"
-msgstr ""
+msgstr "Privateco"
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:9
 msgid ""
@@ -246,11 +246,11 @@ msgstr ""
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:10
 msgid "User Scripts"
-msgstr ""
+msgstr "Uzantskriptoj"
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:11
 msgid "User Styles"
-msgstr ""
+msgstr "Uzantstiloj"
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:12
 msgid ""
@@ -261,30 +261,32 @@ msgstr ""
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:13
 msgid "Customization"
-msgstr ""
+msgstr "Tajlorado"
 
 #: ../data/ui/PreferencesFoggerDialog.ui.h:14
 msgid "Autostart"
-msgstr ""
+msgstr "Aŭtomata startigo"
 
 #: ../fogger_lib/AppWindow.py:99
 #, python-format
 msgid "%s will be freed."
-msgstr ""
+msgstr "%s estos liberigita."
 
 #: ../fogger/FoggerWindow.py:128
 msgid "There's an app for that!"
-msgstr ""
+msgstr "Estas aplikaĵo por tio!"
 
 #: ../fogger/FoggerWindow.py:129
 msgid ""
 "A fog app already exists by that name. Would you like to replace it with a "
 "new one?"
 msgstr ""
+"Fogeraplikaĵo kun tiu nomo jam ekzistas. Ĉu vi volas anstataŭigi ĝin per "
+"nova?"
 
 #: ../fogger/FoggerWindow.py:131
 msgid "Replace"
-msgstr ""
+msgstr "Anstataŭigi"
 
 #: ../fogger/FoggerWindow.py:192
 #, python-format
@@ -305,15 +307,15 @@ msgstr "Elŝuto finiĝis"
 
 #: ../fogger/PreferencesFoggerDialog.py:57
 msgid "Are you sure you want to reset the app?"
-msgstr ""
+msgstr "Ĉu vi certe volas reagordi la aplikaĵon?"
 
 #: ../fogger/PreferencesFoggerDialog.py:58
 msgid "This will log you out of all websites and delete all local data"
-msgstr ""
+msgstr "Tio elsalutos vin de ĉiuj retejoj kaj forigos ĉiuj lokaj datumoj"
 
 #: ../fogger/PreferencesFoggerDialog.py:67
 msgid "Are you sure you want to remove the app?"
-msgstr ""
+msgstr "Ĉu vi certe volas forigi la aplikaĵon?"
 
 #: ../fogger/PreferencesFoggerDialog.py:68
 msgid ""
