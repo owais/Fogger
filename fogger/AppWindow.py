@@ -93,7 +93,7 @@ class FoggerAppWindow(AppWindow):
 
     def inject_scripts(self):
         userscripts = self.app.scripts
-        userscripts.insert(0, self.js_lib)
+        self.webview.execute_script(self.js_lib)
         for script in userscripts:
             self.webview.execute_script(script)
 
