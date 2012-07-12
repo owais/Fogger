@@ -8,7 +8,7 @@ from gi.repository import GLib
 
 from fogger_lib.helpers import get_or_create_directory
 from fogger_lib.exceptions import BadFogAppException
-from . foggerconfig import get_data_file
+from . foggerconfig import get_data_file, get_data_path
 
 
 __all__ = ('FogApp', 'FogAppManager',)
@@ -16,10 +16,15 @@ __all__ = ('FogApp', 'FogAppManager',)
 op = os.path
 logger = logging.getLogger('fogger_lib')
 DESKTOP_DIR = op.join(GLib.get_user_data_dir(), 'applications')
-APP_PATH = op.join(GLib.get_user_data_dir(), 'fogapps')
 CONF_PATH = op.join(GLib.get_user_config_dir(), 'fogger')
 CACHE_PATH = op.join(GLib.get_user_cache_dir(), 'fogger')
 AUTOSTART_PATH = op.join(GLib.get_user_config_dir(), 'autostart')
+
+BASE_APP_PATHS = [GLib.get_user_data_dir(), get_data_path()]
+BASE_APP_PATHS += list(GLib.get_system_data_dirs())
+APP_PATHS = [op.join(P, 'fogapps') for P in BASE_APP_PATHS]
+USER_APP_PATH = op.join(GLib.get_user_data_dir(), 'fogapps')
+
 DEFAULT_SIZE = (800, 600,)
 DEFAULT_STATE = False # True if maximized
 
@@ -44,6 +49,7 @@ class FogApp(object):
             try:
                 state = json.loads(open(op.join(self.path, 'app.json'), 'r').read())
             except:
+                logger.error('Could not read app configuration: %s' % path)
                 raise BadFogAppException()
             else:
                 try:
@@ -54,6 +60,7 @@ class FogApp(object):
                     self.window_size = state.get('window_size') or DEFAULT_SIZE
                     self.maximized = state.get('maximized') or DEFAULT_STATE
                 except KeyError:
+                    logger.error('Could not read app configuration: %s' % path)
                     raise BadFogAppException()
 
     @property
@@ -156,7 +163,7 @@ class FogApp(object):
             return
         else:
             for directory in (op.join(CONF_PATH, self.uuid),
-                              op.join(APP_PATH, self.uuid),
+                              op.join(USER_APP_PATH, self.uuid),
                               op.join(CACHE_PATH, self.uuid),):
                 if op.exists(directory):
                     rmtree(directory)
@@ -197,24 +204,27 @@ class FogAppManager(object):
 
     def get(self, uuid):
         #path = self.apps.get(uuid)
-        path = op.join(APP_PATH, uuid)
-        if op.exists(path):
-            return FogApp(path)
-        else:
-            logger.debug('No such app: %s' % uuid)
-            return None
+        for app_path in APP_PATHS:
+            path = op.join(app_path, uuid)
+            if op.exists(path):
+                return FogApp(path)
+        logger.debug('No such app: %s' % uuid)
+        return None
 
     def get_by_name(self, name):
         return self.get(md5(name.lower()).hexdigest())
 
     def get_all(self):
-        dirs = os.listdir(APP_PATH)
         apps = []
-        for path in dirs:
-            try:
-                apps.append(FogApp(op.join(APP_PATH, path)))
-            except BadFogAppException:
-                pass
+        for app_path in APP_PATHS:
+            if not op.exists(app_path):
+                continue
+            dirs = os.listdir(app_path)
+            for path in dirs:
+                try:
+                    apps.append(FogApp(op.join(app_path, path)))
+                except BadFogAppException:
+                    pass
         return apps
 
     def create(self, name, url, icon):
@@ -263,7 +273,7 @@ def create_desktop_files(name, uuid, icon, path):
         os.chmod(desktop_file_path, 0755)
 
 def setup_app_dir(uuid):
-    path = get_or_create_directory(op.join(APP_PATH, uuid))
+    path = get_or_create_directory(op.join(USER_APP_PATH, uuid))
     get_or_create_directory(op.join(path, 'scripts'))
     get_or_create_directory(op.join(path, 'styles'))
     return path

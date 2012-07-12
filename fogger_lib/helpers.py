@@ -44,7 +44,6 @@ def get_builder(builder_file_name):
     return builder
 
 
-# Owais Lone : To get quick access to icons and stuff.
 def get_media_file(media_file_name, protocol='file:///'):
     media_filename = get_data_file('media', '%s' % (media_file_name,))
     if not os.path.exists(media_filename):

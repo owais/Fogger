@@ -195,7 +195,7 @@ class FoggerWindow(Window):
                         ' the URL you provided and try again.' % url))
                 return
 
-            SkipIcon = type('SkipIcon', (BaseException,), {})
+            SkipIcon = type('SkipIcon', (BaseException, Exception), {})
             if self.icon != "foggerapp":
                 raise SkipIcon()
 
