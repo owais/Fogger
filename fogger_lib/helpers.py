@@ -132,14 +132,14 @@ def get_network_proxies():
     settings = Gio.Settings.new('org.gnome.system.proxy.https')
     host, port =  settings.get_string('host') , settings.get_int('port')
     if host and port:
-        https = ':'.join(host, port)
+        https = ':'.join([host, port])
         proxies['https'] = https
 
     settings = Gio.Settings.new('org.gnome.system.proxy.http')
     host, port =  settings.get_string('host') , settings.get_int('port')
 
     if host and port:
-        http = ':'.join(host, port)
+        http = ':'.join([host, port])
         auth = None
         username = settings.get_string('authentication-user')
         password = settings.get_string('authentication-password')
