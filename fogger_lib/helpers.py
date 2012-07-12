@@ -126,7 +126,7 @@ def get_or_create_directory(path):
     return path
 
 
-def get_network_proxies(self):
+def get_network_proxies():
     from gi.repository import Gio
     proxies = {}
     settings = Gio.Settings.new('org.gnome.system.proxy.https')
