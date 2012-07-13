@@ -241,8 +241,11 @@ class FoggerAppWindow(AppWindow):
              'scripts': self.app.scripts,
              'styles': self.app.styles})
         window.webview = webview
+        if self.is_popup:
+            self.root.popups.append(window)
+        else:
+            self.popups.append(window)
         window.run_app(app, self.root or self)
-        self.popups.append(window)
 
     def on_resource_request_starting(self, widget, frame, resource, request, response, data=None):
         uri = urllib.unquote(request.props.uri)
