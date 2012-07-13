@@ -344,9 +344,9 @@ class FoggerAppWindow(AppWindow):
             self.bridge = DesktopBridge(self, self.app.desktop_file_name, self.app.icon)
             self.appname.set_text(app.name)
             self.webview.load_uri(self.app.url)
-            #self.resize_window(max_w, max_h, *self.app.window_size)
-            #if self.app.maximized:
-            #    self.maximize()
+            self.resize_window(max_w, max_h, *self.app.window_size)
+            if self.app.maximized:
+                self.maximize()
         else:
             self.bridge = self.root.bridge
             self.downloads = self.root.downloads
@@ -354,9 +354,9 @@ class FoggerAppWindow(AppWindow):
             wf = root.webview.props.window_features
             if wf.props.width > 0 and wf.props.height > 0:
                 self.resize_window(max_w, max_h, wf.props.width, wf.props.height)
-            #else:
-            #    self.resize(800, 600)
-            #if wf.props.fullscreen:
-            #    self.fullscreen()
+            else:
+                self.resize(800, 600)
+            if wf.props.fullscreen:
+                self.fullscreen()
         self.show()
 
