@@ -131,19 +131,19 @@ def get_network_proxies():
     settings = Gio.Settings.new('org.gnome.system.proxy.https')
     host, port =  settings.get_string('host') , settings.get_int('port')
     if host and port:
-        https = ':'.join([host, port])
+        https = '%s:%d' % (host, port,)
         proxies['https'] = https
 
     settings = Gio.Settings.new('org.gnome.system.proxy.http')
     host, port =  settings.get_string('host') , settings.get_int('port')
 
     if host and port:
-        http = ':'.join([host, port])
+        http = '%s:%d' % (host, port,)
         auth = None
         username = settings.get_string('authentication-user')
         password = settings.get_string('authentication-password')
         if username and password:
-            auth = ':'.join([username, password])
+            auth = '%s:%s' % (username, password,)
         elif username:
             auth = username
         if auth:
