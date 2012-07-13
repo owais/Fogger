@@ -17,25 +17,30 @@
 
 import sys
 sys.path.insert(0, '/opt/extras.ubuntu.com/fogger/')
+from os import path as op
 
 import locale
 from locale import gettext as _
 locale.bindtextdomain('fogger', '/opt/extras.ubuntu.com/fogger/share/locale')
 locale.textdomain('fogger')
 
-from gi.repository import GLib, GObject, Gio
-from gi.repository import Unity
+from gi.repository import GLib, GObject, Gio, Unity
 
 from fogger_lib.utils import search_fogapps
 from fogger_lib.helpers import get_media_file
 
 BUS_NAME = "net.launchpad.lens.fogger"
 
-CREATE_URI = GLib.filename_to_uri('/usr/share/applications/extras-fogger.desktop', None)
+CREATE_URI = GLib.filename_to_uri(
+                        '/usr/share/applications/extras-fogger.desktop', None)
 CAT_ICON = get_media_file('lens-cat.svg')
+USER_APPS = op.join(GLib.get_user_data_dir(), 'applications')
+SYSTEM_APPS = '/usr/share/applications'
 
 
 class Daemon:
+    search_string = ''
+
     def __init__ (self):
         # The path for the Lens *must* also match the one in our .lens file
         self._lens = Unity.Lens.new('/net/launchpad/lens/fogger', 'fogger')
@@ -63,11 +68,21 @@ class Daemon:
         self._lens.add_local_scope(self._scope)
         self._lens.export()
 
+    def _fogapp_changed(self, fmon, f1, f2, event):
+        E = Gio.FileMonitorEvent
+        if event in (E.CREATED,
+                     E.CHANGED,
+                     E.CHANGES_DONE_HINT,
+                     E.DELETED):
+            results = self._scope.props.results_model
+            self.update_results_model(self.search_string, results)
+            results.flush_revision_queue()
+
     def on_search_changed(self, scope, search, search_type, cancellable):
-        search_string = \
+        self.search_string = \
             (search.props.search_string.lower() if search else None) or None
         results = self._scope.props.results_model
-        self.update_results_model(search_string, results)
+        self.update_results_model(self.search_string, results)
         results.flush_revision_queue()
         search.finished()
 
@@ -107,5 +122,15 @@ if __name__ == "__main__":
         print >> sys.stderr, 'Failed to own name %s. Bailing out.' % BUS_NAME
         raise SystemExit (1)
 
+
     daemon = Daemon()
+
+    f1 = Gio.File.new_for_path(USER_APPS)
+    m1 = f1.monitor_directory(Gio.FileMonitorFlags.NONE, None)
+    m1.connect('changed', daemon._fogapp_changed)
+
+    f2 = Gio.File.new_for_path(SYSTEM_APPS)
+    m2 = f2.monitor_directory(Gio.FileMonitorFlags.NONE, None)
+    m2.connect('changed', daemon._fogapp_changed)
+
     GObject.MainLoop().run()
