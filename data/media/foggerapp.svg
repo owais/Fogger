@@ -10,12 +10,12 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   sodipodi:docname="fogger_app.svg"
+   sodipodi:docname="foggerapp.svg"
    inkscape:version="0.48.3.1 r9886"
    version="1.1"
    id="svg2"
-   height="100"
-   width="100">
+   height="80"
+   width="80">
   <defs
      id="defs4">
     <filter
@@ -1305,12 +1305,12 @@
      inkscape:pageshadow="2"
      inkscape:zoom="2.8284271"
      inkscape:cx="106.9088"
-     inkscape:cy="27.410262"
+     inkscape:cy="41.552398"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1366"
-     inkscape:window-height="744"
+     inkscape:window-width="1920"
+     inkscape:window-height="1056"
      inkscape:window-x="0"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
@@ -1393,7 +1393,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1401,7 +1401,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-952.36217)">
+     transform="translate(0,-972.36217)">
     <rect
        style="opacity:0.9;fill:url(#linearGradient3562);fill-opacity:1;fill-rule:nonzero;stroke:none;display:none;filter:url(#filter3174)"
        id="rect3745"
@@ -1443,7 +1443,8 @@
        width="66"
        transform="translate(437.97532,398.37253)" />
     <g
-       id="g4116">
+       id="g4116"
+       transform="matrix(0.79870637,0,0,0.80747734,0.18499286,202.80321)">
       <g
          transform="matrix(1.0879779,0,0,1.0879779,-476.71542,517.7467)"
          id="g6508">

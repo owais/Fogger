@@ -8,6 +8,7 @@ from gi.repository import GLib
 
 from fogger_lib.helpers import get_or_create_directory
 from fogger_lib.exceptions import BadFogAppException
+from fogger_lib.DB import get_state_db
 from . foggerconfig import get_data_file, get_data_path
 
 
@@ -25,25 +26,25 @@ BASE_APP_PATHS += list(GLib.get_system_data_dirs())
 APP_PATHS = [op.join(P, 'fogapps') for P in BASE_APP_PATHS]
 USER_APP_PATH = op.join(GLib.get_user_data_dir(), 'fogapps')
 
-DEFAULT_SIZE = (800, 600,)
-DEFAULT_STATE = False # True if maximized
-
 
 class FogApp(object):
     name = None
     url = None
-    window_size = DEFAULT_SIZE
-    maximized = DEFAULT_STATE
     icon = None
     uuid = None
     path = ''
+    _window_size = (1024, 768)
+    _maximized = False
     __style_cache = __script_cache = ''
     DEBUG = False
 
     def __init__(self, path=None):
         self.DEBUG = logging.getLogger('fogger').level == logging.DEBUG
+        self.state_db = get_state_db()
+
         if not path:
             return
+
         self.path = path
         if op.exists(self.path):
             try:
@@ -57,11 +58,13 @@ class FogApp(object):
                     self.url = state['url']
                     self.uuid = state['uuid']
                     self.icon = state['icon']
-                    self.window_size = state.get('window_size') or DEFAULT_SIZE
-                    self.maximized = state.get('maximized') or DEFAULT_STATE
                 except KeyError:
                     logger.error('Could not read app configuration: %s' % path)
                     raise BadFogAppException()
+                else:
+                    state = self.state_db.load_state(self.uuid)
+                    self.window_size = state[:2]
+                    self.maximized = state[2]
 
     @property
     def scripts(self):
@@ -129,7 +132,28 @@ class FogApp(object):
             if op.exists(autostart_file):
                 os.remove(autostart_file)
 
+    @property
+    def maximized(self):
+        return self._maximized
+
+    @maximized.setter
+    def maximized(self, maximized):
+        self._maximized = maximized
+
+    @property
+    def window_size(self):
+        return self._window_size
+
+    @window_size.setter
+    def window_size(self, size):
+        self._window_size = size
+
     def save(self):
+        self.state_db.save_state(self.uuid,
+                                 self.window_size[0],
+                                 self.window_size[1],
+                                 self.maximized)
+
         if not self.path.startswith(USER_APP_PATH):
             return
         state = {
@@ -137,8 +161,6 @@ class FogApp(object):
             'url': self.url,
             'uuid': self.uuid,
             'icon': self.icon,
-            'window_size': self.window_size or DEFAULT_SIZE,
-            'maximized': self.maximized or DEFAULT_STATE,
         }
         serialized = json.dumps(state)
         handle = open(op.join(self.path, 'app.json'), 'w')

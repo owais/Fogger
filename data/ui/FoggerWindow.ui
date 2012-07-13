@@ -3,14 +3,7 @@
   <!-- interface-requires gtk+ 3.0 -->
   <!-- interface-requires fogger_window 1.0 -->
   <!-- interface-local-resource-path ../media -->
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-help</property>
-  </object>
   <object class="FoggerWindow" id="fogger_window">
-    <property name="width_request">400</property>
-    <property name="height_request">400</property>
     <property name="can_focus">False</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
@@ -21,6 +14,7 @@
     <property name="default_height">700</property>
     <property name="icon_name">fogger</property>
     <property name="gravity">center</property>
+    <property name="has_resize_grip">False</property>
     <child>
       <object class="GtkBox" id="box1">
         <property name="visible">True</property>
@@ -153,8 +147,8 @@
                                 <property name="tooltip_markup" translatable="yes">&lt;tt&gt;&lt;small&gt;&lt;i&gt;You can also drop a custom icon anywhere on the window&lt;/i&gt;&lt;/small&gt;&lt;/tt&gt;</property>
                                 <property name="halign">end</property>
                                 <property name="valign">center</property>
+                                <property name="pixbuf">../media/foggerapp.svg</property>
                                 <property name="pixel_size">80</property>
-                                <property name="icon_name">foggerapp</property>
                               </object>
                             </child>
                           </object>
@@ -406,5 +400,10 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-help</property>
   </object>
 </interface>

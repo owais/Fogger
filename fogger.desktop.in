@@ -3,6 +3,6 @@ _Name=Create a new fog app
 _Comment=Create a new fog app
 Categories=Network;WebBrowser;
 Exec=fogger
-Icon=fogger
+Icon=/opt/extras.ubuntu.com/fogger/share/fogger/media/fogger.svg
 Terminal=false
 Type=Application

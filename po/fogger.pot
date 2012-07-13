@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-11 22:29+0530\n"
+"POT-Creation-Date: 2012-07-14 05:14+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../fogger_lib/Dialogs.py:34
+#: ../fogger_lib/Dialogs.py:50
 msgid "Please choose an icon"
 msgstr ""
 
@@ -105,16 +105,16 @@ msgstr ""
 msgid "Contents"
 msgstr ""
 
-#: ../fogger/AppWindow.py:239
+#: ../fogger/AppWindow.py:262
 msgid "Geolocation permission requested"
 msgstr ""
 
-#: ../fogger/AppWindow.py:240
+#: ../fogger/AppWindow.py:263
 #, python-format
 msgid "%s wants to know your current location. Do you want to share?"
 msgstr ""
 
-#: ../fogger/AppWindow.py:242
+#: ../fogger/AppWindow.py:265
 msgid "Share"
 msgstr ""
 
@@ -131,11 +131,11 @@ msgid "Remove a fogapp"
 msgstr ""
 
 #: ../fogger/__init__.py:42
-msgid "Remove all fogapp"
+msgid "Remove all fogapps"
 msgstr ""
 
 #: ../fogger/__init__.py:45
-msgid "Remove all fogapps"
+msgid "Remove stale desktop entries"
 msgstr ""
 
 #: ../data/ui/AboutFoggerDialog.ui.h:1
@@ -164,7 +164,7 @@ msgid "Launchpad Translators\t"
 msgstr ""
 
 #. Code for other initialization actions should be added here.
-#: ../bin/fogger-lens.py:83 ../fogger.desktop.in.h:1
+#: ../bin/fogger-lens.py:99 ../fogger.desktop.in.h:1
 msgid "Create a new fog app"
 msgstr ""
 
@@ -187,7 +187,7 @@ msgid "<b><small>URL</small></b>"
 msgstr ""
 
 #: ../data/ui/FoggerWindow.ui.h:8
-msgid "<tt><small><i>Example: www.facebook.com</i></small></tt>"
+msgid "<tt><small><i>Example: www.reddit.com</i></small></tt>"
 msgstr ""
 
 #: ../data/ui/FoggerWindow.ui.h:9
@@ -195,7 +195,7 @@ msgid "<b><small>Name</small></b>"
 msgstr ""
 
 #: ../data/ui/FoggerWindow.ui.h:10
-msgid "<tt><small><i>Example: Facebook</i></small></tt>"
+msgid "<tt><small><i>Example: Reddit</i></small></tt>"
 msgstr ""
 
 #: ../data/ui/FoggerWindow.ui.h:11
@@ -265,37 +265,37 @@ msgstr ""
 msgid "Autostart"
 msgstr ""
 
-#: ../fogger_lib/AppWindow.py:99
+#: ../fogger_lib/AppWindow.py:100
 #, python-format
 msgid "%s will be freed."
 msgstr ""
 
-#: ../fogger/FoggerWindow.py:128
+#: ../fogger/FoggerWindow.py:132
 msgid "There's an app for that!"
 msgstr ""
 
-#: ../fogger/FoggerWindow.py:129
+#: ../fogger/FoggerWindow.py:133
 msgid ""
 "A fog app already exists by that name. Would you like to replace it with a "
 "new one?"
 msgstr ""
 
-#: ../fogger/FoggerWindow.py:131
+#: ../fogger/FoggerWindow.py:135
 msgid "Replace"
 msgstr ""
 
-#: ../fogger/FoggerWindow.py:192
+#: ../fogger/FoggerWindow.py:197
 #, python-format
 msgid ""
 "The URL %s could not be reached.\n"
 "Please double check the URL you provided and try again."
 msgstr ""
 
-#: ../fogger_lib/Downloads.py:95
+#: ../fogger_lib/Downloads.py:109
 msgid "Error"
 msgstr ""
 
-#: ../fogger_lib/Downloads.py:100
+#: ../fogger_lib/Downloads.py:114
 msgid "Download Complete"
 msgstr ""
 

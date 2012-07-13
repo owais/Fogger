@@ -34,6 +34,7 @@ BUS_NAME = "net.launchpad.lens.fogger"
 CREATE_URI = GLib.filename_to_uri(
                         '/usr/share/applications/extras-fogger.desktop', None)
 CAT_ICON = get_media_file('lens-cat.svg')
+FOGGER_ICON = get_media_file('fogger.svg', '')
 USER_APPS = op.join(GLib.get_user_data_dir(), 'applications')
 SYSTEM_APPS = '/usr/share/applications'
 
@@ -94,7 +95,7 @@ class Daemon:
                          app.get_icon().to_string(), 0,
                          'application/x-desktop', app.get_name(), '', '')
 
-        model.append(CREATE_URI, 'fogger', 0, 'appplication/x-desktop',
+        model.append(CREATE_URI, FOGGER_ICON, 0, 'appplication/x-desktop',
                      _('Create a new fog app'), '', '')
         return
 

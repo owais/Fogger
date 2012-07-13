@@ -31,7 +31,7 @@ logger = logging.getLogger('fogger')
 from fogger_lib import Window, IconChooserDialog, ConfirmDialog
 from fogger_lib import FogAppManager
 from fogger_lib.exceptions import BaseFogAppException
-from fogger_lib.helpers import get_network_proxies
+from fogger_lib.helpers import get_network_proxies, get_media_file
 from fogger.AboutFoggerDialog import AboutFoggerDialog
 
 
@@ -57,7 +57,8 @@ class FoggerWindow(Window):
         self.spinner = self.builder.get_object('spinner')
         self.error_message = self.builder.get_object('error')
 
-        self.icon = 'foggerapp'
+        self.DEFAULT_APP_ICON = get_media_file('foggerapp.svg', '')
+        self.icon = self.DEFAULT_APP_ICON
         self.icon_selected = False
         self.setup_drop_targets()
         self.icon_theme = Gtk.IconTheme.get_default()
@@ -111,9 +112,11 @@ class FoggerWindow(Window):
                     self.icon = subname
                     break
         if not gicon:
-            gicon = Gio.Icon.new_for_string('foggerapp')
-            self.icon = 'foggerapp'
-        self.image.set_from_gicon(gicon, ICON_SIZE)
+            self.icon = self.DEFAULT_APP_ICON
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file(self.icon)
+            self.image.props.pixbuf = pixbuf.scale_simple(80, 80, GdkPixbuf.InterpType.BILINEAR)
+        else:
+            self.image.set_from_gicon(gicon, ICON_SIZE)
 
     def setup_icon(self, path):
         pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
@@ -196,7 +199,7 @@ class FoggerWindow(Window):
                 return
 
             SkipIcon = type('SkipIcon', (Exception,), {})
-            if self.icon != "foggerapp":
+            if self.icon != self.DEFAULT_APP_ICON:
                 raise SkipIcon()
 
             # Try to find the apple-touch-icon
