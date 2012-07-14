@@ -100,8 +100,8 @@ class AppWindow(Gtk.Window):
                 sl.set_markup('<small><tt>%s</tt></small>' % (_('%s will be freed.' % self.app.data_size)))
                 sl.show()
                 self.preferences_dialog.set_autostart_widget(self.app.autostart)
-                self.preferences_dialog.scripts_path = self.app.scripts_path
-                self.preferences_dialog.styles_path = self.app.styles_path
+                self.preferences_dialog.scripts_path = self.app.userscripts_path
+                self.preferences_dialog.styles_path = self.app.userstyles_path
             self.preferences_dialog.connect('destroy', self.on_preferences_dialog_destroyed)
             self.preferences_dialog.connect('fogger-autostart-changed', self.on_fogger_autostart_changed)
             self.preferences_dialog.connect('fogger-app-reset', self.on_fogger_app_reset)

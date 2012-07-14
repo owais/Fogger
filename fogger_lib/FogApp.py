@@ -62,6 +62,7 @@ class FogApp(object):
                     logger.error('Could not read app configuration: %s' % path)
                     raise BadFogAppException()
                 else:
+                    self.user_path = op.join(USER_APP_PATH, self.uuid)
                     state = self.state_db.load_state(self.uuid)
                     self.window_size = state[:2]
                     self.maximized = state[2]
@@ -70,35 +71,46 @@ class FogApp(object):
     def scripts(self):
         if self.DEBUG or not self.__script_cache:
             scripts = []
-            path = self.scripts_path
-            for item in os.listdir(path):
-                try:
-                    scripts.append(open(op.join(path, item)).read())
-                    logger.info('READING %s' % item)
-                except:
-                    logger.error('Error reading file: %s', op.join(path, item))
-                self.__script_cache = scripts
+            for path in (self.scripts_path, self.userscripts_path,):
+                if not op.exists(path):
+                    continue
+                for item in os.listdir(path):
+                    try:
+                        scripts.append(open(op.join(path, item)).read())
+                        logger.info('READING %s' % item)
+                    except:
+                        logger.error('Error reading file: %s', op.join(path, item))
+                    self.__script_cache = scripts
         return self.__script_cache
 
     @property
     def styles(self):
         if self.DEBUG or not self.__style_cache:
             styles = []
-            path = self.styles_path
-            for item in os.listdir(path):
-                try:
-                    lines = [line.replace("'", "\\'")
-                            for line in open(op.join(path, item)).readlines()]
-                    logger.info('READING %s' % item)
-                except Exception, e:
-                    raise e
-                    logger.error('Error reading file: %s\n %s' % \
-                                  (op.join(path, item), e))
-                else:
-                    styles.append('\n'.join([l for l in lines]))
-                self.__style_cache = styles
-
+            for path in (self.styles_path, self.userstyles_path,):
+                if not op.exists(path):
+                    continue
+                for item in os.listdir(path):
+                    try:
+                        lines = [line.replace("'", "\\'")
+                                for line in open(op.join(path, item)).readlines()]
+                        logger.info('READING %s' % item)
+                    except Exception, e:
+                        raise e
+                        logger.error('Error reading file: %s\n %s' % \
+                                    (op.join(path, item), e))
+                    else:
+                        styles.append('\n'.join([l for l in lines]))
+                    self.__style_cache = styles
         return self.__style_cache
+
+    @property
+    def userscripts_path(self):
+        return get_or_create_directory(op.join(self.user_path, 'scripts'))
+
+    @property
+    def userstyles_path(self):
+        return get_or_create_directory(op.join(self.user_path, 'styles'))
 
     @property
     def scripts_path(self):
@@ -227,10 +239,9 @@ class FogAppManager(object):
             self.apps = json.loads(open(path, 'r').read())
 
     def get(self, uuid):
-        #path = self.apps.get(uuid)
         for app_path in APP_PATHS:
             path = op.join(app_path, uuid)
-            if op.exists(path):
+            if op.exists(op.join(path, 'app.json')):
                 return FogApp(path)
         logger.debug('No such app: %s' % uuid)
         return None
@@ -241,7 +252,7 @@ class FogAppManager(object):
     def get_all(self):
         apps = []
         for app_path in APP_PATHS:
-            if not op.exists(app_path):
+            if not op.exists(op.join(app_path, 'app.json')):
                 continue
             dirs = os.listdir(app_path)
             for path in dirs:
