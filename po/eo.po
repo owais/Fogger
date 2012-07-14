@@ -7,17 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fogger\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-07-11 22:29+0530\n"
+"POT-Creation-Date: 2012-07-14 05:14+0530\n"
 "PO-Revision-Date: 2012-07-11 23:58+0000\n"
 "Last-Translator: Michael Moroni <michael.moroni@mailoo.org>\n"
 "Language-Team: Esperanto <eo@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-07-13 05:16+0000\n"
+"X-Launchpad-Export-Date: 2012-07-14 06:47+0000\n"
 "X-Generator: Launchpad (build 15614)\n"
 
-#: ../fogger_lib/Dialogs.py:34
+#: ../fogger_lib/Dialogs.py:50
 msgid "Please choose an icon"
 msgstr "Bonvole elektu piktogramon"
 
@@ -105,16 +105,16 @@ msgstr "_Helpo"
 msgid "Contents"
 msgstr "Enhavo"
 
-#: ../fogger/AppWindow.py:239
+#: ../fogger/AppWindow.py:262
 msgid "Geolocation permission requested"
 msgstr "Permeso de terlokalizo postulata"
 
-#: ../fogger/AppWindow.py:240
+#: ../fogger/AppWindow.py:263
 #, python-format
 msgid "%s wants to know your current location. Do you want to share?"
 msgstr "%s volas koni vian aktualan lokon. Ĉu vi volas kunhavigi ĝin?"
 
-#: ../fogger/AppWindow.py:242
+#: ../fogger/AppWindow.py:265
 msgid "Share"
 msgstr "Kunhavigi"
 
@@ -131,12 +131,12 @@ msgid "Remove a fogapp"
 msgstr "Forigi fogeraplikaĵon"
 
 #: ../fogger/__init__.py:42
-msgid "Remove all fogapp"
-msgstr "Forigi ĉiun fogeraplikaĵon"
-
-#: ../fogger/__init__.py:45
 msgid "Remove all fogapps"
 msgstr "Forigi ĉiujn fogeraplikaĵojn"
+
+#: ../fogger/__init__.py:45
+msgid "Remove stale desktop entries"
+msgstr ""
 
 #: ../data/ui/AboutFoggerDialog.ui.h:1
 msgid "Copyright (C) 2012 Owais Lone <hello@owaislone.org>"
@@ -164,7 +164,7 @@ msgid "Launchpad Translators\t"
 msgstr "Laŭnĉpadaj tradukistoj\t"
 
 #. Code for other initialization actions should be added here.
-#: ../bin/fogger-lens.py:83 ../fogger.desktop.in.h:1
+#: ../bin/fogger-lens.py:99 ../fogger.desktop.in.h:1
 msgid "Create a new fog app"
 msgstr "Krei novan fogeraplikaĵon"
 
@@ -189,16 +189,16 @@ msgid "<b><small>URL</small></b>"
 msgstr "<b><small>URL</small></b>"
 
 #: ../data/ui/FoggerWindow.ui.h:8
-msgid "<tt><small><i>Example: www.facebook.com</i></small></tt>"
-msgstr "<tt><small><i>Ekzemple: eo.wikipedia.org</i></small></tt>"
+msgid "<tt><small><i>Example: www.reddit.com</i></small></tt>"
+msgstr ""
 
 #: ../data/ui/FoggerWindow.ui.h:9
 msgid "<b><small>Name</small></b>"
 msgstr "<b><small>Nomo</small></b>"
 
 #: ../data/ui/FoggerWindow.ui.h:10
-msgid "<tt><small><i>Example: Facebook</i></small></tt>"
-msgstr "<tt><small><i>Ekzemple: Vikipedio</i></small></tt>"
+msgid "<tt><small><i>Example: Reddit</i></small></tt>"
+msgstr ""
 
 #: ../data/ui/FoggerWindow.ui.h:11
 msgid "Create"
@@ -267,16 +267,16 @@ msgstr "Tajlorado"
 msgid "Autostart"
 msgstr "Aŭtomata startigo"
 
-#: ../fogger_lib/AppWindow.py:99
+#: ../fogger_lib/AppWindow.py:100
 #, python-format
 msgid "%s will be freed."
 msgstr "%s estos liberigita."
 
-#: ../fogger/FoggerWindow.py:128
+#: ../fogger/FoggerWindow.py:132
 msgid "There's an app for that!"
 msgstr "Estas aplikaĵo por tio!"
 
-#: ../fogger/FoggerWindow.py:129
+#: ../fogger/FoggerWindow.py:133
 msgid ""
 "A fog app already exists by that name. Would you like to replace it with a "
 "new one?"
@@ -284,11 +284,11 @@ msgstr ""
 "Fogeraplikaĵo kun tiu nomo jam ekzistas. Ĉu vi volas anstataŭigi ĝin per "
 "nova?"
 
-#: ../fogger/FoggerWindow.py:131
+#: ../fogger/FoggerWindow.py:135
 msgid "Replace"
 msgstr "Anstataŭigi"
 
-#: ../fogger/FoggerWindow.py:192
+#: ../fogger/FoggerWindow.py:197
 #, python-format
 msgid ""
 "The URL %s could not be reached.\n"
@@ -297,11 +297,11 @@ msgstr ""
 "La URL %s ne atigeblas.\n"
 "Bonvole duoble kontrolu la URL, kiun vi provizis, kaj provu denove."
 
-#: ../fogger_lib/Downloads.py:95
+#: ../fogger_lib/Downloads.py:109
 msgid "Error"
 msgstr "Eraro"
 
-#: ../fogger_lib/Downloads.py:100
+#: ../fogger_lib/Downloads.py:114
 msgid "Download Complete"
 msgstr "Elŝuto finiĝis"
 
@@ -322,3 +322,12 @@ msgid ""
 "This will permanently remove the app and delete all the data associated with "
 "it."
 msgstr ""
+
+#~ msgid "<tt><small><i>Example: Facebook</i></small></tt>"
+#~ msgstr "<tt><small><i>Ekzemple: Vikipedio</i></small></tt>"
+
+#~ msgid "Remove all fogapp"
+#~ msgstr "Forigi ĉiun fogeraplikaĵon"
+
+#~ msgid "<tt><small><i>Example: www.facebook.com</i></small></tt>"
+#~ msgstr "<tt><small><i>Ekzemple: eo.wikipedia.org</i></small></tt>"
