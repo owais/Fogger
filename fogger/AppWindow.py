@@ -130,6 +130,7 @@ class FoggerAppWindow(AppWindow):
         session.props.max_conns_per_host = 8
 
     def setup_websettings(self):
+        self.webview.props.full_content_zoom = True
         self.websettings = WebKit.WebSettings()
         self.websettings.props.html5_local_storage_database_path = \
                                     get_or_create_directory(op.join(
