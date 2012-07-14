@@ -252,10 +252,12 @@ class FogAppManager(object):
     def get_all(self):
         apps = []
         for app_path in APP_PATHS:
-            if not op.exists(op.join(app_path, 'app.json')):
+            if not op.exists(app_path):
                 continue
             dirs = os.listdir(app_path)
             for path in dirs:
+                if not op.exists(op.join(app_path, path, 'app.json')):
+                    continue
                 try:
                     apps.append(FogApp(op.join(app_path, path)))
                 except BadFogAppException:
