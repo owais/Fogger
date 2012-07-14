@@ -45,9 +45,7 @@ class StateDB(object):
     _con = FailSafeClass()
 
     def __new__(cls):
-        #db_path = op.join(get_or_create_directory(DB_PATH), 'state.db')
-        #db_path = op.join(DB_PATH, 'state.db')
-        db_path = op.join('/home/owais/Desktop/kuta/', 'state.db')
+        db_path = op.join(get_or_create_directory(DB_PATH), 'state.db')
 
         try:
             if (cls._con == None) or isinstance(cls._con, FailSafeClass):
