@@ -296,7 +296,7 @@ def setup_icon(path, icon, themed_icon):
     if op.exists(icon):
         if themed_icon:
             _, ext = op.splitext(icon)
-            path = op.join(USER_ICON_PATH, themed_icon + ext)
+            path = op.join(get_or_create_directory(USER_ICON_PATH), themed_icon + ext)
             return_val = themed_icon
         else:
             _, ext = op.splitext(icon)
