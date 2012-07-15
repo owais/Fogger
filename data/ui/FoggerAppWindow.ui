@@ -167,7 +167,6 @@
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
     <property name="title" translatable="yes">Fogger</property>
-    <property name="window_position">center</property>
     <property name="default_width">800</property>
     <property name="default_height">600</property>
     <property name="icon">../media/fogger.svg</property>

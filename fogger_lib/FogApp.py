@@ -6,22 +6,24 @@ import logging
 
 from gi.repository import GLib
 
-from fogger_lib.helpers import get_or_create_directory
-from fogger_lib.exceptions import BadFogAppException
-from fogger_lib.DB import get_state_db
+from . exceptions import BadFogAppException
+from . DB import get_state_db
+from . helpers import get_or_create_directory
 from . foggerconfig import get_data_file, get_data_path
+from . consts import DEFAULT_APP_ICON
 
 
 __all__ = ('FogApp', 'FogAppManager',)
 
 op = os.path
 logger = logging.getLogger('fogger_lib')
-DESKTOP_DIR = op.join(GLib.get_user_data_dir(), 'applications')
+USER_DATA_DIR = GLib.get_user_data_dir()
+DESKTOP_DIR = op.join(USER_DATA_DIR, 'applications')
 CONF_PATH = op.join(GLib.get_user_config_dir(), 'fogger')
 CACHE_PATH = op.join(GLib.get_user_cache_dir(), 'fogger')
 AUTOSTART_PATH = op.join(GLib.get_user_config_dir(), 'autostart')
-
-BASE_APP_PATHS = [GLib.get_user_data_dir(), get_data_path()]
+USER_ICON_PATH = op.join(USER_DATA_DIR, 'icons')
+BASE_APP_PATHS = [USER_DATA_DIR, get_data_path()]
 BASE_APP_PATHS += list(GLib.get_system_data_dirs())
 APP_PATHS = [op.join(P, 'fogapps') for P in BASE_APP_PATHS]
 USER_APP_PATH = op.join(GLib.get_user_data_dir(), 'fogapps')
@@ -264,10 +266,10 @@ class FogAppManager(object):
                     pass
         return apps
 
-    def create(self, name, url, icon):
+    def create(self, name, url, icon, themed_icon):
         uuid = md5(name.lower()).hexdigest()
         path = setup_app_dir(uuid)
-        icon = setup_icon(icon, path)
+        icon = setup_icon(path, icon, themed_icon)
         create_desktop_files(name, uuid, icon, path)
         app = FogApp()
         app.name = name
@@ -288,15 +290,21 @@ class FogAppManager(object):
     get_by_uuid = get
 
 
-def setup_icon(icon, path):
-    if icon.startswith('/') and op.exists(icon):
-        _, ext = op.splitext(icon)
-        path = op.join(path, 'icon%s' % ext)
+def setup_icon(path, icon, themed_icon):
+    if icon == DEFAULT_APP_ICON:
+        return icon
+    if op.exists(icon):
+        if themed_icon:
+            _, ext = op.splitext(icon)
+            path = op.join(USER_ICON_PATH, themed_icon + ext)
+            return_val = themed_icon
+        else:
+            _, ext = op.splitext(icon)
+            path = op.join(path, 'icon%s' % ext)
+            return_val = path
         data = open(icon).read()
         open(path, 'w').write(data)
-        return path
-    else:
-        return icon
+        return return_val
 
 def create_desktop_files(name, uuid, icon, path):
     desktop_tmpl = open(get_data_file('templates/fogapp.desktop.tmpl')).read()

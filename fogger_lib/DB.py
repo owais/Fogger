@@ -58,6 +58,9 @@ class FailSafeClass(object):
 
 class StateDB(object):
     _con = FailSafeClass()
+    height = None
+    width = None
+    maximized = None
 
     def __new__(cls):
         db_path = op.join(get_or_create_directory(DB_PATH), 'state.db')
@@ -74,6 +77,8 @@ class StateDB(object):
             return FailSafeClass()
 
     def load_state(self, uuid):
+        if self.width and self.height and self.maximized:
+            return (self.width, self.height, self.maximized)
         cursor = self._con.cursor()
         cursor.execute("SELECT * FROM WINDOW_STATE WHERE id=?", (uuid,))
         state = cursor.fetchone()
@@ -83,6 +88,7 @@ class StateDB(object):
             return (DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_STATE)
 
     def save_state(self, *values):
+        _, self.width, self.height, self.maximized = values
         cursor = self._con.cursor()
         cursor.execute("REPLACE INTO WINDOW_STATE (id, width, height, maximized) VALUES (?,?,?,?)", values)
         self._con.commit()

@@ -14,7 +14,7 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
-import os
+from os import path as op
 import re
 import requests
 import urlparse
@@ -31,7 +31,8 @@ logger = logging.getLogger('fogger')
 from fogger_lib import Window, IconChooserDialog, ConfirmDialog
 from fogger_lib import FogAppManager
 from fogger_lib.exceptions import BaseFogAppException
-from fogger_lib.helpers import get_network_proxies, get_media_file
+from fogger_lib.helpers import get_network_proxies
+from fogger_lib.consts import DEFAULT_APP_ICON
 from fogger.AboutFoggerDialog import AboutFoggerDialog
 
 
@@ -57,11 +58,12 @@ class FoggerWindow(Window):
         self.spinner = self.builder.get_object('spinner')
         self.error_message = self.builder.get_object('error')
 
-        self.DEFAULT_APP_ICON = get_media_file('foggerapp.svg', '')
-        self.icon = self.DEFAULT_APP_ICON
+        self.icon = DEFAULT_APP_ICON
+        self.themed_icon = None
         self.icon_selected = False
-        self.setup_drop_targets()
         self.icon_theme = Gtk.IconTheme.get_default()
+
+        self.setup_drop_targets()
 
     def validate_form(self, widget, data=None):
         url = self.url.get_text()
@@ -100,29 +102,29 @@ class FoggerWindow(Window):
     def on_name_changed(self, widget, data=None):
         if self.icon_selected:
             return
-        name = self.name.get_text().lower().replace(' ', '-')
-        gicon = None
-        if self.icon_theme.has_icon(name):
-            gicon = Gio.Icon.new_for_string(name)
-            self.icon= name
+        name = self.name.get_text().lower().strip().replace(' ', '-')
+        words = name.split('-')
+        subnames = []
+        for i, word in enumerate(words):
+            x = '-'.join(words[:(i + 1) * -1])
+            if x:
+                subnames.append(x)
+        search_strings = [name] + subnames
+        icon = self.icon_theme.choose_icon(search_strings, 0, Gtk.IconLookupFlags.GENERIC_FALLBACK)
+        if icon:
+            filename = icon.get_filename()
+            path, ext = op.splitext(filename)
+            _, themed_icon = op.split(path)
+            self.setup_icon(filename, themed_icon, False)
         else:
-            for subname in name.split('-'):
-                if self.icon_theme.has_icon(subname):
-                    gicon = Gio.Icon.new_for_string(subname)
-                    self.icon = subname
-                    break
-        if not gicon:
-            self.icon = self.DEFAULT_APP_ICON
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file(self.icon)
-            self.image.props.pixbuf = pixbuf.scale_simple(80, 80, GdkPixbuf.InterpType.BILINEAR)
-        else:
-            self.image.set_from_gicon(gicon, ICON_SIZE)
+            self.setup_icon(DEFAULT_APP_ICON, None, False)
 
-    def setup_icon(self, path):
+    def setup_icon(self, path, name=None, selected=True):
         pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
         self.image.props.pixbuf = pixbuf.scale_simple(80, 80, GdkPixbuf.InterpType.BILINEAR)
         self.icon = path
-        self.icon_selected = True
+        self.themed_icon = name
+        self.icon_selected = selected
 
     def on_create(self, widget, data=None):
         name = self.name.get_text()
@@ -147,7 +149,7 @@ class FoggerWindow(Window):
     def create_app(self, url, name):
         manager = FogAppManager()
         try:
-            app = manager.create(name, url, self.icon)
+            app = manager.create(name, url, self.icon, self.themed_icon)
         except BaseFogAppException:
             logger.error("Error creating App %s" % url)
         else:
@@ -199,7 +201,7 @@ class FoggerWindow(Window):
                 return
 
             SkipIcon = type('SkipIcon', (Exception,), {})
-            if self.icon != self.DEFAULT_APP_ICON:
+            if self.icon != DEFAULT_APP_ICON:
                 raise SkipIcon()
 
             # Try to find the apple-touch-icon
@@ -228,7 +230,7 @@ class FoggerWindow(Window):
                 else:
                     icon_url = urlparse.urljoin(url, href)
 
-            ext = os.path.splitext(icon_url)[-1]
+            ext = op.splitext(icon_url)[-1]
             tmpf = tempfile.mktemp(ext)
             logger.debug('temp file: %s' % tmpf)
 
