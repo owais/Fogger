@@ -153,7 +153,6 @@ class FoggerAppWindow(AppWindow):
         self.websettings.props.enable_page_cache = True
         self.websettings.props.enable_plugins = True
         if logger.level == logging.DEBUG:
-            print 'DEBUGGING'
             self.websettings.props.enable_developer_extras = True
         self.webview.set_settings(self.websettings)
 

@@ -73,7 +73,11 @@ class FogApp(object):
     def scripts(self):
         if self.DEBUG or not self.__script_cache:
             scripts = []
-            for path in (self.scripts_path, self.userscripts_path,):
+            if self.scripts_path == self.userscripts_path:
+                paths = (self.scripts_path,)
+            else:
+                paths = (self.scripts_path, self.userscripts_path,)
+            for path in paths:
                 if not op.exists(path):
                     continue
                 for item in os.listdir(path):
@@ -89,7 +93,12 @@ class FogApp(object):
     def styles(self):
         if self.DEBUG or not self.__style_cache:
             styles = []
-            for path in (self.styles_path, self.userstyles_path,):
+            paths = (self.styles_path, self.userstyles_path,)
+            if self.styles_path == self.userstyles_path:
+                paths = (self.styles_path,)
+            else:
+                paths = (self.styles_path, self.userstyles_path,)
+            for path in paths:
                 if not op.exists(path):
                     continue
                 for item in os.listdir(path):
