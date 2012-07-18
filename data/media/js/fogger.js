@@ -8,7 +8,6 @@ var dispatch = function(data) {
     }
   }
   var string = params.join('&');
-  console.log(string)
   var uri = 'http://fogger.local/?' + string;
   var h = new XMLHttpRequest();
   h.open('GET', uri,  true);
@@ -222,7 +221,8 @@ Desktop.prototype.notify = function(summary, body) {
 
 Desktop.prototype.setUrgent = function(urgent) {
   this._dispatch({
-    'action': urgent == true ? 'set_urgent': 'unset_urgent',
+    'action': 'set_urgent',
+    'urgent': urgent,
   });
 }
 

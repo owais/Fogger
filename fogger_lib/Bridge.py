@@ -24,6 +24,7 @@ class DesktopBridge:
 
     widget_callback_data = {
 
+
     }
 
     def __init__(self, root, desktop_file, icon_name=None):
@@ -58,22 +59,22 @@ class DesktopBridge:
             })
 
     def notify(self, W, data):
-        Notify.Notification.new(data['title'][0], data['body'][0], self.icon_name).show()
+        Notify.Notification.new(data.get('summary', [''])[0], data.get('body', [''])[0], self.icon_name).show()
 
     def set_progress(self, W, data):
         self.launcher_entry.props.progress = float(data['progress'][0])
 
     def set_progress_visible(self, W, data):
-        self.launcher_entry.props.progress_visible = data['visible'][0]
+        self.launcher_entry.props.progress_visible = data['visible'][0] == 'true'
 
     def set_count(self, W, data):
         self.launcher_entry.props.count = int(data['count'][0])
 
     def set_count_visible(self, W, data):
-        self.launcher_entry.props.count_visible = data['visible'][0]
+        self.launcher_entry.props.count_visible = data['visible'][0] == 'true'
 
     def set_urgent(self, W, data):
-        self.launcher_entry.props.urgent = data['urgent'][0]
+        self.launcher_entry.props.urgent = data['urgent'][0] == 'true'
 
     def add_quicklist_item(self, W, data):
         name = data['name'][0]
