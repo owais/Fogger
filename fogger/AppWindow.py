@@ -16,6 +16,7 @@
 
 import os
 import urllib
+import urlparse
 import logging
 import gettext
 from gettext import gettext as _
@@ -251,11 +252,11 @@ class FoggerAppWindow(AppWindow):
         uri = urllib.unquote(request.props.uri)
         if uri.startswith('http://fogger.local/'):
             request.props.uri = 'about:blank'
-            method = uri.replace('http://fogger.local/', '')
-            action = method.split('///')
-            method = action[0]
-            args = action[1:]
-            getattr(self.bridge, method)(self, *args)
+            query = urlparse.parse_qs(urlparse.urlparse(uri).query)
+            method = query.get('action', None)
+            if method:
+                method = method[0]
+                getattr(self.bridge, method)(self, query)
             return True
 
     def on_request_geo_permission(self, view, frame, decision, data=None):
@@ -339,7 +340,8 @@ class FoggerAppWindow(AppWindow):
             self.set_icon_name(self.app.icon)
         self.set_title(app.name or app.url or 'FogApp')
         self.set_role('fogger-%s' % app.uuid)
-        self.set_wmclass('fogger-%s' % app.uuid, app.uuid)
+        wm_class = 'fogapp-%s' % app.uuid
+        self.set_wmclass('fogapp', wm_class)
         screen = Gdk.Screen.get_default()
         max_h = screen.get_height()
         max_w = screen.get_width()

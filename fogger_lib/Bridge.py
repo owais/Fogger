@@ -16,10 +16,15 @@ from gi.repository import Gtk, Unity, Notify, Dbusmenu
 
 Notify.init('fogger')
 
+
 class DesktopBridge:
     icon_name = None
     desktop_file = None
     menus = {}
+
+    widget_callback_data = {
+
+    }
 
     def __init__(self, root, desktop_file, icon_name=None):
         self.W = root
@@ -52,34 +57,26 @@ class DesktopBridge:
                 'active': self.W.props.is_active
             })
 
-    def notify(self, W, title, body):
-        Notify.Notification.new(title, body, self.icon_name).show()
+    def notify(self, W, data):
+        Notify.Notification.new(data['title'][0], data['body'][0], self.icon_name).show()
 
-    def set_progress(self, W, progress):
-        self.launcher_entry.props.progress = float(progress)
+    def set_progress(self, W, data):
+        self.launcher_entry.props.progress = float(data['progress'][0])
 
-    def set_progress_visible(self, W):
-        self.launcher_entry.props.progress_visible = True
+    def set_progress_visible(self, W, data):
+        self.launcher_entry.props.progress_visible = data['visible'][0]
 
-    def set_progress_invisible(self, W):
-        self.launcher_entry.props.progress_visible = False
+    def set_count(self, W, data):
+        self.launcher_entry.props.count = int(data['count'][0])
 
-    def set_count(self, W, count):
-        self.launcher_entry.props.count = int(count)
+    def set_count_visible(self, W, data):
+        self.launcher_entry.props.count_visible = data['visible'][0]
 
-    def set_count_visible(self, W):
-        self.launcher_entry.props.count_visible = True
+    def set_urgent(self, W, data):
+        self.launcher_entry.props.urgent = data['urgent'][0]
 
-    def set_count_invisible(self, W):
-        self.launcher_entry.props.count_visible = False
-
-    def set_urgent(self, W):
-        self.launcher_entry.props.urgent = True
-
-    def unset_urgent(self, W):
-        self.launcher_entry.props.urgent = False
-
-    def add_quicklist_item(self, W, name):
+    def add_quicklist_item(self, W, data):
+        name = data['name'][0]
         if name in self.quicklist_items:
             return
         item = Dbusmenu.Menuitem.new()
@@ -91,13 +88,15 @@ class DesktopBridge:
         self.quicklist.child_append(item)
         self.quicklist_items[name] = item
 
-    def remove_quicklist_item(self, W, name):
+    def remove_quicklist_item(self, W, data):
+        name = data['name'][0]
         item = self.quicklist_items.get(name)
         if item:
             self.quicklist.child_delete(item)
             del self.quicklist_items[name]
 
-    def add_menu(self, W, name):
+    def add_menu(self, W, data):
+        name = data['name'][0]
         menus = self.menus.get(W, {})
         if name in menus:
             return
@@ -112,7 +111,8 @@ class DesktopBridge:
         menus[name] = {'menu': menu, 'menu_item': menu_item, 'items': {}}
         self.menus[W] = menus
 
-    def remove_menu(self, W, name):
+    def remove_menu(self, W, data):
+        name = data['name'][0]
         menus = self.menus.get(W)
         if name not in menus:
             return
@@ -120,14 +120,22 @@ class DesktopBridge:
         W.menubar.remove(menu)
         del menus[name]
 
-    def add_menu_item(self, W, menu_name, item_name):
+    def add_menu_item(self, W, data):
+        menu_name = data['menu_name'][0]
+        item_name = data['item_name'][0]
+        widget_name = data.get('type', ['MenuItem'])[0]
+        if hasattr(Gtk, widget_name):
+            WidgetClass = getattr(Gtk, widget_name)
+        else:
+            WidgetClass = Gtk.MenuItem
         _menu = self.menus.get(W, {}).get(menu_name)
         if not _menu:
             return
         if _menu['items'].get(item_name):
             return
         gmenu = _menu['menu']
-        item = Gtk.MenuItem(item_name)
+        #item = Gtk.MenuItem(item_name)
+        item = WidgetClass(item_name)
         item.props.use_underline = True
         gmenu.append(item)
         _menu['items'][item_name] = item
@@ -136,7 +144,9 @@ class DesktopBridge:
                     {'menu': menu_name, 'name': item_name}))
         item.show()
 
-    def remove_menu_item(self, W, menu_name, item_name):
+    def remove_menu_item(self, W, data):
+        menu_name = data['menu_name'][0]
+        item_name = data['item_name'][0]
         _menu = self.menus.get(W, {}).get(menu_name)
         if not _menu and item_name not in _menu['items']:
             return

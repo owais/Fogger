@@ -6,3 +6,4 @@ Exec=fogger
 Icon=/opt/extras.ubuntu.com/fogger/share/fogger/media/fogger.svg
 Terminal=false
 Type=Application
+StartupWMClass=Fogger

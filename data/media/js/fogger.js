@@ -1,7 +1,15 @@
 (function() {
 
-var dispatch = function(action) {
-  var uri = 'http://fogger.local/' + action
+var dispatch = function(data) {
+  var params = [];
+  for (key in data) {
+    if (data.hasOwnProperty(key)) {
+      params.push(escape(key) + '=' + escape(data[key]));
+    }
+  }
+  var string = params.join('&');
+  console.log(string)
+  var uri = 'http://fogger.local/?' + string;
   var h = new XMLHttpRequest();
   h.open('GET', uri,  true);
   h.send();
@@ -64,8 +72,9 @@ document.addEventListener('foggerWindowStateChange', function(e){
   fogger.desktopWindow.active = e.foggerData.active;
 });
 
-
+// Quicklists
 var QuicklistItem = function(name, callback) {
+  this.type = 'quicklist';
   this.name = name;
   this.callback = callback;
 }
@@ -87,7 +96,10 @@ Quicklist.prototype.addItem = function(conf) {
   } else {
     var item = new QuicklistItem(conf.name, conf.callback);
     this.items[conf.name] = item;
-    this._dispatch('add_quicklist_item///' + conf.name)
+    this._dispatch({
+      'action': 'add_quicklist_item',
+      'name': conf.name,
+    });
     return this;
   }
 }
@@ -97,9 +109,13 @@ Quicklist.prototype.removeItem = function(conf) {
     console.error('Conf must contain "name"');
     return;
   }
-  this._dispatch('remove_quicklist_item///' + conf.name);
+  var data = {
+    'action': 'remove_quicklist_item',
+    'name': conf.name
+  }
+  this._dispatch(data);
   delete(this.items[conf.name]);
-}
+};
 
 
 var MenuItem = function(name, callback) {
@@ -111,12 +127,18 @@ var Menu = function(name) {
   this.name = name;
   this.items = {};
   this._dispatch = dispatch;
-  this._dispatch('add_menu///' + this.name)
+  this._dispatch({
+      'action': 'add_menu',
+      'name': this.name,
+  });
   fogger.menus[name] = this;
 };
 
 Menu.prototype.remove = function() {
-  this._dispatch('remove_menu///' + this.name);
+  this._dispatch({
+    'action': 'remove_menu',
+    'name': this.name,
+  });
   delete(fogger.menus[this.name]);
 }
 
@@ -131,7 +153,12 @@ Menu.prototype.addItem = function(conf) {
   } else {
     var item = new MenuItem(conf.name, conf.callback);
     this.items[conf.name] = item;
-    this._dispatch('add_menu_item///' + this.name + '///' + conf.name)
+    this._dispatch({
+      'action': 'add_menu_item',
+      'menu_name': this.name,
+      'item_name': conf.name,
+      'type': conf.type === undefined ? 'GtkMenuItem' : conf.type,
+    });
     return item;
   }
 };
@@ -141,9 +168,13 @@ Menu.prototype.removeItem = function(conf) {
     console.error('Conf must contain "name"');
     return;
   }
-  this._dispatch('remove_menu_item///' + this.name + '///' + conf.name);
+  this._dispatch({
+    'action': 'remove_menu_item',
+    'menu_name': this.name,
+    'item_name': conf.name
+  });
   delete(this.items[conf.name]);
-}
+};
 
 
 /* Desktop */
@@ -153,30 +184,46 @@ var Desktop = function() {
 };
 
 Desktop.prototype.setProgress = function(progress) {
-  this._dispatch('set_progress///' + progress);
-}
+  this._dispatch({
+    'action': 'set_progress',
+    'progress': progress
+    });
+};
 
 Desktop.prototype.setProgressVisible = function(visible) {
-  var action = 'set_progress_' + (visible == true ? 'visible': 'invisible');
-  this._dispatch(action);
-}
+  this._dispatch({
+    'action': 'set_progress_visible',
+    'visible': visible,
+  });
+};
 
 Desktop.prototype.setCount = function(count) {
-  this._dispatch('set_count///' + count);
-}
+  var data = {
+    'action': 'set_count',
+    'count': count,
+  }
+  this._dispatch(data);
+};
 
 Desktop.prototype.setCountVisible = function(visible) {
-  var action = 'set_count_' + (visible == true ? 'visible': 'invisible');
-  this._dispatch(action);
+  this._dispatch({
+    'action': 'set_count_visible',
+    'visible': visible,
+  });
 }
 
 Desktop.prototype.notify = function(summary, body) {
-  this._dispatch('notify///' + summary + '///' + body);
+  this._dispatch({
+    'action': 'notify',
+    'summary': summary,
+    'body': body
+  });
 }
 
 Desktop.prototype.setUrgent = function(urgent) {
-  var action = urgent == true ? 'set_urgent': 'unset_urgent';
-  this._dispatch(action);
+  this._dispatch({
+    'action': urgent == true ? 'set_urgent': 'unset_urgent',
+  });
 }
 
 Desktop.prototype.newMenu = function(name) {
