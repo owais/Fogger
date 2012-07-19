@@ -107,20 +107,14 @@ class FoggerAppWindow(AppWindow):
         style.set_attribute('type', 'text/css')
         style.set_inner_html(style_string)
 
-        def wait_for_head_and_inject(style):
-            head = doc.get_head()
-            if head:
-                head.append_child(style)
+        def wait_and_inject(style):
+            #head ou= doc.get_head()
+            doc_element = doc.get_document_element()
+            if doc_element:
+                doc_element.append_child(style)
                 return False
             return True
-        GObject.timeout_add(50, wait_for_head_and_inject, style)
-
-    def wait_for_head_and_inject(self, element):
-        head = self.webview.get_dom_document.get_head()
-        if head:
-            head.append_child(element)
-            return False
-        return True
+        GObject.timeout_add(50, wait_and_inject, style)
 
     def setup_webkit_session(self):
         session = WebKit.get_default_session()

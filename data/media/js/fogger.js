@@ -1,5 +1,24 @@
 (function() {
 
+// utils
+var randoms = [];
+function randomString(length) {
+  var length = length || 10;
+  var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
+  if (!length) {
+    length = Math.floor(Math.random() * chars.length);
+  }
+  var str = '';
+  for (var i = 0; i < length; i++) {
+    str += chars[Math.floor(Math.random() * chars.length)];
+  }
+  if (randoms.indexOf(str) != -1) {
+    randomString(length);
+  } else {
+    return str;
+  }
+}
+
 var dispatch = function(data) {
   var params = [];
   for (key in data) {
@@ -14,11 +33,23 @@ var dispatch = function(data) {
   h.send();
 };
 
-// Base model
 
+// Base GtkWidget
+var GtkWidget = function() {
+  this._id = randomString();
+  fogger._widgets[this._id] = this;
+};
+
+GtkWidget.prototype.getProperty = function() {
+};
+
+GtkWidget.prototype.setProperty = function() {
+};
+
+// Base model
 var fogger = {
+  _widgets: {},
   events: {},
-  callbackStore: {},
   menus: {},
   indicators: {},
   desktopWindow: {
@@ -28,33 +59,13 @@ var fogger = {
 };
 
 
-fogger.injectCSS = function(css_string) {
-  var waitForHeadAndInject = function() {
-    if(document.head === null) {
-      setTimeout(waitForHeadAndInject, 1000);
-      return;
-    } else {
-      var style_id = '__foggerInjectedStyleSheet';
-      var style = document.getElementById(style_id);
-      if (style === null) {
-        style = document.createElement('style');
-        style.setAttribute('id', style_id);
-      }
-      style.innerHTML = css_string;
-      style.setAttribute('type', 'text/css');
-      document.head.appendChild(style);
-    }
-  };
-  waitForHeadAndInject();
-}
-
 // Events
 fogger.events.readyEvent = document.createEvent('Event');
 fogger.events.readyEvent.initEvent('foggerReady', true, true);
 
 document.addEventListener('foggerMenuCallbackEvent', function(e) {
-  var menu = fogger.menus[e.foggerData.menu];
-  var item = menu.items[e.foggerData.name];
+  var menu = fogger._widgets[e.foggerData.menu_id];
+  var item = fogger._widgets[e.foggerData.item_id];
   if (item.callback !== undefined) {
     item.callback(menu, item);
   };
@@ -73,16 +84,19 @@ document.addEventListener('foggerWindowStateChange', function(e){
 
 // Quicklists
 var QuicklistItem = function(name, callback) {
+  GtkWidget.call(this);
   this.type = 'quicklist';
   this.name = name;
   this.callback = callback;
-}
+};
+QuicklistItem.prototype = new GtkWidget();
+QuicklistItem.prototype.constructor = QuicklistItem;
 
 var Quicklist = function() {
   this.items = {};
   this._dispatch = dispatch;
   fogger.quicklist = this;
-}
+};
 
 Quicklist.prototype.addItem = function(conf) {
   if (!conf.name) {
@@ -98,40 +112,52 @@ Quicklist.prototype.addItem = function(conf) {
     this._dispatch({
       'action': 'add_quicklist_item',
       'name': conf.name,
+      'id': item._id,
     });
-    return this;
+    return item;
   }
-}
+};
 
 Quicklist.prototype.removeItem = function(conf) {
   if (!conf.name) {
     console.error('Conf must contain "name"');
     return;
   }
-  var data = {
-    'action': 'remove_quicklist_item',
-    'name': conf.name
-  }
-  this._dispatch(data);
-  delete(this.items[conf.name]);
+  var item = this.items[conf.name];
+  if (item) {
+    var data = {
+      'action': 'remove_quicklist_item',
+      'id': item._id,
+    }
+    this._dispatch(data);
+    delete(this.items[conf.name]);
+  };
 };
 
 
 var MenuItem = function(name, callback) {
+  GtkWidget.call(this);
+  this.type = 'menuitem'
   this.name = name;
   this.callback = callback;
 }
+MenuItem.prototype = new GtkWidget();
+MenuItem.prototype.constructor = MenuItem;
 
 var Menu = function(name) {
+  GtkWidget.call(this);
   this.name = name;
   this.items = {};
   this._dispatch = dispatch;
   this._dispatch({
       'action': 'add_menu',
       'name': this.name,
+      'id': this._id,
   });
   fogger.menus[name] = this;
 };
+Menu.prototype = new GtkWidget();
+Menu.prototype.constructor = Menu;
 
 Menu.prototype.remove = function() {
   this._dispatch({
@@ -154,8 +180,9 @@ Menu.prototype.addItem = function(conf) {
     this.items[conf.name] = item;
     this._dispatch({
       'action': 'add_menu_item',
-      'menu_name': this.name,
-      'item_name': conf.name,
+      'name': conf.name,
+      'id': item._id,
+      'menu_id': this._id,
       'type': conf.type === undefined ? 'GtkMenuItem' : conf.type,
     });
     return item;
@@ -167,18 +194,20 @@ Menu.prototype.removeItem = function(conf) {
     console.error('Conf must contain "name"');
     return;
   }
-  this._dispatch({
-    'action': 'remove_menu_item',
-    'menu_name': this.name,
-    'item_name': conf.name
-  });
-  delete(this.items[conf.name]);
+  var item = new MenuItem(conf.name, conf.callback);
+  if (!item === undefined) {
+    this._dispatch({
+      'action': 'remove_menu_item',
+      'menu_name': this.name,
+      'id': item._id,
+    });
+    delete(this.items[conf.name]);
+  };
 };
 
 
 /* Desktop */
 var Desktop = function() {
-  this.__version__  = 12.07;
   this._dispatch = dispatch;
 };
 

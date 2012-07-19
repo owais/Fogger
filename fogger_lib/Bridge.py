@@ -21,11 +21,7 @@ class DesktopBridge:
     icon_name = None
     desktop_file = None
     menus = {}
-
-    widget_callback_data = {
-
-
-    }
+    widgets = {}
 
     def __init__(self, root, desktop_file, icon_name=None):
         self.W = root
@@ -34,7 +30,6 @@ class DesktopBridge:
         self.launcher_entry = Unity.LauncherEntry.get_for_desktop_file(self.desktop_file)
         self.quicklist = Dbusmenu.Menuitem.new()
         self.launcher_entry.set_property("quicklist", self.quicklist)
-        self.quicklist_items = {}
         self.indicator = None
 
         self.W.connect('notify::is-active', self.notify_window_state)
@@ -77,31 +72,29 @@ class DesktopBridge:
         self.launcher_entry.props.urgent = data['urgent'][0] == 'true'
 
     def add_quicklist_item(self, W, data):
+        widget_id = data['id'][0]
         name = data['name'][0]
-        if name in self.quicklist_items:
-            return
-        item = Dbusmenu.Menuitem.new()
+        item = self.widgets[widget_id] = self.widgets.get(
+                                                    widget_id,
+                                                    Dbusmenu.Menuitem.new())
         item.property_set(Dbusmenu.MENUITEM_PROP_LABEL, name)
         item.property_set_bool(Dbusmenu.MENUITEM_PROP_VISIBLE, True)
         item.connect('item-activated', lambda *a, **kw:
                 self._dispatch_dom_event(None, 'foggerQLCallbackEvent',
                     {'name': name}))
         self.quicklist.child_append(item)
-        self.quicklist_items[name] = item
 
     def remove_quicklist_item(self, W, data):
-        name = data['name'][0]
-        item = self.quicklist_items.get(name)
+        widget_id = data['id'][0]
+        item = self.widgets.get(widget_id)
         if item:
             self.quicklist.child_delete(item)
-            del self.quicklist_items[name]
+            del self.widgets[widget_id]
 
     def add_menu(self, W, data):
+        widget_id = data['id'][0]
+        menu = self.widgets[widget_id] = self.widgets.get(widget_id, Gtk.Menu())
         name = data['name'][0]
-        menus = self.menus.get(W, {})
-        if name in menus:
-            return
-        menu = Gtk.Menu()
         menu.set_title(name)
         menu.show()
         menu_item = Gtk.MenuItem(name)
@@ -109,10 +102,16 @@ class DesktopBridge:
         menu_item.show()
         menu_item.props.use_underline = True
         W.menubar.append(menu_item)
-        menus[name] = {'menu': menu, 'menu_item': menu_item, 'items': {}}
-        self.menus[W] = menus
+        #menus[name] = {'menu': menu, 'menu_item': menu_item, 'items': {}}
+        #self.menus[W] = menus
 
     def remove_menu(self, W, data):
+        widget_id = data['id'][0]
+        menu = self.widgets.get(widget_id)
+        if menu:
+            menu.destroy()
+            del self.widgets[widget_id]
+        '''
         name = data['name'][0]
         menus = self.menus.get(W)
         if name not in menus:
@@ -120,32 +119,35 @@ class DesktopBridge:
         menu = menus[name]['menu_item']
         W.menubar.remove(menu)
         del menus[name]
+        '''
 
     def add_menu_item(self, W, data):
-        menu_name = data['menu_name'][0]
-        item_name = data['item_name'][0]
+        menu_id = data['menu_id'][0]
+        item_id = data['id'][0]
+        item_name = data['name'][0]
         widget_name = data.get('type', ['MenuItem'])[0]
         if hasattr(Gtk, widget_name):
             WidgetClass = getattr(Gtk, widget_name)
         else:
             WidgetClass = Gtk.MenuItem
-        _menu = self.menus.get(W, {}).get(menu_name)
-        if not _menu:
+        menu = self.widgets.get(menu_id)
+        if not menu:
             return
-        if _menu['items'].get(item_name):
-            return
-        gmenu = _menu['menu']
-        #item = Gtk.MenuItem(item_name)
-        item = WidgetClass(item_name)
+        item = self.widgets[item_id] = self.widgets.get(item_id, WidgetClass(item_name))
         item.props.use_underline = True
-        gmenu.append(item)
-        _menu['items'][item_name] = item
+        menu.append(item)
         item.connect('activate', lambda *a, **kw:
                 self._dispatch_dom_event(W, 'foggerMenuCallbackEvent',
-                    {'menu': menu_name, 'name': item_name}))
+                    {'menu_id': menu_id, 'item_id': item_id}))
         item.show()
 
     def remove_menu_item(self, W, data):
+        widget_id = data['id'][0]
+        item = self.widgets.get(widget_id)
+        if item:
+            item.destroy()
+            del self.widgets[widget_id]
+        '''
         menu_name = data['menu_name'][0]
         item_name = data['item_name'][0]
         _menu = self.menus.get(W, {}).get(menu_name)
@@ -156,4 +158,4 @@ class DesktopBridge:
         gmenu.remove(item)
         del _menu['items'][item_name]
         item.destroy()
-
+        '''
