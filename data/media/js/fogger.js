@@ -194,11 +194,11 @@ Menu.prototype.removeItem = function(conf) {
     console.error('Conf must contain "name"');
     return;
   }
-  var item = new MenuItem(conf.name, conf.callback);
-  if (!item === undefined) {
+  var item = this.items[conf.name];
+  console.log(item)
+  if (item !== undefined) {
     this._dispatch({
       'action': 'remove_menu_item',
-      'menu_name': this.name,
       'id': item._id,
     });
     delete(this.items[conf.name]);

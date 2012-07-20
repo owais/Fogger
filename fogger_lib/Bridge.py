@@ -93,11 +93,11 @@ class DesktopBridge:
 
     def add_menu(self, W, data):
         widget_id = data['id'][0]
-        menu = self.widgets[widget_id] = self.widgets.get(widget_id, Gtk.Menu())
         name = data['name'][0]
+        menu_item = self.widgets[widget_id] = self.widgets.get(widget_id, Gtk.MenuItem(name))
+        menu = Gtk.Menu()
         menu.set_title(name)
         menu.show()
-        menu_item = Gtk.MenuItem(name)
         menu_item.set_submenu(menu)
         menu_item.show()
         menu_item.props.use_underline = True
@@ -111,15 +111,6 @@ class DesktopBridge:
         if menu:
             menu.destroy()
             del self.widgets[widget_id]
-        '''
-        name = data['name'][0]
-        menus = self.menus.get(W)
-        if name not in menus:
-            return
-        menu = menus[name]['menu_item']
-        W.menubar.remove(menu)
-        del menus[name]
-        '''
 
     def add_menu_item(self, W, data):
         menu_id = data['menu_id'][0]
@@ -130,9 +121,10 @@ class DesktopBridge:
             WidgetClass = getattr(Gtk, widget_name)
         else:
             WidgetClass = Gtk.MenuItem
-        menu = self.widgets.get(menu_id)
-        if not menu:
+        menu_item = self.widgets.get(menu_id)
+        if not menu_item:
             return
+        menu = menu_item.get_submenu()
         item = self.widgets[item_id] = self.widgets.get(item_id, WidgetClass(item_name))
         item.props.use_underline = True
         menu.append(item)
@@ -147,15 +139,3 @@ class DesktopBridge:
         if item:
             item.destroy()
             del self.widgets[widget_id]
-        '''
-        menu_name = data['menu_name'][0]
-        item_name = data['item_name'][0]
-        _menu = self.menus.get(W, {}).get(menu_name)
-        if not _menu and item_name not in _menu['items']:
-            return
-        gmenu = _menu['menu']
-        item = _menu['items'][item_name]
-        gmenu.remove(item)
-        del _menu['items'][item_name]
-        item.destroy()
-        '''
