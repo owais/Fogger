@@ -152,7 +152,7 @@ var MenuItem = function(menu, name, callback) {
 MenuItem.prototype = new GtkWidget();
 MenuItem.prototype.constructor = MenuItem;
 
-Menu.prototype.remove = function() {
+MenuItem.prototype.remove = function() {
   this._dispatch({
     'action': 'remove_menu_item',
     'id': this._id,
