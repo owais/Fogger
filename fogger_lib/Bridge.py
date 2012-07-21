@@ -31,7 +31,10 @@ class DesktopBridge:
         self.quicklist = Dbusmenu.Menuitem.new()
         self.launcher_entry.set_property("quicklist", self.quicklist)
         self.indicator = None
-
+        self._rename_methods = {
+            Dbusmenu.Menuitem: self._rename_dbus_menu_item,
+            Gtk.MenuItem: self._rename_gtk_menu_item,
+        }
         self.W.connect('notify::is-active', self.notify_window_state)
 
     def _js(self, W, jscode):
@@ -47,6 +50,19 @@ class DesktopBridge:
             js = js + 'params.%s = "%s";' % (k, v,)
         js = js + 'e.foggerData = params; document.dispatchEvent(e);'
         self._js(W, js)
+
+    def _rename_gtk_menu_item(self, item, name):
+        item.props.label = name
+
+    def _rename_dbus_menu_item(self, item, name):
+        item.property_set(Dbusmenu.MENUITEM_PROP_LABEL, name)
+
+    def rename_item(self, W, data):
+        widget_id = data['id'][0]
+        item = self.widgets.get(widget_id)
+        rename = self._rename_methods.get(item.__class__)
+        if rename:
+            rename(item, data['name'][0])
 
     def notify_window_state(self, window, active):
         self._dispatch_dom_event(self.W, 'foggerWindowStateChange', {

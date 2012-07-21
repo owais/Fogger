@@ -38,13 +38,18 @@ var dispatch = function(data) {
 var GtkWidget = function() {
   this._id = randomString();
   fogger._widgets[this._id] = this;
+  this._dispatch = dispatch;
 };
 
-GtkWidget.prototype.getProperty = function() {
+GtkWidget.prototype.rename = function(name) {
+  this.name = name;
+  this._dispatch({
+    'action': 'rename_item',
+    'name': this.name,
+    'id': this._id,
+  });
 };
 
-GtkWidget.prototype.setProperty = function() {
-};
 
 // Base model
 var fogger = {
@@ -82,21 +87,26 @@ document.addEventListener('foggerWindowStateChange', function(e){
   fogger.desktopWindow.active = e.foggerData.active;
 });
 
+
 // Quicklists
-var QuicklistItem = function(name, callback) {
+var QuicklistItem = function(quicklist, name, callback) {
   GtkWidget.call(this);
   this.type = 'quicklist';
+  this.quicklist = quicklist;
   this.name = name;
   this.callback = callback;
 };
 QuicklistItem.prototype = new GtkWidget();
 QuicklistItem.prototype.constructor = QuicklistItem;
 
+
 var Quicklist = function() {
   this.items = {};
   this._dispatch = dispatch;
   fogger.quicklist = this;
 };
+Quicklist.prototype = new GtkWidget();
+Quicklist.prototype.constructor = Quicklist;
 
 Quicklist.prototype.addItem = function(conf) {
   if (!conf.name) {
@@ -107,7 +117,7 @@ Quicklist.prototype.addItem = function(conf) {
     this.items[conf.name].callback = conf.callback;
     return this.items[conf.name];
   } else {
-    var item = new QuicklistItem(conf.name, conf.callback);
+    var item = new QuicklistItem(this, conf.name, conf.callback);
     this.items[conf.name] = item;
     this._dispatch({
       'action': 'add_quicklist_item',
@@ -135,9 +145,11 @@ Quicklist.prototype.removeItem = function(conf) {
 };
 
 
-var MenuItem = function(name, callback) {
+// Menus
+var MenuItem = function(menu, name, callback) {
   GtkWidget.call(this);
   this.type = 'menuitem'
+  this.menu = menu;
   this.name = name;
   this.callback = callback;
 }
@@ -176,7 +188,7 @@ Menu.prototype.addItem = function(conf) {
     this.items[conf.name].callback = conf.callback;
     return this.items[conf.name];
   } else {
-    var item = new MenuItem(conf.name, conf.callback);
+    var item = new MenuItem(this, conf.name, conf.callback);
     this.items[conf.name] = item;
     this._dispatch({
       'action': 'add_menu_item',
@@ -262,7 +274,6 @@ Desktop.prototype.newMenu = function(name) {
 Desktop.prototype.quicklist = new Quicklist();
 
 fogger.Desktop = Desktop;
-fogger.Fogger = Desktop; // TODO: Remove this once all scripts move to fogger.Desktop;
 fogger.Menu = Menu;
 fogger.MenuItem = MenuItem;
 fogger.Quicklist = Quicklist;
