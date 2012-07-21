@@ -111,7 +111,7 @@ Normally, scrips and styles are read only once from disk and then stored in memo
     <section>
         <title>Class Documentation</title>
         <section id="docs-classes-Desktop">
-            <title>Foggger</title>
+            <title>Desktop</title>
             <p>This is the main fogger class. You can access all the API functions from an instance of this class.</p>
             <section>
                 <list>
@@ -239,17 +239,10 @@ Normally, scrips and styles are read only once from disk and then stored in memo
                         </item>
                     </steps>
                 </item>
-
                 <item>
-                    <title>removeItem(item)</title>
-                    <steps>
-                        <item>
-                            <title>item</title>
-                            <p>A <link type="section" xref="Web API#docs-classes-MenuItem">menuItem</link> instance or a similar object as the one used in the <code>addItem</code> method.</p>
-                        </item>
-                    </steps>
+                    <title>rename(new_name)</title>
+                    <p>Changes the menu label to <code>new_name</code>.</p>
                 </item>
-
                 <item>
                     <title>remove()</title>
                     <p>Removes the menu and all of it's child items.</p>
@@ -264,6 +257,17 @@ Normally, scrips and styles are read only once from disk and then stored in memo
                 <item>
                     <title>callback</title>
                     <p>A function that is called everytime the menu item is clicked.</p>
+                </item>
+            </list>
+            <list>
+                <title>Methods</title>
+                <item>
+                    <title>rename(new_name)</title>
+                    <p>Changes the menu item label to <code>new_name</code>.</p>
+                </item>
+                <item>
+                    <title>remove()</title>
+                    <p>Completely removes the menu item.</p>
                 </item>
             </list>
         </section>
@@ -303,15 +307,6 @@ desktop.quicklist.addItem(...);
                     </steps>
                 </item>
 
-                <item>
-                    <title>removeItem(item)</title>
-                    <steps>
-                        <item>
-                            <title>item</title>
-                            <p>A <link type="section" xref="Web API#docs-classes-QuicklistItem">quicklistItem</link> instance or a similar object as the one used in the <code>addItem</code> method.</p>
-                        </item>
-                    </steps>
-                </item>
             </list>
         </section>
 
@@ -322,6 +317,17 @@ desktop.quicklist.addItem(...);
                 <item>
                     <title>callback</title>
                     <p>A function that is called every time the menu item is clicked.</p>
+                </item>
+            </list>
+            <list>
+                <title>Methods</title>
+                <item>
+                    <title>rename(new_name)</title>
+                    <p>Changes the quicklist item label to <code>new_name</code>.</p>
+                </item>
+                <item>
+                    <title>remove()</title>
+                    <p>Removes the quicklist item.</p>
                 </item>
             </list>
         </section>

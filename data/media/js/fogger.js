@@ -42,12 +42,15 @@ var GtkWidget = function() {
 };
 
 GtkWidget.prototype.rename = function(name) {
+  var old_name = this.name;
   this.name = name;
   this._dispatch({
     'action': 'rename_item',
     'name': this.name,
     'id': this._id,
   });
+  this._parent.items[this.name] = this;
+  delete(this._parent.items[old_name]);
 };
 
 
@@ -92,12 +95,21 @@ document.addEventListener('foggerWindowStateChange', function(e){
 var QuicklistItem = function(quicklist, name, callback) {
   GtkWidget.call(this);
   this.type = 'quicklist';
-  this.quicklist = quicklist;
+  this._parent = quicklist;
   this.name = name;
   this.callback = callback;
 };
 QuicklistItem.prototype = new GtkWidget();
 QuicklistItem.prototype.constructor = QuicklistItem;
+
+QuicklistItem.prototype.remove = function() {
+  var data = {
+    'action': 'remove_quicklist_item',
+    'id': this._id,
+  }
+  this._dispatch(data);
+  delete(this._parent.items[this.name]);
+};
 
 
 var Quicklist = function() {
@@ -128,33 +140,26 @@ Quicklist.prototype.addItem = function(conf) {
   }
 };
 
-Quicklist.prototype.removeItem = function(conf) {
-  if (!conf.name) {
-    console.error('Conf must contain "name"');
-    return;
-  }
-  var item = this.items[conf.name];
-  if (item) {
-    var data = {
-      'action': 'remove_quicklist_item',
-      'id': item._id,
-    }
-    this._dispatch(data);
-    delete(this.items[conf.name]);
-  };
-};
-
 
 // Menus
 var MenuItem = function(menu, name, callback) {
   GtkWidget.call(this);
   this.type = 'menuitem'
-  this.menu = menu;
+  this._parent = menu;
   this.name = name;
   this.callback = callback;
 }
 MenuItem.prototype = new GtkWidget();
 MenuItem.prototype.constructor = MenuItem;
+
+Menu.prototype.remove = function() {
+  this._dispatch({
+    'action': 'remove_menu_item',
+    'id': this._id,
+  });
+  delete(this._parent.items[this.name]);
+};
+
 
 var Menu = function(name) {
   GtkWidget.call(this);
@@ -199,22 +204,6 @@ Menu.prototype.addItem = function(conf) {
     });
     return item;
   }
-};
-
-Menu.prototype.removeItem = function(conf) {
-  if (!conf.name) {
-    console.error('Conf must contain "name"');
-    return;
-  }
-  var item = this.items[conf.name];
-  console.log(item)
-  if (item !== undefined) {
-    this._dispatch({
-      'action': 'remove_menu_item',
-      'id': item._id,
-    });
-    delete(this.items[conf.name]);
-  };
 };
 
 
