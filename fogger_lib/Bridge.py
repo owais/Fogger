@@ -118,6 +118,9 @@ class DesktopBridge:
 
     def add_action(self, W, data):
         action_path = data['name'][0]
+        if action_path in self.actions:
+            return
+        action_items = []
         action_parts = [X for X in action_path.split('/') if X]
         parent = self.W.menubar
         length = len(action_parts)
@@ -139,62 +142,38 @@ class DesktopBridge:
                         self._dispatch_dom_event(W, 'foggerActionCallbackEvent',
                             {'name': action_path}))
                 item.show()
+                action_items.append(item)
             else:
                 children = [X.props.label for X in parent.get_children()]
                 if action in children:
                     parent = [X for X in parent.get_children() if X.props.label == action][0].get_submenu()
+                    action_items.append(parent)
                 else:
                     menu = Gtk.MenuItem(action)
+                    menu.props.use_underline = True
                     menu.set_submenu(Gtk.Menu())
                     parent.append(menu)
                     parent = menu.get_submenu()
                     menu.show()
+                    action_items.append(menu)
+        self.actions[action_path] = action_items
 
-    def add_menu(self, W, data):
-        name = data['name'][0]
-        if name in [c.props.label for c in W.menubar.get_children()]:
-            return
-        widget_id = data['id'][0]
-        menu_item = self.widgets[widget_id] = self.widgets.get(widget_id, Gtk.MenuItem(name))
-        menu = Gtk.Menu()
-        menu.set_title(name)
-        menu.show()
-        menu_item.set_submenu(menu)
-        menu_item.show()
-        menu_item.props.use_underline = True
-        W.menubar.append(menu_item)
+    def remove_action(self, W, data):
+        action_path = data['name'][0]
+        action_items = self.actions.get(action_path)
+        if action_items:
+            for item in reversed(action_items):
+                if isinstance(item, Gtk.MenuItem):
+                    submenu = item.get_submenu()
+                else:
+                    submenu = item
+                if not submenu or not submenu.get_children():
+                    action_items.remove(item)
+                    item.destroy()
+            del self.actions[action_path]
 
-    def remove_menu(self, W, data):
-        widget_id = data['id'][0]
-        menu = self.widgets.get(widget_id)
-        if menu:
-            menu.destroy()
-            del self.widgets[widget_id]
-
-    def add_menu_item(self, W, data):
-        menu_id = data['menu_id'][0]
-        item_id = data['id'][0]
-        item_name = data['name'][0]
-        widget_name = data.get('type', ['MenuItem'])[0]
-        if hasattr(Gtk, widget_name):
-            WidgetClass = getattr(Gtk, widget_name)
-        else:
-            WidgetClass = Gtk.MenuItem
-        menu_item = self.widgets.get(menu_id)
-        if not menu_item:
-            return
-        menu = menu_item.get_submenu()
-        item = self.widgets[item_id] = self.widgets.get(item_id, WidgetClass(item_name))
-        item.props.use_underline = True
-        menu.append(item)
-        item.connect('activate', lambda *a, **kw:
-                self._dispatch_dom_event(W, 'foggerMenuCallbackEvent',
-                    {'menu_id': menu_id, 'item_id': item_id}))
-        item.show()
-
-    def remove_menu_item(self, W, data):
-        widget_id = data['id'][0]
-        item = self.widgets.get(widget_id)
-        if item:
-            item.destroy()
-            del self.widgets[widget_id]
+    def remove_actions(self, W, data):
+        for value in self.actions.values():
+            root = value[0]
+            root.destroy()
+        self.actions = {}
