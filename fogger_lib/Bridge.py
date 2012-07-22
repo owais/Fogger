@@ -20,8 +20,8 @@ Notify.init('fogger')
 class DesktopBridge:
     icon_name = None
     desktop_file = None
-    menus = {}
-    widgets = {}
+    actions = {}
+    launcher_actions = {}
 
     def __init__(self, root, desktop_file, icon_name=None):
         self.W = root
@@ -74,25 +74,29 @@ class DesktopBridge:
 
     def set_progress(self, W, data):
         self.launcher_entry.props.progress = float(data['progress'][0])
+        self.launcher_entry.props.progress_visible = True
 
-    def set_progress_visible(self, W, data):
-        self.launcher_entry.props.progress_visible = data['visible'][0] == 'true'
+    def clear_progress(self, W, data):
+        self.launcher_entry.props.progress_visible = False
 
     def set_count(self, W, data):
         self.launcher_entry.props.count = int(data['count'][0])
+        self.launcher_entry.props.count_visible = True
 
-    def set_count_visible(self, W, data):
-        self.launcher_entry.props.count_visible = data['visible'][0] == 'true'
+    def clear_count(self, W, data):
+        self.launcher_entry.props.count_visible = False
 
     def set_urgent(self, W, data):
-        self.launcher_entry.props.urgent = data['urgent'][0] == 'true'
+        self.launcher_entry.props.urgent = True
 
-    def add_quicklist_item(self, W, data):
-        widget_id = data['id'][0]
+    def clear_urgent(self, W, data):
+        self.launcher_entry.props.urgent = False
+
+    def add_launcher_action(self, W, data):
         name = data['name'][0]
-        item = self.widgets[widget_id] = self.widgets.get(
-                                                    widget_id,
-                                                    Dbusmenu.Menuitem.new())
+        if name in self.launcher_actions:
+            return
+        item = self.launcher_actions[name] = Dbusmenu.Menuitem.new()
         item.property_set(Dbusmenu.MENUITEM_PROP_LABEL, name)
         item.property_set_bool(Dbusmenu.MENUITEM_PROP_VISIBLE, True)
         item.connect('item-activated', lambda *a, **kw:
@@ -100,16 +104,57 @@ class DesktopBridge:
                     {'name': name}))
         self.quicklist.child_append(item)
 
-    def remove_quicklist_item(self, W, data):
-        widget_id = data['id'][0]
-        item = self.widgets.get(widget_id)
-        if item:
-            self.quicklist.child_delete(item)
-            del self.widgets[widget_id]
+    def remove_launcher_action(self, W, data):
+        name = data['name'][0]
+        action = self.launcher_actions.get(name)
+        if action:
+            self.quicklist.child_delete(action)
+            del self.launcher_actions[name]
+
+    def remove_launcher_actions(self, W, data):
+        for action in self.launcher_actions.values():
+            self.quicklist.child_delete(action)
+        self.launcher_actions = {}
+
+    def add_action(self, W, data):
+        action_path = data['name'][0]
+        action_parts = [X for X in action_path.split('/') if X]
+        parent = self.W.menubar
+        length = len(action_parts)
+        for i, action in enumerate(action_parts, 1):
+            if i == length:
+                prepend = False
+                if i == 1:
+                    parent = self.W.menubar.get_children()[0].get_submenu()
+                    prepend = True
+                if [X for X in parent.get_children() if X.props.label == action]:
+                    return
+                item = Gtk.MenuItem(action)
+                item.props.use_underline = True
+                if prepend:
+                    parent.prepend(item)
+                else:
+                    parent.append(item)
+                item.connect('activate', lambda *a, **kw:
+                        self._dispatch_dom_event(W, 'foggerActionCallbackEvent',
+                            {'name': action_path}))
+                item.show()
+            else:
+                children = [X.props.label for X in parent.get_children()]
+                if action in children:
+                    parent = [X for X in parent.get_children() if X.props.label == action][0].get_submenu()
+                else:
+                    menu = Gtk.MenuItem(action)
+                    menu.set_submenu(Gtk.Menu())
+                    parent.append(menu)
+                    parent = menu.get_submenu()
+                    menu.show()
 
     def add_menu(self, W, data):
-        widget_id = data['id'][0]
         name = data['name'][0]
+        if name in [c.props.label for c in W.menubar.get_children()]:
+            return
+        widget_id = data['id'][0]
         menu_item = self.widgets[widget_id] = self.widgets.get(widget_id, Gtk.MenuItem(name))
         menu = Gtk.Menu()
         menu.set_title(name)
@@ -118,8 +163,6 @@ class DesktopBridge:
         menu_item.show()
         menu_item.props.use_underline = True
         W.menubar.append(menu_item)
-        #menus[name] = {'menu': menu, 'menu_item': menu_item, 'items': {}}
-        #self.menus[W] = menus
 
     def remove_menu(self, W, data):
         widget_id = data['id'][0]
