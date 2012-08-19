@@ -3,6 +3,21 @@
   <!-- interface-requires gtk+ 3.0 -->
   <!-- interface-requires fogger_window 1.0 -->
   <!-- interface-local-resource-path ../media -->
+  <object class="GtkImage" id="image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="has_tooltip">True</property>
+    <property name="tooltip_markup" translatable="yes">&lt;tt&gt;&lt;small&gt;&lt;i&gt;You can also drop a custom icon anywhere on the window&lt;/i&gt;&lt;/small&gt;&lt;/tt&gt;</property>
+    <property name="halign">end</property>
+    <property name="valign">center</property>
+    <property name="pixbuf">../media/foggerapp.svg</property>
+    <property name="pixel_size">80</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-help</property>
+  </object>
   <object class="FoggerWindow" id="fogger_window">
     <property name="can_focus">False</property>
     <property name="hexpand">True</property>
@@ -135,31 +150,22 @@
                         <property name="can_focus">False</property>
                         <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkEventBox" id="image_eb">
+                          <object class="GtkButton" id="button1">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <signal name="button-press-event" handler="on_icon_clicked" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="has_tooltip">True</property>
-                                <property name="tooltip_markup" translatable="yes">&lt;tt&gt;&lt;small&gt;&lt;i&gt;You can also drop a custom icon anywhere on the window&lt;/i&gt;&lt;/small&gt;&lt;/tt&gt;</property>
-                                <property name="halign">end</property>
-                                <property name="valign">center</property>
-                                <property name="pixbuf">../media/foggerapp.svg</property>
-                                <property name="pixel_size">80</property>
-                              </object>
-                            </child>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="use_action_appearance">False</property>
+                            <property name="image">image</property>
+                            <property name="image_position">top</property>
+                            <property name="always_show_image">True</property>
+                            <signal name="clicked" handler="on_icon_clicked" swapped="no"/>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
+                            <property name="expand">True</property>
                             <property name="fill">True</property>
-                            <property name="position">0</property>
+                            <property name="position">1</property>
                           </packing>
-                        </child>
-                        <child>
-                          <placeholder/>
                         </child>
                       </object>
                       <packing>
@@ -241,7 +247,7 @@
                             <property name="can_focus">True</property>
                             <property name="invisible_char">•</property>
                             <property name="invisible_char_set">True</property>
-                            <property name="placeholder_text">Name</property>
+                            <property name="placeholder_text">Fogapp name</property>
                             <signal name="changed" handler="on_name_changed" swapped="no"/>
                             <signal name="changed" handler="validate_form" swapped="no"/>
                           </object>
@@ -400,10 +406,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-help</property>
   </object>
 </interface>

@@ -12,9 +12,18 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
-from gi.repository import Gtk, Unity, Notify, Dbusmenu
+from gi.repository import Gtk, Unity, Notify, Dbusmenu, TelepathyGLib
 
 Notify.init('fogger')
+
+
+TELEPATHY_PRESENCE_MAP = {
+    TelepathyGLib.ConnectionPresenceType.AVAILABLE: 'available',
+    TelepathyGLib.ConnectionPresenceType.AWAY: 'away',
+    TelepathyGLib.ConnectionPresenceType.EXTENDED_AWAY: 'away',
+    TelepathyGLib.ConnectionPresenceType.BUSY: 'busy',
+    TelepathyGLib.ConnectionPresenceType.OFFLINE: 'offline',
+}
 
 
 class DesktopBridge:
@@ -35,14 +44,20 @@ class DesktopBridge:
             Dbusmenu.Menuitem: self._rename_dbus_menu_item,
             Gtk.MenuItem: self._rename_gtk_menu_item,
         }
+        self.telepathy_account_manager = TelepathyGLib.AccountManager.new(
+                                             TelepathyGLib.DBusDaemon.dup())
+        self.telepathy_account_manager.connect(
+            'most-available-presence-changed', self.notify_presence_change)
         self.W.connect('notify::is-active', self.notify_window_state)
 
     def _js(self, W, jscode):
         if W:
+            windows = [W]
             W.webview.execute_script(jscode)
         else:
-            for win in self.W.popups:
-                win.webview.execute_script(jscode)
+            windows = self.W.popups
+        for win in windows:
+            win.webview.execute_script(jscode)
 
     def _dispatch_dom_event(self, W, event, params):
         js = 'var e = document.createEvent("Event"); e.initEvent("%s"); var params={};' % event
@@ -66,8 +81,15 @@ class DesktopBridge:
 
     def notify_window_state(self, window, active):
         self._dispatch_dom_event(self.W, 'foggerWindowStateChange', {
-                'active': self.W.props.is_active
-            })
+                'active': self.W.props.is_active})
+
+    def notify_presence_change(self, manager, presence, status, message):
+        self._dispatch_dom_event(None, 'foggerPresenceChange',
+                {'presence': TELEPATHY_PRESENCE_MAP.get(presence, 'offline')})
+
+    def get_presence(self, W, data):
+        presence = self.telepathy_account_manager.get_most_available_presence()
+        print W
 
     def notify(self, W, data):
         Notify.Notification.new(data.get('summary', [''])[0], data.get('body', [''])[0], self.icon_name).show()

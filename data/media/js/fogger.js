@@ -89,11 +89,42 @@
     });
   };
 
+  // Messaging Indicator
+  var MessagingIndicator = newDesktopPropertySubclass(function(){
+    // this.actions = {};
+    var that = this;
+
+    var presence = 'offline'
+    this.__defineGetter__('presence', function() { return presence });
+
+    var presenceChangedCB = function() {};
+    this.__defineGetter__('presenceChanged', function() {
+      return presenceChangedCB;
+    });
+
+    var updatePresence = function() {
+      this._dispatch({
+        'action': 'get_presence'
+      });
+    };
+
+    this.onPresenceChanged = function(presenceChanged) {
+      presenceChangedCB = presenceChanged;
+    };
+
+    document.addEventListener('foggerPresenceChange', function(e) {
+      presence = e.foggerData.presence;
+      that.presenceChanged();
+    });
+    updatePresence();
+  });
+
 
   // Unity Object
   var Unity = newDesktopPropertySubclass(function() {
     this.Notification = new Notification();
     this.Launcher = new Launcher();
+    this.MessagingIndicator = new MessagingIndicator();
     this.actions = {};
     var that = this;
     document.addEventListener('foggerActionCallbackEvent', function(e) {
