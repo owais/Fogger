@@ -136,11 +136,6 @@
       <column type="GObject"/>
     </columns>
   </object>
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-help</property>
-  </object>
   <object class="FoggerAppWindow" id="fogger_app_window">
     <property name="can_focus">False</property>
     <property name="hexpand">True</property>
@@ -258,8 +253,8 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">_Reload</property>
                         <property name="use_underline">True</property>
-                        <accelerator key="r" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="F5" signal="activate"/>
+                        <accelerator key="r" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_reload" swapped="no"/>
                       </object>
                     </child>
@@ -303,8 +298,8 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Zoom _In</property>
                         <property name="use_underline">True</property>
-                        <accelerator key="equal" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="plus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="equal" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_zoom_in" swapped="no"/>
                       </object>
                     </child>
@@ -465,7 +460,7 @@
                 <property name="can_focus">False</property>
                 <property name="halign">center</property>
                 <property name="valign">end</property>
-                <property name="pixbuf">../media/background.png</property>
+                <property name="pixbuf">../media/background-app.png</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -541,6 +536,11 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-help</property>
   </object>
   <object class="GtkImage" id="image4">
     <property name="visible">True</property>

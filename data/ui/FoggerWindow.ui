@@ -7,7 +7,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="has_tooltip">True</property>
-    <property name="tooltip_markup" translatable="yes">&lt;tt&gt;&lt;small&gt;&lt;i&gt;You can also drop a custom icon anywhere on the window&lt;/i&gt;&lt;/small&gt;&lt;/tt&gt;</property>
+    <property name="tooltip_markup" translatable="yes">Click to choose an icon for the app. You can also drag and drop the icon anywhere on this window.</property>
     <property name="halign">end</property>
     <property name="valign">center</property>
     <property name="pixbuf">../media/foggerapp.svg</property>
@@ -129,8 +129,11 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Create a new fog app&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
+                    <property name="label" translatable="yes">Create a new fog app</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                      <attribute name="size" value="30000"/>
+                    </attributes>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -182,7 +185,7 @@
                         <property name="margin_left">10</property>
                         <property name="margin_right">10</property>
                         <property name="hexpand">True</property>
-                        <property name="row_spacing">5</property>
+                        <property name="row_spacing">30</property>
                         <property name="column_spacing">5</property>
                         <child>
                           <object class="GtkLabel" id="label3">
@@ -200,7 +203,6 @@
                         </child>
                         <child>
                           <object class="GtkLabel" id="label4">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">&lt;tt&gt;&lt;small&gt;&lt;i&gt;Example: www.reddit.com&lt;/i&gt;&lt;/small&gt;&lt;/tt&gt;</property>
                             <property name="use_markup">True</property>
@@ -228,7 +230,6 @@
                         </child>
                         <child>
                           <object class="GtkLabel" id="label6">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">&lt;tt&gt;&lt;small&gt;&lt;i&gt;Example: Reddit&lt;/i&gt;&lt;/small&gt;&lt;/tt&gt;</property>
                             <property name="use_markup">True</property>
@@ -245,9 +246,10 @@
                             <property name="width_request">200</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="tooltip_text" translatable="yes">Choose a name for the app. Each app must have a unique name.</property>
                             <property name="invisible_char">•</property>
                             <property name="invisible_char_set">True</property>
-                            <property name="placeholder_text">Fogapp name</property>
+                            <property name="placeholder_text">Gmail</property>
                             <signal name="changed" handler="on_name_changed" swapped="no"/>
                             <signal name="changed" handler="validate_form" swapped="no"/>
                           </object>
@@ -263,9 +265,10 @@
                             <property name="width_request">200</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="tooltip_text" translatable="yes">Enter the website URL here. You can create multiple apps for the same URL.</property>
                             <property name="invisible_char">•</property>
                             <property name="invisible_char_set">True</property>
-                            <property name="placeholder_text">Website URL</property>
+                            <property name="placeholder_text">www.gmail.com</property>
                             <signal name="changed" handler="validate_form" swapped="no"/>
                           </object>
                           <packing>
@@ -394,8 +397,7 @@
             <property name="halign">center</property>
             <property name="valign">center</property>
             <property name="yalign">1</property>
-            <property name="xpad">5</property>
-            <property name="pixbuf">../media/background.png</property>
+            <property name="pixbuf">../media/background-main.png</property>
           </object>
           <packing>
             <property name="expand">False</property>
