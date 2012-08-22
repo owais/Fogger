@@ -33,6 +33,7 @@ from fogger_lib import FogAppManager
 from fogger_lib.exceptions import BaseFogAppException
 from fogger_lib.helpers import get_network_proxies
 from fogger_lib.consts import DEFAULT_APP_ICON
+from fogger_lib.BackgroundLoader import get_chameleonic_pixbuf_from_svg
 from fogger.AboutFoggerDialog import AboutFoggerDialog
 
 
@@ -58,12 +59,16 @@ class FoggerWindow(Window):
         self.spinner = self.builder.get_object('spinner')
         self.error_message = self.builder.get_object('error')
 
+        self.background_image = self.builder.get_object('bgimage')
         self.icon = DEFAULT_APP_ICON
         self.themed_icon = None
         self.icon_selected = False
         self.icon_theme = Gtk.IconTheme.get_default()
 
         self.setup_drop_targets()
+
+        self.background_image.set_from_pixbuf(get_chameleonic_pixbuf_from_svg(
+                                                       'background-main.svg'))
 
     def validate_form(self, widget, data=None):
         url = self.url.get_text()

@@ -29,6 +29,7 @@ logger = logging.getLogger('fogger')
 
 from fogger_lib import AppWindow, DesktopBridge, ConfirmDialog, DownloadManager
 from fogger_lib.helpers import get_media_file, get_or_create_directory
+from fogger_lib.BackgroundLoader import get_chameleonic_pixbuf_from_svg
 
 from fogger.AboutFoggerDialog import AboutFoggerDialog
 from fogger.PreferencesFoggerDialog import PreferencesFoggerDialog
@@ -59,7 +60,9 @@ class FoggerAppWindow(AppWindow):
         self.progressbar = self.builder.get_object('progressbar')
         self.menu_app = self.builder.get_object('mnu_app')
 
-
+        self.background_image = self.builder.get_object('bgimage')
+        self.background_image.set_from_pixbuf(get_chameleonic_pixbuf_from_svg(
+                                                       'background-app.svg'))
         self.extra_windows = []
 
     def setup_webview(self):
