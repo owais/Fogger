@@ -66,9 +66,7 @@ class FoggerWindow(Window):
         self.icon_theme = Gtk.IconTheme.get_default()
 
         self.setup_drop_targets()
-
         self.background_image.set_from_pixbuf(get_chameleonic_pixbuf_from_svg(
-                                                       #'background-main.svg'))
                                                        'background-app.svg'))
 
     def validate_form(self, widget, data=None):
