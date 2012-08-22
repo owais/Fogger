@@ -11,8 +11,9 @@ def get_chameleonic_pixbuf_from_svg(filename):
     display = Display()
     screen = display.screen()
     atom = display.get_atom('_GNOME_BACKGROUND_REPRESENTATIVE_COLORS')
-    result = screen.root.get_property(atom, Xatom.STRING, 1, 3)
+    result = screen.root.get_property(atom, Xatom.STRING, 0, 100)
     if result:
+        print result.value
         color = result.value.strip('\x00')
         data = data.replace('#000000', color)
     h = Rsvg.Handle.new_from_data(data)
