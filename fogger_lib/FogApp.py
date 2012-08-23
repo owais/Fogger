@@ -133,7 +133,7 @@ class FogApp(object):
 
     @property
     def desktop_file(self):
-        return op.join(DESKTOP_DIR, 'fogger-%s.desktop' % self.uuid)
+        return op.join(DESKTOP_DIR, self.desktop_file_name)
 
     @property
     def desktop_file_name(self):
