@@ -1,5 +1,5 @@
 project = fogger
-version = 12.08
+version = 12.08.1
 template = ubuntu-application
 lp_id = fogger
 ppa = fogger
