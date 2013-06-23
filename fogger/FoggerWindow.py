@@ -157,6 +157,8 @@ class FoggerWindow(Window):
         except BaseFogAppException:
             logger.error("Error creating App %s" % url)
         else:
+            print '*' * 20
+            print app.desktop_file
             app = Gio.DesktopAppInfo.new_from_filename(app.desktop_file)
             app.launch([], Gio.AppLaunchContext())
             self.destroy()
