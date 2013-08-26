@@ -59,14 +59,6 @@ class AppWindow(Gtk.Window):
         self.popups = [self]
         #self.is_destroyed = False
 
-        try:
-            from gi.repository import LaunchpadIntegration # pylint: disable=E0611
-            LaunchpadIntegration.add_items(self.ui.helpMenu, 1, True, True)
-            LaunchpadIntegration.set_sourcepackagename('fogger')
-        except ImportError:
-            pass
-
-
     @property
     def is_popup(self):
         return self.root != None

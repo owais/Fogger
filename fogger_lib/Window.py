@@ -63,17 +63,6 @@ class Window(Gtk.Window):
         #self.settings = Gio.Settings("net.launchpad.fogger")
         #self.settings.connect('changed', self.on_preferences_changed)
 
-        # Optional Launchpad integration
-        # This shouldn't crash if not found as it is simply used for bug reporting.
-        # See https://wiki.ubuntu.com/UbuntuDevelopment/Internationalisation/Coding
-        # for more information about Launchpad integration.
-        try:
-            from gi.repository import LaunchpadIntegration # pylint: disable=E0611
-            LaunchpadIntegration.add_items(self.ui.helpMenu, 1, True, True)
-            LaunchpadIntegration.set_sourcepackagename('fogger')
-        except ImportError:
-            pass
-
         # Optional application indicator support
         # Run 'quickly add indicator' to get started.
         # More information:
