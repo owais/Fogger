@@ -1,7 +1,0 @@
-*.pyc
-*~
-build/*
-build
-.ropeproject
-.git
-.gitignore
